@@ -1,5 +1,7 @@
 package net.meowsers.peach.structures;
 
+import java.util.Objects;
+
 public class Color {
     public float r, g, b, a;
 
@@ -16,6 +18,22 @@ public class Color {
         this.g = g;
         this.b = b;
         this.a = a;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Color otherColor = (Color) obj;
+        return r == otherColor.r
+                && g == otherColor.g
+                && b == otherColor.b
+                && a == otherColor.a;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(r, g, b, a);
     }
 
     // Core Primaries & Basics

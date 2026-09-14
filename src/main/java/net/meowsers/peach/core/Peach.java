@@ -1,93 +1,75 @@
 package net.meowsers.peach.core;
 
 import net.meowsers.peach.rendering.Renderer;
+import net.meowsers.peach.utils.Input;
 import net.meowsers.peach.utils.Log;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.meowsers.peach.utils.Time;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Peach {
-    private final Window window = new Window();
-    private final PeachGui gui = new PeachGui();
-    private PeachProgram program = new PeachProgram() { };
+    private Window window;
+    private PeachGame game;
+
     private float deltaTime;
-    private boolean running;
 
-    public void start(PeachLevel... initialLevels) {
-        PeachProgram game = new PeachProgram() { };
-        for (PeachLevel level : initialLevels) game.addLevel(level);
-        start(game);
-    }
-
-    public void start(PeachProgram program) {
-        if (running) throw new IllegalStateException("Peach is already running");
-        this.program = java.util.Objects.requireNonNull(program);
-        program.attach(this);
-        if (!glfwInit()) Log.fatalGlfw();
-        running = true;
-        Throwable failure = null;
+    public void run() {
         try {
-            window.create();
-            window.use();
-            Input.start(window.getHandle());
-            Renderer.init();
-            gui.init(window.getHandle());
-            program.start();
-            Time.start();
-            while (window.isRunning()) {
-                window.update();
-                if (!window.isRunning()) break;
-                Time.update();
-                deltaTime = Time.getDeltaTime();
-                if (window.getFramebufferWidth() > 0 && window.getFramebufferHeight() > 0) {
-                    Renderer.beginFrame(window.getFramebufferWidth(), window.getFramebufferHeight(), window.getClearColor());
-                    gui.newFrame();
-                    program.update(deltaTime);
-                    Renderer.endFrame();
-                    gui.render();
-                    window.present();
-                } else {
-                    glfwWaitEventsTimeout(0.05);
-                }
-                Input.endFrame();
-            }
-        } catch (RuntimeException | Error e) { failure = e; throw e; }
-        finally {
-            running = false;
-            try { end(); }
-            catch (RuntimeException | Error cleanup) {
-                if (failure != null) failure.addSuppressed(cleanup); else throw cleanup;
-            }
+            start();
+            update();
+        } finally {
+            end();
         }
     }
 
-    public void addLevel(PeachLevel level) { program.addLevel(level); }
-    public void removeLevel(PeachLevel level) { program.removeLevel(level); }
+    private void start() {
+        initGlfw();
+        window = new Window();
+        window.start();
+        Time.start();
+        Input.start(window.getHandle());
+        Renderer.start();
+
+        game.start();
+    }
+
+    private void update() {
+        while(window.isRunning()) {
+            window.update();
+            if (!window.isRunning()) break;
+            Time.update();
+            deltaTime = Time.getDeltaTime();
+            game.update(deltaTime);
+            Renderer.flush();
+            window.present();
+
+            Input.endFrame();
+        }
+    }
 
     private void end() {
-        // Cleanup continues even if a level's end hook fails. The context outlives all GL objects.
-        List<Runnable> cleanup = new ArrayList<>();
-        cleanup.add(program::end);
-        cleanup.add(Renderer::dispose);
-        cleanup.add(gui::shutdown);
-        cleanup.add(Input::cleanup);
-        cleanup.add(window::end);
-        cleanup.add(() -> glfwTerminate());
-        Throwable failure = null;
-        for (Runnable action : cleanup) {
-            try { action.run(); }
-            catch (RuntimeException | Error e) {
-                if (failure == null) failure = e; else failure.addSuppressed(e);
-            }
+        try {
+            if (game != null) game.end();
+        } finally {
+            Renderer.end();
+            Input.cleanup();
+            if (window != null) window.end();
+            glfwTerminate();
         }
-        if (failure instanceof Error error) throw error;
-        if (failure instanceof RuntimeException exception) throw exception;
     }
 
-    public List<PeachLevel> getLevels() { return program.getLevels(); }
-    public Window getWindow() { return window; }
-    public float getDeltaTime() { return deltaTime; }
-    public void stop() { window.stop(); }
+    private void initGlfw() {
+        if(!glfwInit()) { Log.fatalGlfw(); }
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+    }
+
+    public PeachGame getGame() {
+        return game;
+    }
+    public void setGame(PeachGame game) {
+        this.game = game;
+    }
 }

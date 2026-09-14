@@ -1,91 +1,96 @@
 package net.meowsers.peach.rendering;
 
 import net.meowsers.peach.utils.PeachException;
-import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-import static org.lwjgl.opengl.GL41.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL30.glGenerateMipmap;
+import static org.lwjgl.stb.STBImage.*;
+import static org.lwjgl.system.MemoryUtil.*;
 
-/** Create and dispose textures on the thread with the current OpenGL context. */
-public class Texture implements AutoCloseable {
-    public enum Filter { LINEAR, NEAREST }
-
+public class Texture {
     private int id;
     private int width, height;
 
     public Texture(String path) {
-        this(path, Filter.LINEAR, true);
-    }
+        String resource = path.startsWith("/") ? path : "/" + path;
+        byte[] bytes;
+        try (InputStream stream = Texture.class.getResourceAsStream(resource)) {
+            if (stream == null) throw new PeachException("Texture not found: " + path);
+            bytes = stream.readAllBytes();
+        } catch (IOException e) {
+            throw new PeachException("Could not read texture: " + path, e);
+        }
 
-    public Texture(String path, Filter filter, boolean mipmaps) {
+        ByteBuffer encoded = memAlloc(bytes.length);
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            IntBuffer w = stack.mallocInt(1), h = stack.mallocInt(1), channels = stack.mallocInt(1);
-            // Assimp flips UVs; do not change STB's process-wide flip setting.
-            ByteBuffer pixels = STBImage.stbi_load(path, w, h, channels, 4);
-            if (pixels == null) throw new PeachException("Cannot load texture " + path + ": " + STBImage.stbi_failure_reason());
-            try { upload(pixels, w.get(0), h.get(0), 4, filter, mipmaps); }
-            finally { STBImage.stbi_image_free(pixels); }
+            encoded.put(bytes).flip();
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+            IntBuffer channels = stack.mallocInt(1);
+            // UV (0, 0) is the bottom-left of the image.
+            stbi_set_flip_vertically_on_load_thread(1);
+            ByteBuffer pixels = stbi_load_from_memory(encoded, w, h, channels, 4);
+            if (pixels == null) throw new PeachException("Could not decode texture " + path + ": " + stbi_failure_reason());
+            try {
+                upload(w.get(0), h.get(0), pixels);
+            } finally {
+                stbi_image_free(pixels);
+            }
+        } finally {
+            memFree(encoded);
         }
     }
 
-    public Texture(ByteBuffer pixels, int width, int height, int channels, Filter filter, boolean mipmaps) {
-        upload(pixels, width, height, channels, filter, mipmaps);
+    /** RGBA bytes, starting at the buffer's current position. Rows run bottom to top. */
+    public Texture(int width, int height, ByteBuffer pixels) {
+        if (width <= 0 || height <= 0 || !pixels.isDirect() || (long) width * height * 4 > pixels.remaining()) {
+            throw new IllegalArgumentException("Texture needs positive dimensions and a direct RGBA buffer");
+        }
+        upload(width, height, pixels);
     }
 
-    public static Texture fromEncoded(ByteBuffer data) {
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            IntBuffer w = stack.mallocInt(1), h = stack.mallocInt(1), c = stack.mallocInt(1);
-            ByteBuffer pixels = STBImage.stbi_load_from_memory(data, w, h, c, 4);
-            if (pixels == null) throw new PeachException("Cannot decode texture: " + STBImage.stbi_failure_reason());
-            try { return new Texture(pixels, w.get(0), h.get(0), 4, Filter.LINEAR, true); }
-            finally { STBImage.stbi_image_free(pixels); }
-        }
-    }
-
-    private void upload(ByteBuffer pixels, int width, int height, int channels, Filter filter, boolean mipmaps) {
-        if (width <= 0 || height <= 0 || (channels != 3 && channels != 4)
-                || !pixels.isDirect() || pixels.remaining() < (long) width * height * channels) {
-            throw new IllegalArgumentException("Expected a direct RGB/RGBA pixel buffer of the requested size");
-        }
+    private void upload(int width, int height, ByteBuffer pixels) {
+        int maxSize = glGetInteger(GL_MAX_TEXTURE_SIZE);
+        if (width > maxSize || height > maxSize) throw new IllegalArgumentException("Texture exceeds GPU size limit: " + maxSize);
         this.width = width;
         this.height = height;
-        int previous = glGetInteger(GL_TEXTURE_BINDING_2D), alignment = glGetInteger(GL_UNPACK_ALIGNMENT);
+        int previous = glGetInteger(GL_TEXTURE_BINDING_2D);
         id = glGenTextures();
-        try {
-            glBindTexture(GL_TEXTURE_2D, id);
-            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-            int format = channels == 4 ? GL_RGBA : GL_RGB;
-            glTexImage2D(GL_TEXTURE_2D, 0, channels == 4 ? GL_RGBA8 : GL_RGB8, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
-            int sampling = filter == Filter.LINEAR ? GL_LINEAR : GL_NEAREST;
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, sampling);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mipmaps
-                    ? (filter == Filter.LINEAR ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_NEAREST) : sampling);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-            if (mipmaps) glGenerateMipmap(GL_TEXTURE_2D);
-        } catch (RuntimeException e) {
-            dispose();
-            throw e;
-        } finally {
-            glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
-            glBindTexture(GL_TEXTURE_2D, previous);
-        }
+        glBindTexture(GL_TEXTURE_2D, id);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, previous);
     }
 
     public void bind(int slot) {
-        if (id == 0) throw new IllegalStateException("Texture is disposed");
+        if (id == 0) throw new IllegalStateException("Texture has ended");
         glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_2D, id);
     }
 
-    public void bind() { bind(0); }
-    public int getId() { return id; }
-    public int getWidth() { return width; }
-    public int getHeight() { return height; }
-    public void dispose() { if (id != 0) glDeleteTextures(id); id = 0; }
-    public void cleanup() { dispose(); }
-    @Override public void close() { dispose(); }
+    public void end() {
+        if (id == 0) return;
+        glDeleteTextures(id);
+        id = 0;
+    }
+
+    public int getId() {
+        return id;
+    }
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
 }
