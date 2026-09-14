@@ -4,14 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="981d490d-4a08-433b-b131-fd2c9210176e" name="Changes" comment="Clean" />
+    <list default="true" id="981d490d-4a08-433b-b131-fd2c9210176e" name="Changes" comment="Clean">
+      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/Game.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core/Input.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core/Peach.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core/PeachProgram.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core/Time.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core/Window.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/scene/GameObject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/structures/Color.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/structures/Key.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/structures/MouseButton.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/structures/Transform.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/structures/WindowParams.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/utils/ConsoleColors.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/utils/Log.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/utils/PeachException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/Main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="24" />
+    <option name="cachedIndexableFilesCount" value="211" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="ExternalProjectsData">
@@ -41,7 +62,7 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Peach" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build setup" type="c8890929:TasksNode$1" />
+                <item name="application" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -53,8 +74,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="Interface" />
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -81,61 +102,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000000000012592" />
-      <entry key="S5" value="1.0000448410000216" />
-      <entry key="S10" value="1.0151473663456776" />
-      <entry key="S30" value="1.8784732211442765" />
-      <entry key="S60" value="3.8898315748129364" />
-      <entry key="M2" value="7.218153408778804" />
-      <entry key="M5" value="12.9249424783277" />
-      <entry key="M10" value="19.350755299287236" />
-      <entry key="M15" value="27.258896381834766" />
-      <entry key="M30" value="73.61660155632131" />
-      <entry key="H1" value="254.7126195440216" />
-      <entry key="H2" value="648.50283972845" />
-      <entry key="H4" value="1122.7386975823397" />
-      <entry key="D1" value="1844.935615427346" />
-      <entry key="W1" value="2015.82244464845" />
+      <entry key="MS100" value="1.5987393523094644" />
+      <entry key="MS500" value="1.9025015383972432" />
+      <entry key="S2" value="2.0077072925434445" />
+      <entry key="S5" value="2.4221805127953777" />
+      <entry key="S10" value="3.529642968581665" />
+      <entry key="S30" value="7.9449310440762195" />
+      <entry key="S60" value="13.176565998424145" />
+      <entry key="M2" value="25.158130192492102" />
+      <entry key="M5" value="58.51349621959269" />
+      <entry key="M10" value="101.53851393728867" />
+      <entry key="M15" value="138.67964214702667" />
+      <entry key="M30" value="228.41877382085895" />
+      <entry key="H1" value="408.05818522080966" />
+      <entry key="H2" value="791.0588644715225" />
+      <entry key="H4" value="1301.834053600768" />
+      <entry key="D1" value="2157.614650455648" />
+      <entry key="W1" value="2370.9502674213354" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="2.0824949347134884E-253" />
-      <entry key="MS500" value="3.500959278840662E-51" />
-      <entry key="S2" value="4.091097854088251E-13" />
-      <entry key="S5" value="2.4233722850799982E-5" />
-      <entry key="S10" value="0.01336811687570931" />
-      <entry key="S30" value="1.2213917261294913" />
-      <entry key="S60" value="4.155377271651588" />
-      <entry key="M2" value="8.027465637201791" />
-      <entry key="M5" value="12.575734604590911" />
-      <entry key="M10" value="16.63052425296259" />
-      <entry key="M15" value="21.34149200037056" />
-      <entry key="M30" value="39.90130526146412" />
-      <entry key="H1" value="76.76765431679932" />
-      <entry key="H2" value="132.38791718554162" />
-      <entry key="H4" value="194.9650716852952" />
-      <entry key="D1" value="292.2268393212902" />
-      <entry key="W1" value="315.8117629431632" />
+      <entry key="MS100" value="8.281556102154595E-57" />
+      <entry key="MS500" value="6.382154276408402E-12" />
+      <entry key="S2" value="0.002513995695190844" />
+      <entry key="S5" value="0.19233591797582586" />
+      <entry key="S10" value="0.9554776930566677" />
+      <entry key="S30" value="3.4953703041692776" />
+      <entry key="S60" value="5.940140351713539" />
+      <entry key="M2" value="9.730096448308142" />
+      <entry key="M5" value="19.150774675512324" />
+      <entry key="M10" value="34.26604499932447" />
+      <entry key="M15" value="48.84327753787116" />
+      <entry key="M30" value="84.9416866720102" />
+      <entry key="H1" value="137.5746418639063" />
+      <entry key="H2" value="208.6149856111801" />
+      <entry key="H4" value="287.11847109193974" />
+      <entry key="D1" value="412.3307882164904" />
+      <entry key="W1" value="443.4441153724927" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9201876506248751" />
-      <entry key="MS500" value="0.9835020740262483" />
-      <entry key="S2" value="0.9958497530959445" />
-      <entry key="S5" value="0.9984022176899928" />
-      <entry key="S10" value="1.0263604059628741" />
-      <entry key="S30" value="3.056452897363907" />
-      <entry key="S60" value="7.968473557290756" />
-      <entry key="M2" value="15.168332706990267" />
-      <entry key="M5" value="25.449371241885505" />
-      <entry key="M10" value="35.94518944284893" />
-      <entry key="M15" value="48.56835749694403" />
-      <entry key="M30" value="113.48749729151145" />
-      <entry key="H1" value="331.45064547302763" />
-      <entry key="H2" value="780.8637142316513" />
-      <entry key="H4" value="1317.6827571024771" />
-      <entry key="D1" value="2137.15691590383" />
-      <entry key="W1" value="2331.633344333944" />
+      <entry key="MS100" value="0.6008182003220686" />
+      <entry key="MS500" value="1.1932810524909867" />
+      <entry key="S2" value="1.7377896237184796" />
+      <entry key="S5" value="2.4603895293308047" />
+      <entry key="S10" value="4.352196912657609" />
+      <entry key="S30" value="11.30383233735744" />
+      <entry key="S60" value="18.98268362399206" />
+      <entry key="M2" value="34.76258938939086" />
+      <entry key="M5" value="77.55904893293328" />
+      <entry key="M10" value="135.70740330009534" />
+      <entry key="M15" value="187.42784611953996" />
+      <entry key="M30" value="313.2758360603774" />
+      <entry key="H1" value="545.5656860523392" />
+      <entry key="H2" value="999.6238998895207" />
+      <entry key="H4" value="1588.9181705951619" />
+      <entry key="D1" value="2569.937124677735" />
+      <entry key="W1" value="2814.3931014669565" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -153,7 +174,10 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Gradle.Peach [init].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Peach [runDemo].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Peach [runPeach].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Peach [run].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
@@ -163,7 +187,7 @@
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/meowsers/Desktop/Code/Java/Peach/src/main/resources/shaders&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/meowsers/Desktop/Code/Java/Peach/src/main/java/net/meowsers/peach/structures&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -179,17 +203,21 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/net/meowsers/peach/structures" />
+      <recent name="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core" />
+      <recent name="$PROJECT_DIR$/src/main/java/net/meowsers/peach/utils" />
       <recent name="$PROJECT_DIR$/src/main/resources/shaders" />
       <recent name="$PROJECT_DIR$/src/main/resources/models" />
-      <recent name="$PROJECT_DIR$/src/main/java/net/meowsers/Peach/Structures" />
-      <recent name="$PROJECT_DIR$/src/main/java/net/meowsers/Peach/Utils" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/models" />
       <recent name="$PROJECT_DIR$/src/main/resources/Jars" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="net.meowsers.peach.scene" />
+    </key>
   </component>
-  <component name="RunManager" selected="Gradle.Peach [init]">
+  <component name="RunManager" selected="Gradle.Peach [runPeach]">
     <configuration name="Peach [init]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -202,6 +230,31 @@
         <option name="taskNames">
           <list>
             <option value="init" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="Peach [runDemo]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="runDemo" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -240,10 +293,37 @@
       <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
+    <configuration name="Peach [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="run" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Peach [init]" />
         <item itemvalue="Gradle.Peach [runPeach]" />
+        <item itemvalue="Gradle.Peach [runDemo]" />
+        <item itemvalue="Gradle.Peach [run]" />
+        <item itemvalue="Gradle.Peach [init]" />
       </list>
     </recent_temporary>
   </component>
