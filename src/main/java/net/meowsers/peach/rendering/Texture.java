@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
@@ -20,7 +22,8 @@ public class Texture {
     public Texture(String path) {
         String resource = path.startsWith("/") ? path : "/" + path;
         byte[] bytes;
-        try (InputStream stream = Texture.class.getResourceAsStream(resource)) {
+        try (InputStream stream = Files.isRegularFile(Path.of(path))
+                ? Files.newInputStream(Path.of(path)) : Texture.class.getResourceAsStream(resource)) {
             if (stream == null) throw new PeachException("Texture not found: " + path);
             bytes = stream.readAllBytes();
         } catch (IOException e) {
@@ -28,22 +31,34 @@ public class Texture {
         }
 
         ByteBuffer encoded = memAlloc(bytes.length);
-        try (MemoryStack stack = MemoryStack.stackPush()) {
+        try {
             encoded.put(bytes).flip();
+            decode(encoded);
+        } finally {
+            memFree(encoded);
+        }
+    }
+
+    /** Encoded image bytes, such as an embedded PNG or JPEG. The caller owns the buffer. */
+    public Texture(ByteBuffer encoded) {
+        if (!encoded.isDirect()) throw new IllegalArgumentException("Image buffer must be direct");
+        decode(encoded);
+    }
+
+    private void decode(ByteBuffer encoded) {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
             IntBuffer channels = stack.mallocInt(1);
             // UV (0, 0) is the bottom-left of the image.
             stbi_set_flip_vertically_on_load_thread(1);
             ByteBuffer pixels = stbi_load_from_memory(encoded, w, h, channels, 4);
-            if (pixels == null) throw new PeachException("Could not decode texture " + path + ": " + stbi_failure_reason());
+            if (pixels == null) throw new PeachException("Could not decode texture: " + stbi_failure_reason());
             try {
                 upload(w.get(0), h.get(0), pixels);
             } finally {
                 stbi_image_free(pixels);
             }
-        } finally {
-            memFree(encoded);
         }
     }
 

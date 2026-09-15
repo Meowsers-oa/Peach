@@ -4,11 +4,12 @@ import net.meowsers.peach.structures.Vertex;
 import org.joml.Vector3f;
 
 /** Triangulates one simple, planar polygon in boundary order. Scratch storage is reused. */
-class Triangulator {
+public class Triangulator {
     private double[] x = new double[0], y = new double[0];
     private int[] polygon = new int[0], indices = new int[0];
 
-    int[] triangulate(Vertex[] vertices) {
+    /** The returned index buffer is reused by the next call on this instance. */
+    public int[] triangulate(Vertex[] vertices) {
         int count = vertices.length;
         if (count < 3) throw new IllegalArgumentException("Submit at least three vertices together, in face boundary order");
         if (x.length < count) {

@@ -55,9 +55,8 @@ public class RenderBatch {
     }
 
     /** Adds complete triangles until full, returning the next index offset to submit. */
-    int addVertices(Vertex[] addedVertices, int[] addedIndices, Texture texture, Matrix4f model, int offset, int[] vertexIndices) {
+    int addVertices(Vertex[] addedVertices, int[] addedIndices, Texture texture, Matrix4f model, int offset, int end, int[] vertexIndices) {
         if (vao == 0) throw new IllegalStateException("Render batch has ended");
-        int count = addedIndices.length;
         int slot = texture == null ? 0 : findTexture(texture);
         if (slot == -1) {
             if (textureCount == textures.length) return offset;
@@ -67,7 +66,7 @@ public class RenderBatch {
 
         // Source indices are remapped locally so shared vertices survive a batch boundary.
         int mappedCount = 0;
-        while (offset < count) {
+        while (offset < end) {
             int needed = 0;
             for (int i = 0; i < 3; i++) {
                 triangle[i] = addedIndices[offset + i];

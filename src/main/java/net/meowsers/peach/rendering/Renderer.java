@@ -1,5 +1,6 @@
 package net.meowsers.peach.rendering;
 
+import net.meowsers.peach.structures.Mesh;
 import net.meowsers.peach.structures.Vertex;
 import net.meowsers.peach.utils.Log;
 import org.joml.Matrix4f;
@@ -21,6 +22,7 @@ public class Renderer {
     private static int currentBatch;
     private static int textureSlots;
     private static final Matrix4f viewProjection = new Matrix4f();
+    private static final Matrix4f meshTransform = new Matrix4f();
     private static final Triangulator triangulator = new Triangulator();
     private static int[] vertexIndices = new int[0];
 
@@ -59,51 +61,89 @@ public class Renderer {
     public static void addVertices(Vertex... vertices) {
         addVertices(vertices, null, null, null);
     }
-
     public static void addVertices(Vertex[] vertices, Texture texture) {
         addVertices(vertices, null, texture, null);
     }
-
     public static void addVertices(Vertex[] vertices, int[] indices) {
         addVertices(vertices, indices, null, null);
     }
-
     public static void addVertices(Vertex[] vertices, int[] indices, Texture texture) {
         addVertices(vertices, indices, texture, null);
     }
-
     /** Null indices triangulate one ordered planar face. Explicit triangle indices describe arbitrary meshes. */
     public static void addVertices(Vertex[] vertices, int[] indices, Texture texture, Matrix4f model) {
         requireStarted();
-        if (indices != null) {
-            if (indices.length % 3 != 0) throw new IllegalArgumentException("Explicit triangle indices must come in groups of three");
-            for (int index : indices) {
-                if (index < 0 || index >= vertices.length) throw new IllegalArgumentException("Vertex index out of bounds: " + index);
-            }
-        }
+        validateVertices(vertices);
+        if (texture != null && texture.getId() == 0) throw new IllegalStateException("Texture has ended");
+        if (indices != null) validateIndices(vertices.length, indices);
+        if (vertices.length == 0) return;
+        if (indices == null) indices = triangulator.triangulate(vertices);
+        submitVertices(vertices, indices, texture, model, 0, indices.length);
+    }
+
+    private static void validateVertices(Vertex[] vertices) {
         for (Vertex vertex : vertices) {
             if (vertex == null || vertex.position == null || vertex.color == null || vertex.uv == null) {
                 throw new IllegalArgumentException("Each vertex needs a position, color and UV");
             }
         }
-        if (texture != null && texture.getId() == 0) throw new IllegalStateException("Texture has ended");
-        if (vertices.length == 0) return;
-        if (indices == null) indices = triangulator.triangulate(vertices);
-        int count = indices.length;
+    }
+
+    private static void validateIndices(int vertexCount, int[] indices) {
+        if (indices.length % 3 != 0) throw new IllegalArgumentException("Explicit triangle indices must come in groups of three");
+        for (int index : indices) {
+            if (index < 0 || index >= vertexCount) throw new IllegalArgumentException("Vertex index out of bounds: " + index);
+        }
+    }
+
+    private static void submitVertices(Vertex[] vertices, int[] indices, Texture texture, Matrix4f model, int offset, int end) {
         if (vertexIndices.length < vertices.length) {
             vertexIndices = new int[vertices.length];
             Arrays.fill(vertexIndices, -1);
         }
-
-        int offset = 0;
-        while (offset < count) {
-            offset = batches.get(currentBatch).addVertices(vertices, indices, texture, model, offset, vertexIndices);
-            if (offset < count) {
+        while (offset < end) {
+            offset = batches.get(currentBatch).addVertices(vertices, indices, texture, model, offset, end, vertexIndices);
+            if (offset < end) {
                 currentBatch++;
                 if (currentBatch == batches.size()) batches.add(new RenderBatch(textureSlots, whiteTexture));
             }
         }
     }
+
+    /** Mesh textures: none = white, one = shared, otherwise one entry per triangle face. */
+    public static void addMesh(Mesh mesh) {
+        requireStarted();
+        Vertex[] vertices = mesh.getVertices().toArray(Vertex[]::new);
+        validateVertices(vertices);
+        int[] indices = mesh.getIndices().stream().mapToInt(Integer::intValue).toArray();
+        validateIndices(vertices.length, indices);
+        if (vertices.length == 0) return;
+        if (indices.length == 0) indices = triangulator.triangulate(vertices);
+
+        List<Texture> textures = mesh.getTextures();
+        if (textures.size() > 1 && textures.size() != indices.length / 3) {
+            throw new IllegalArgumentException("Mesh needs no textures, one shared texture, or one texture per triangle face");
+        }
+        for (Texture texture : textures) {
+            if (texture != null && texture.getId() == 0) throw new IllegalStateException("Texture has ended");
+        }
+        mesh.transform.toMatrix(meshTransform);
+        if (textures.size() <= 1) {
+            submitVertices(vertices, indices, textures.isEmpty() ? null : textures.get(0), meshTransform, 0, indices.length);
+            return;
+        }
+
+        // Submit adjacent faces sharing a texture together, without copying their index ranges.
+        int offset = 0;
+        while (offset < indices.length) {
+            Texture texture = textures.get(offset / 3);
+            int end = offset + 3;
+            while (end < indices.length && textures.get(end / 3) == texture) end += 3;
+            submitVertices(vertices, indices, texture, meshTransform, offset, end);
+            offset = end;
+        }
+    }
+
 
     public static void setCamera(Matrix4f view, Matrix4f projection) {
         flush();
