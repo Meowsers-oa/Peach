@@ -38,7 +38,12 @@ public class Mesh {
         vertices.addAll(addedVertices);
         indices.clear();
         for (int index : currentIndices) indices.add(index);
-        for (int index : addedIndices) indices.add(offset + index);
+        boolean mirrored = model.determinant3x3() < 0;
+        for (int i = 0; i < addedIndices.length; i += 3) {
+            indices.add(offset + addedIndices[i]);
+            indices.add(offset + addedIndices[i + (mirrored ? 2 : 1)]);
+            indices.add(offset + addedIndices[i + (mirrored ? 1 : 2)]);
+        }
         textures.clear();
         textures.addAll(faceTextures);
     }

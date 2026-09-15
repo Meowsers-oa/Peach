@@ -98,4 +98,3 @@ tasks.register<JavaExec>("runPeach") {
     classpath = sourceSets.main.get().runtimeClasspath
     mainClass.set("net.meowsers.Main")
 }
-

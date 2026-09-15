@@ -25,13 +25,20 @@ public class Model {
     private final Mesh result = new Mesh();
     private final Map<String, Texture> textures = new HashMap<>();
     private String directory;
+    private final boolean useVertexAlpha;
 
-    private Model() {
+    private Model(boolean useVertexAlpha) {
+        this.useVertexAlpha = useVertexAlpha;
     }
 
     /** Returns one mesh with all model parts, node transforms and face textures preserved. */
     public static Mesh loadModel(String path) {
-        return new Model().load(path);
+        return loadModel(path, true);
+    }
+
+    /** Set false for RGB-only vertex colors when Assimp supplies zero alpha. Texture alpha is preserved. */
+    public static Mesh loadModel(String path, boolean useVertexAlpha) {
+        return new Model(useVertexAlpha).load(path);
     }
 
     private Mesh load(String path) {
@@ -123,7 +130,7 @@ public class Model {
                     color.r *= vertexColor.r();
                     color.g *= vertexColor.g();
                     color.b *= vertexColor.b();
-                    color.a *= vertexColor.a();
+                    if (useVertexAlpha) color.a *= vertexColor.a();
                 }
                 Vector2f uv = uvs == null ? new Vector2f() : new Vector2f(uvs.get(i).x(), uvs.get(i).y());
                 mesh.getVertices().add(new Vertex(new Vector3f(position.x(), position.y(), position.z()), color, uv));

@@ -4,6 +4,8 @@ import net.meowsers.peach.structures.Mesh;
 import net.meowsers.peach.structures.Vertex;
 import net.meowsers.peach.utils.Log;
 import org.joml.Matrix4f;
+import org.joml.FrustumIntersection;
+import org.joml.Vector3f;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
@@ -23,6 +25,9 @@ public class Renderer {
     private static int textureSlots;
     private static final Matrix4f viewProjection = new Matrix4f();
     private static final Matrix4f meshTransform = new Matrix4f();
+    private static final Matrix4f clipTransform = new Matrix4f();
+    private static final FrustumIntersection frustum = new FrustumIntersection();
+    private static final Vector3f boundsMin = new Vector3f(), boundsMax = new Vector3f();
     private static final Triangulator triangulator = new Triangulator();
     private static int[] vertexIndices = new int[0];
 
@@ -48,6 +53,9 @@ public class Renderer {
             viewProjection.identity();
             setSamplers();
             glEnable(GL_DEPTH_TEST);
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
+            glFrontFace(GL_CCW);
             glEnable(GL_BLEND);
             glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
             Log.message(glGetString(GL_RENDERER) + ": " + textureSlots + " texture slots (slot 0 reserved for white)");
@@ -77,6 +85,7 @@ public class Renderer {
         if (texture != null && texture.getId() == 0) throw new IllegalStateException("Texture has ended");
         if (indices != null) validateIndices(vertices.length, indices);
         if (vertices.length == 0) return;
+        if (!isVisible(vertices, model)) return;
         if (indices == null) indices = triangulator.triangulate(vertices);
         submitVertices(vertices, indices, texture, model, 0, indices.length);
     }
@@ -112,12 +121,20 @@ public class Renderer {
 
     /** Mesh textures: none = white, one = shared, otherwise one entry per triangle face. */
     public static void addMesh(Mesh mesh) {
+        addMesh(mesh, null);
+    }
+
+    /** Parent transform is combined with the mesh's local transform without modifying either. */
+    public static void addMesh(Mesh mesh, Matrix4f parentTransform) {
         requireStarted();
         Vertex[] vertices = mesh.getVertices().toArray(Vertex[]::new);
         validateVertices(vertices);
+        if (vertices.length == 0) return;
+        mesh.transform.toMatrix(meshTransform);
+        if (parentTransform != null) parentTransform.mul(meshTransform, meshTransform);
+        if (!isVisible(vertices, meshTransform)) return;
         int[] indices = mesh.getIndices().stream().mapToInt(Integer::intValue).toArray();
         validateIndices(vertices.length, indices);
-        if (vertices.length == 0) return;
         if (indices.length == 0) indices = triangulator.triangulate(vertices);
 
         List<Texture> textures = mesh.getTextures();
@@ -127,7 +144,6 @@ public class Renderer {
         for (Texture texture : textures) {
             if (texture != null && texture.getId() == 0) throw new IllegalStateException("Texture has ended");
         }
-        mesh.transform.toMatrix(meshTransform);
         if (textures.size() <= 1) {
             submitVertices(vertices, indices, textures.isEmpty() ? null : textures.get(0), meshTransform, 0, indices.length);
             return;
@@ -142,6 +158,20 @@ public class Renderer {
             submitVertices(vertices, indices, texture, meshTransform, offset, end);
             offset = end;
         }
+    }
+
+    private static boolean isVisible(Vertex[] vertices, Matrix4f model) {
+        // Recompute bounds because vertex positions are publicly editable.
+        boundsMin.set(Float.POSITIVE_INFINITY);
+        boundsMax.set(Float.NEGATIVE_INFINITY);
+        for (Vertex vertex : vertices) {
+            boundsMin.min(vertex.position);
+            boundsMax.max(vertex.position);
+        }
+        if (model == null) clipTransform.set(viewProjection);
+        else viewProjection.mul(model, clipTransform);
+        // Test in local space against the transformed frustum: handles rotation and nonuniform scale.
+        return frustum.set(clipTransform).testAab(boundsMin, boundsMax);
     }
 
 

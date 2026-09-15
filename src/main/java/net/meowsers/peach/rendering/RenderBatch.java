@@ -66,6 +66,7 @@ public class RenderBatch {
 
         // Source indices are remapped locally so shared vertices survive a batch boundary.
         int mappedCount = 0;
+        boolean mirrored = model != null && model.determinant3x3() < 0;
         while (offset < end) {
             int needed = 0;
             for (int i = 0; i < 3; i++) {
@@ -75,6 +76,11 @@ public class RenderBatch {
                         && (i < 2 || triangle[i] != triangle[1])) needed++;
             }
             if (needed > MAX_VERTICES - vertexCount || indices.remaining() < 3) break;
+            if (mirrored) {
+                int second = triangle[1];
+                triangle[1] = triangle[2];
+                triangle[2] = second;
+            }
 
             for (int index : triangle) {
                 int localIndex = vertexIndices[index];

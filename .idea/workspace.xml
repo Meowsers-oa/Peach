@@ -4,28 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="981d490d-4a08-433b-b131-fd2c9210176e" name="Changes" comment="Camera Movement">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/structures/Mesh.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/utils/Model.java" afterDir="false" />
+    <list default="true" id="981d490d-4a08-433b-b131-fd2c9210176e" name="Changes" comment="Model loading">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/scene/Component.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/scene/GameObject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/scene/components/CameraComponent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/scene/components/MeshRendererComponent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/models/yoshi.glb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.6.0/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.0/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.6.0/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.0/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.6.0/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.0/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.6.0/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.0/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.6.0/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.0/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/MyLevel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/MyLevel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/core/PeachLevel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/core/PeachLevel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/rendering/RenderBatch.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/rendering/RenderBatch.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/rendering/Renderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/rendering/Renderer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/rendering/Texture.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/rendering/Texture.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/rendering/Triangulator.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/rendering/Triangulator.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/models/cube.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/models/plane.obj" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/MyLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/MyLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core/PeachLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core/PeachLevel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/RenderBatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/RenderBatch.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/Renderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/Texture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/Texture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/Triangulator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/Triangulator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/models/cube.obj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/models/plane.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/structures/Mesh.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/structures/Mesh.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/utils/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/utils/Model.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +40,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="74" />
+    <option name="cachedIndexableFilesCount" value="80" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="ExternalProjectsData">
@@ -103,61 +110,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="0.010525262319263212" />
-      <entry key="MS500" value="0.4026571214363724" />
-      <entry key="S2" value="1.0250969530722083" />
-      <entry key="S5" value="1.7720570451775188" />
-      <entry key="S10" value="2.484316830774607" />
-      <entry key="S30" value="4.845381017031765" />
-      <entry key="S60" value="8.771890737563494" />
-      <entry key="M2" value="15.996344806835793" />
-      <entry key="M5" value="27.725225547275798" />
-      <entry key="M10" value="34.78265894490725" />
-      <entry key="M15" value="39.49943315262009" />
-      <entry key="M30" value="68.19548831715943" />
-      <entry key="H1" value="183.3660545794756" />
-      <entry key="H2" value="507.9599277981021" />
-      <entry key="H4" value="1035.6674956303261" />
-      <entry key="D1" value="2076.2094914849013" />
-      <entry key="W1" value="2358.7686747050334" />
+      <entry key="MS100" value="1.852634891767957" />
+      <entry key="MS500" value="1.96977444929025" />
+      <entry key="S2" value="2.3651734476698643" />
+      <entry key="S5" value="3.279096156468161" />
+      <entry key="S10" value="4.06488650196236" />
+      <entry key="S30" value="7.989795532568321" />
+      <entry key="S60" value="15.434877351830606" />
+      <entry key="M2" value="28.007180884462567" />
+      <entry key="M5" value="55.8869843831223" />
+      <entry key="M10" value="91.09493268316223" />
+      <entry key="M15" value="120.36868065356538" />
+      <entry key="M30" value="189.4490093176934" />
+      <entry key="H1" value="300.8727509696956" />
+      <entry key="H2" value="565.7743388768819" />
+      <entry key="H4" value="1080.4952397668358" />
+      <entry key="D1" value="2336.8214841498852" />
+      <entry key="W1" value="2719.913577476852" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000001617198382" />
-      <entry key="S2" value="1.020159320318111" />
-      <entry key="S5" value="1.2350433771851028" />
-      <entry key="S10" value="1.6190845590241756" />
-      <entry key="S30" value="2.501912517118292" />
-      <entry key="S60" value="3.4684281701281385" />
-      <entry key="M2" value="4.9126635724938135" />
-      <entry key="M5" value="6.807314296375562" />
-      <entry key="M10" value="7.8385360588853645" />
-      <entry key="M15" value="8.838415496020284" />
-      <entry key="M30" value="17.807737635522813" />
-      <entry key="H1" value="51.333266408190106" />
-      <entry key="H2" value="119.63251349254632" />
-      <entry key="H4" value="209.93436452431033" />
-      <entry key="D1" value="372.9119054823178" />
-      <entry key="W1" value="416.1739999619988" />
+      <entry key="MS100" value="3.7244500033637034E-14" />
+      <entry key="MS500" value="0.0023064468205578146" />
+      <entry key="S2" value="0.3381715722747677" />
+      <entry key="S5" value="0.9754875800270957" />
+      <entry key="S10" value="1.4513382952630354" />
+      <entry key="S30" value="3.1374409390690303" />
+      <entry key="S60" value="6.025884226983879" />
+      <entry key="M2" value="11.414304335345896" />
+      <entry key="M5" value="23.902109695447127" />
+      <entry key="M10" value="38.46773057346711" />
+      <entry key="M15" value="50.04661767211544" />
+      <entry key="M30" value="75.98730109984216" />
+      <entry key="H1" value="113.28400077535753" />
+      <entry key="H2" value="180.06056442202672" />
+      <entry key="H4" value="280.9541735403934" />
+      <entry key="D1" value="495.089590955028" />
+      <entry key="W1" value="557.4943546562948" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.012516199631281371" />
-      <entry key="MS500" value="0.6818051118617657" />
-      <entry key="S2" value="1.7184543329812334" />
-      <entry key="S5" value="2.7192171667531766" />
-      <entry key="S10" value="3.8157699688170297" />
-      <entry key="S30" value="7.116835188760741" />
-      <entry key="S60" value="12.05598488545907" />
-      <entry key="M2" value="20.77168439179317" />
-      <entry key="M5" value="34.454153540335746" />
-      <entry key="M10" value="42.57560705761035" />
-      <entry key="M15" value="48.30448204067826" />
-      <entry key="M30" value="85.97658202056381" />
-      <entry key="H1" value="234.6692697198698" />
-      <entry key="H2" value="627.5611775868999" />
-      <entry key="H4" value="1245.575406751601" />
-      <entry key="D1" value="2449.1136482389156" />
-      <entry key="W1" value="2774.9414390598554" />
+      <entry key="MS100" value="1.169814458624005" />
+      <entry key="MS500" value="1.7580674023965506" />
+      <entry key="S2" value="2.5168613071334045" />
+      <entry key="S5" value="4.050509479526014" />
+      <entry key="S10" value="5.3516464485787525" />
+      <entry key="S30" value="10.944107691610787" />
+      <entry key="S60" value="21.266048377052126" />
+      <entry key="M2" value="39.25189354005655" />
+      <entry key="M5" value="79.66885389215531" />
+      <entry key="M10" value="129.4730636677217" />
+      <entry key="M15" value="170.33966426845808" />
+      <entry key="M30" value="265.3792548273837" />
+      <entry key="H1" value="414.111925852052" />
+      <entry key="H2" value="745.7967371381593" />
+      <entry key="H4" value="1361.418217109489" />
+      <entry key="D1" value="2831.9015045357664" />
+      <entry key="W1" value="3277.4063805854717" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -172,38 +179,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Peach [init].executor": "Run",
-    "Gradle.Peach [runPeach].executor": "Run",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/meowsers/Desktop/Code/Java/Peach",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.jshint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.jshint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Peach [init].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Peach [runPeach].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/meowsers/Desktop/Code/Java/Peach/src/main/resources/models&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/models" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/main/resources/shaders" />
-      <recent name="$PROJECT_DIR$/src/main/resources/models" />
       <recent name="$PROJECT_DIR$/src/main/java/net/meowsers/Peach/Structures" />
       <recent name="$PROJECT_DIR$/src/main/java/net/meowsers/Peach/Utils" />
     </key>
@@ -303,7 +310,8 @@
     <MESSAGE value="åå" />
     <MESSAGE value="Quad" />
     <MESSAGE value="Camera Movement" />
-    <option name="LAST_COMMIT_MESSAGE" value="Camera Movement" />
+    <MESSAGE value="Model loading" />
+    <option name="LAST_COMMIT_MESSAGE" value="Model loading" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
