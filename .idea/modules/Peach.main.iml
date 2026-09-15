@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="Peach:main" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="net.meowsers" external.system.module.type="sourceSet" external.system.module.version="1.0" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/../../build/classes/java/main" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl:3.4.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-assimp:3.4.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-freetype:3.4.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-glfw:3.4.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-jawt:3.4.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-nfd:3.4.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-openal:3.4.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-opengl:3.4.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-stb:3.4.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.joml:joml:1.10.9" level="project" />
+    <orderEntry type="library" name="Gradle: io.github.spair:imgui-java-binding:1.92.7.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.github.spair:imgui-java-lwjgl3:1.92.7.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.lwjgl:lwjgl:natives-macos-arm64:3.4.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.lwjgl:lwjgl-assimp:natives-macos-arm64:3.4.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.lwjgl:lwjgl-freetype:natives-macos-arm64:3.4.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.lwjgl:lwjgl-glfw:natives-macos-arm64:3.4.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.lwjgl:lwjgl-nfd:natives-macos-arm64:3.4.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.lwjgl:lwjgl-openal:natives-macos-arm64:3.4.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.lwjgl:lwjgl-opengl:natives-macos-arm64:3.4.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.lwjgl:lwjgl-stb:natives-macos-arm64:3.4.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.github.spair:imgui-java-natives-macos:1.92.7.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.lwjgl:lwjgl-sdl:3.4.3" level="project" />
+  </component>
+</module>

@@ -99,34 +99,3 @@ tasks.register<JavaExec>("runPeach") {
     mainClass.set("net.meowsers.Main")
 }
 
-// Compiler utilities need classes only, so shader generation never depends on processResources.
-val shaderToolClasspath = files(sourceSets.main.get().output.classesDirs, configurations.runtimeClasspath)
-val setupSlang = tasks.register<JavaExec>("setupSlang") {
-    group = "build setup"
-    description = "Installs the pinned Slang compiler into bin/slang"
-    dependsOn(tasks.compileJava)
-    classpath = shaderToolClasspath
-    mainClass.set("net.meowsers.peach.utils.SetupSlang")
-    providers.systemProperty("peach.slangc").orNull?.let { systemProperty("peach.slangc", it) }
-}
-val compiledShaders = layout.buildDirectory.dir("generated/shaderResources")
-val compileShaders = tasks.register<JavaExec>("compileShaders") {
-    group = "build"
-    description = "Compiles all engine Slang shaders to macOS GLSL 410"
-    dependsOn(setupSlang)
-    classpath = shaderToolClasspath
-    mainClass.set("net.meowsers.peach.utils.CompileShaders")
-    args(file("src/main/slang").absolutePath, compiledShaders.get().dir("shaders").asFile.absolutePath)
-    inputs.dir("src/main/slang")
-    inputs.files(sourceSets.main.get().output.classesDirs)
-    inputs.property("slangVersion", "2025.24.3")
-    inputs.property("slangCompiler", providers.systemProperty("peach.slangc").orElse("bundled"))
-    outputs.dir(compiledShaders)
-    providers.systemProperty("peach.slangc").orNull?.let { systemProperty("peach.slangc", it) }
-}
-tasks.processResources {
-    dependsOn(compileShaders)
-    from(compiledShaders)
-}
-
-tasks.test { useJUnitPlatform() }

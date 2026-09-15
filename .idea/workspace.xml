@@ -4,14 +4,76 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="981d490d-4a08-433b-b131-fd2c9210176e" name="Changes" comment="Clean" />
+    <list default="true" id="981d490d-4a08-433b-b131-fd2c9210176e" name="Changes" comment="ååå">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_spair_imgui_java_binding_1_92_7_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_spair_imgui_java_lwjgl3_1_92_7_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_spair_imgui_java_natives_macos_1_92_7_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apiguardian_apiguardian_api_1_1_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_joml_joml_1_10_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_5_11_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_api_5_11_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_engine_5_11_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_params_5_11_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_platform_junit_platform_commons_1_11_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_platform_junit_platform_engine_1_11_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_platform_junit_platform_launcher_1_11_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_assimp_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_assimp_natives_macos_arm64_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_freetype_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_freetype_natives_macos_arm64_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_glfw_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_glfw_natives_macos_arm64_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_jawt_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_natives_macos_arm64_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_nfd_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_nfd_natives_macos_arm64_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_openal_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_openal_natives_macos_arm64_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_opengl_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_opengl_natives_macos_arm64_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_sdl_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_stb_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_lwjgl_lwjgl_stb_natives_macos_arm64_3_4_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_opentest4j_opentest4j_1_3_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/Peach.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/Peach.main.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/Peach.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/MyLevel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core/PeachLevel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/Camera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/9.6.0/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.0/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/9.6.0/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.0/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/9.6.0/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.0/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/9.6.0/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.0/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/9.6.0/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.0/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/MyGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/MyGame.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/core/Peach.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/core/Peach.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/core/PeachGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/core/PeachGame.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/rendering/RenderBatch.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/rendering/RenderBatch.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/rendering/Renderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/net/meowsers/peach/rendering/Renderer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/MyGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/MyGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core/Peach.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core/Peach.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core/PeachGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/core/PeachGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/RenderBatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/RenderBatch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/meowsers/peach/rendering/Renderer.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="24" />
+    <option name="cachedIndexableFilesCount" value="72" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="ExternalProjectsData">
@@ -41,7 +103,7 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Peach" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build setup" type="c8890929:TasksNode$1" />
+                <item name="application" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -81,61 +143,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000000000012592" />
-      <entry key="S5" value="1.0000448410000216" />
-      <entry key="S10" value="1.0151473663456776" />
-      <entry key="S30" value="1.8784732211442765" />
-      <entry key="S60" value="3.8898315748129364" />
-      <entry key="M2" value="7.218153408778804" />
-      <entry key="M5" value="12.9249424783277" />
-      <entry key="M10" value="19.350755299287236" />
-      <entry key="M15" value="27.258896381834766" />
-      <entry key="M30" value="73.61660155632131" />
-      <entry key="H1" value="254.7126195440216" />
-      <entry key="H2" value="648.50283972845" />
-      <entry key="H4" value="1122.7386975823397" />
-      <entry key="D1" value="1844.935615427346" />
-      <entry key="W1" value="2015.82244464845" />
+      <entry key="MS100" value="4.312221972622566E-4" />
+      <entry key="MS500" value="0.25866542319386776" />
+      <entry key="S2" value="1.142870533504639" />
+      <entry key="S5" value="1.5954477610965785" />
+      <entry key="S10" value="1.8669887523797382" />
+      <entry key="S30" value="2.9550663555936048" />
+      <entry key="S60" value="5.697939385531255" />
+      <entry key="M2" value="15.537882020728143" />
+      <entry key="M5" value="51.454890591185546" />
+      <entry key="M10" value="100.33176369700116" />
+      <entry key="M15" value="134.35183636877912" />
+      <entry key="M30" value="208.03576072552428" />
+      <entry key="H1" value="381.6341652431183" />
+      <entry key="H2" value="764.8957356746373" />
+      <entry key="H4" value="1258.0825151252873" />
+      <entry key="D1" value="2052.7744905381874" />
+      <entry key="W1" value="2246.5799266299055" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="2.0824949347134884E-253" />
-      <entry key="MS500" value="3.500959278840662E-51" />
-      <entry key="S2" value="4.091097854088251E-13" />
-      <entry key="S5" value="2.4233722850799982E-5" />
-      <entry key="S10" value="0.01336811687570931" />
-      <entry key="S30" value="1.2213917261294913" />
-      <entry key="S60" value="4.155377271651588" />
-      <entry key="M2" value="8.027465637201791" />
-      <entry key="M5" value="12.575734604590911" />
-      <entry key="M10" value="16.63052425296259" />
-      <entry key="M15" value="21.34149200037056" />
-      <entry key="M30" value="39.90130526146412" />
-      <entry key="H1" value="76.76765431679932" />
-      <entry key="H2" value="132.38791718554162" />
-      <entry key="H4" value="194.9650716852952" />
-      <entry key="D1" value="292.2268393212902" />
-      <entry key="W1" value="315.8117629431632" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000006560003587" />
+      <entry key="S5" value="1.0039755904049876" />
+      <entry key="S10" value="1.0999467722047758" />
+      <entry key="S30" value="2.2152607708697403" />
+      <entry key="S60" value="4.3177639379368" />
+      <entry key="M2" value="8.741764189420048" />
+      <entry key="M5" value="20.38677348894342" />
+      <entry key="M10" value="35.81014520918783" />
+      <entry key="M15" value="47.40695648558799" />
+      <entry key="M30" value="74.06888598924715" />
+      <entry key="H1" value="116.4074841735689" />
+      <entry key="H2" value="177.9985069229386" />
+      <entry key="H4" value="247.76488036431863" />
+      <entry key="D1" value="358.747610313095" />
+      <entry key="W1" value="386.1213150355239" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9201876506248751" />
-      <entry key="MS500" value="0.9835020740262483" />
-      <entry key="S2" value="0.9958497530959445" />
-      <entry key="S5" value="0.9984022176899928" />
-      <entry key="S10" value="1.0263604059628741" />
-      <entry key="S30" value="3.056452897363907" />
-      <entry key="S60" value="7.968473557290756" />
-      <entry key="M2" value="15.168332706990267" />
-      <entry key="M5" value="25.449371241885505" />
-      <entry key="M10" value="35.94518944284893" />
-      <entry key="M15" value="48.56835749694403" />
-      <entry key="M30" value="113.48749729151145" />
-      <entry key="H1" value="331.45064547302763" />
-      <entry key="H2" value="780.8637142316513" />
-      <entry key="H4" value="1317.6827571024771" />
-      <entry key="D1" value="2137.15691590383" />
-      <entry key="W1" value="2331.633344333944" />
+      <entry key="MS100" value="4.512055216109922E-4" />
+      <entry key="MS500" value="0.3062193517379774" />
+      <entry key="S2" value="1.494437156747515" />
+      <entry key="S5" value="2.240637117631434" />
+      <entry key="S10" value="2.755818949832951" />
+      <entry key="S30" value="5.053039822367137" />
+      <entry key="S60" value="9.909397331227462" />
+      <entry key="M2" value="24.164259745967588" />
+      <entry key="M5" value="71.71850692022932" />
+      <entry key="M10" value="136.0282825073069" />
+      <entry key="M15" value="181.65786729338575" />
+      <entry key="M30" value="282.02822816134125" />
+      <entry key="H1" value="497.9851390831285" />
+      <entry key="H2" value="942.8522903842409" />
+      <entry key="H4" value="1505.8181479413438" />
+      <entry key="D1" value="2411.5149293339164" />
+      <entry key="W1" value="2632.7001345347126" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -189,7 +251,7 @@
       <recent name="$PROJECT_DIR$/src/main/resources/Jars" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Peach [init]">
+  <component name="RunManager" selected="Gradle.Peach [runPeach]">
     <configuration name="Peach [init]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -242,8 +304,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Peach [init]" />
         <item itemvalue="Gradle.Peach [runPeach]" />
+        <item itemvalue="Gradle.Peach [init]" />
       </list>
     </recent_temporary>
   </component>
@@ -268,11 +330,20 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.frag" />
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Lights and shadows and like rendering" />
     <MESSAGE value="Post processing" />
     <MESSAGE value="Peach Engine" />
     <MESSAGE value="Clean" />
-    <option name="LAST_COMMIT_MESSAGE" value="Clean" />
+    <MESSAGE value="ååå" />
+    <MESSAGE value="åå" />
+    <option name="LAST_COMMIT_MESSAGE" value="åå" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

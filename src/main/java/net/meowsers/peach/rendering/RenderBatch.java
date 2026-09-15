@@ -12,6 +12,9 @@ import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public class RenderBatch {
+    private static final int MAX_VERTICES = 10_000;
+    private static final int MAX_INDICES = 30_000;
+
     // Position (3), color (4), UV (2), texture slot (1).
     private static final int VERTEX_SIZE = 10;
 
@@ -22,13 +25,15 @@ public class RenderBatch {
     private final Texture[] textures;
     private int textureCount = 1;
     private final Vector3f position = new Vector3f();
+    private final int[] mappedVertices = new int[MAX_VERTICES];
+    private final int[] triangle = new int[3];
 
     public RenderBatch(int textureSlots, Texture whiteTexture) {
         if (textureSlots < 2) throw new IllegalArgumentException("At least two texture slots are required");
         textures = new Texture[textureSlots];
         textures[0] = whiteTexture;
-        vertices = memAllocFloat(1024 * VERTEX_SIZE);
-        indices = memAllocInt(3072);
+        vertices = memAllocFloat(MAX_VERTICES * VERTEX_SIZE);
+        indices = memAllocInt(MAX_INDICES);
         vao = glGenVertexArrays();
         vbo = glGenBuffers();
         ebo = glGenBuffers();
@@ -49,48 +54,48 @@ public class RenderBatch {
         glVertexAttribPointer(location, size, GL_FLOAT, false, VERTEX_SIZE * Float.BYTES, (long) offset * Float.BYTES);
     }
 
-    /** Returns false when a new texture needs a flush. Null indices mean consecutive triangles. */
-    public boolean addVertices(Vertex[] addedVertices, int[] addedIndices, Texture texture, Matrix4f model) {
+    /** Adds complete triangles until full, returning the next index offset to submit. */
+    int addVertices(Vertex[] addedVertices, int[] addedIndices, Texture texture, Matrix4f model, int offset, int[] vertexIndices) {
         if (vao == 0) throw new IllegalStateException("Render batch has ended");
-        int count = addedIndices == null ? addedVertices.length : addedIndices.length;
-        if (count % 3 != 0) throw new IllegalArgumentException("Triangle indices must come in groups of three");
-        if (addedIndices != null) {
-            for (int index : addedIndices) {
-                if (index < 0 || index >= addedVertices.length) throw new IllegalArgumentException("Vertex index out of bounds: " + index);
-            }
-        }
-        for (Vertex vertex : addedVertices) {
-            if (vertex == null || vertex.position == null || vertex.color == null || vertex.uv == null) {
-                throw new IllegalArgumentException("Each vertex needs a position, color and UV");
-            }
-        }
-        if (texture != null && texture.getId() == 0) throw new IllegalStateException("Texture has ended");
-        if (count == 0) return true;
-
+        int count = addedIndices.length;
         int slot = texture == null ? 0 : findTexture(texture);
         if (slot == -1) {
-            if (textureCount == textures.length) return false;
+            if (textureCount == textures.length) return offset;
             slot = textureCount++;
             textures[slot] = texture;
         }
 
-        int requiredVertices = Math.addExact(vertices.position(), Math.multiplyExact(addedVertices.length, VERTEX_SIZE));
-        int requiredIndices = Math.addExact(indices.position(), count);
-        if (requiredVertices > vertices.capacity()) vertices = memRealloc(vertices, Math.max(requiredVertices, vertices.capacity() * 2));
-        if (requiredIndices > indices.capacity()) indices = memRealloc(indices, Math.max(requiredIndices, indices.capacity() * 2));
+        // Source indices are remapped locally so shared vertices survive a batch boundary.
+        int mappedCount = 0;
+        while (offset < count) {
+            int needed = 0;
+            for (int i = 0; i < 3; i++) {
+                triangle[i] = addedIndices[offset + i];
+                if (vertexIndices[triangle[i]] == -1
+                        && (i < 1 || triangle[i] != triangle[0])
+                        && (i < 2 || triangle[i] != triangle[1])) needed++;
+            }
+            if (needed > MAX_VERTICES - vertexCount || indices.remaining() < 3) break;
 
-        for (Vertex vertex : addedVertices) {
-            position.set(vertex.position);
-            if (model != null) model.transformPosition(position);
-            vertices.put(position.x).put(position.y).put(position.z);
-            vertices.put(vertex.color.r).put(vertex.color.g).put(vertex.color.b).put(vertex.color.a);
-            vertices.put(vertex.uv.x).put(vertex.uv.y).put(slot);
+            for (int index : triangle) {
+                int localIndex = vertexIndices[index];
+                if (localIndex == -1) {
+                    Vertex vertex = addedVertices[index];
+                    position.set(vertex.position);
+                    if (model != null) model.transformPosition(position);
+                    vertices.put(position.x).put(position.y).put(position.z);
+                    vertices.put(vertex.color.r).put(vertex.color.g).put(vertex.color.b).put(vertex.color.a);
+                    vertices.put(vertex.uv.x).put(vertex.uv.y).put(slot);
+                    localIndex = vertexCount++;
+                    vertexIndices[index] = localIndex;
+                    mappedVertices[mappedCount++] = index;
+                }
+                indices.put(localIndex);
+            }
+            offset += 3;
         }
-        for (int i = 0; i < count; i++) {
-            indices.put(vertexCount + (addedIndices == null ? i : addedIndices[i]));
-        }
-        vertexCount += addedVertices.length;
-        return true;
+        for (int i = 0; i < mappedCount; i++) vertexIndices[mappedVertices[i]] = -1;
+        return offset;
     }
 
     private int findTexture(Texture texture) {

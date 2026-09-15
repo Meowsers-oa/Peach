@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.lwjgl:lwjgl-openal:natives-macos-arm64:3.4.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.lwjgl" artifactId="lwjgl-openal" version="3.4.3" baseVersion="3.4.3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.4.3/12ab2b7de803ea315a56f39aebfcf148823ffe01/lwjgl-openal-3.4.3-natives-macos-arm64.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.4.3/74f10a762eaa04ab4fc63eab36dd927c200f728/lwjgl-openal-3.4.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

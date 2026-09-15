@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.lwjgl:lwjgl-nfd:natives-macos-arm64:3.4.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.lwjgl" artifactId="lwjgl-nfd" version="3.4.3" baseVersion="3.4.3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-nfd/3.4.3/451cf62b42b2c40c20c29ff003ef1a9f19e7e389/lwjgl-nfd-3.4.3-natives-macos-arm64.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-nfd/3.4.3/3e01961b664981cf441518534e4267c36825a6f4/lwjgl-nfd-3.4.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

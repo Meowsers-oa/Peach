@@ -30,7 +30,9 @@ public class Peach {
         Input.start(window.getHandle());
         Renderer.start();
 
+        game.setWindow(window);
         game.start();
+        game.startLevels();
     }
 
     private void update() {
@@ -40,6 +42,8 @@ public class Peach {
             Time.update();
             deltaTime = Time.getDeltaTime();
             game.update(deltaTime);
+            game.updateLevels(deltaTime);
+
             Renderer.flush();
             window.present();
 
@@ -49,7 +53,10 @@ public class Peach {
 
     private void end() {
         try {
-            if (game != null) game.end();
+            if (game != null) {
+                game.endLevels();
+                game.end();
+            }
         } finally {
             Renderer.end();
             Input.cleanup();

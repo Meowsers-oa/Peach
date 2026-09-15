@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.lwjgl:lwjgl-assimp:natives-macos-arm64:3.4.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.lwjgl" artifactId="lwjgl-assimp" version="3.4.3" baseVersion="3.4.3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-assimp/3.4.3/15afe0f84b324065ccc1f0f6a03b687347efc17d/lwjgl-assimp-3.4.3-natives-macos-arm64.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-assimp/3.4.3/7828a2133fd770eaa60e888ff77189bdcebbc172/lwjgl-assimp-3.4.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

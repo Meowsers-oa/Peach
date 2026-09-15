@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.lwjgl:lwjgl-freetype:natives-macos-arm64:3.4.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.lwjgl" artifactId="lwjgl-freetype" version="3.4.3" baseVersion="3.4.3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-freetype/3.4.3/2b6c33ec08fe2950de44bd40f6f3ff45ffa2e53e/lwjgl-freetype-3.4.3-natives-macos-arm64.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-freetype/3.4.3/f68a5dc04878e3964eb9fe6edd934e2d26e8a9da/lwjgl-freetype-3.4.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

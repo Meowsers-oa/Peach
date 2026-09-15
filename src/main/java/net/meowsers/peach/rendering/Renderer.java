@@ -7,6 +7,9 @@ import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL20.*;
 
@@ -14,12 +17,15 @@ import static org.lwjgl.opengl.GL20.*;
 public class Renderer {
     private static Shader defaultShader, shader;
     private static Texture whiteTexture;
-    private static RenderBatch batch;
+    private static final List<RenderBatch> batches = new ArrayList<>();
+    private static int currentBatch;
     private static int textureSlots;
     private static final Matrix4f viewProjection = new Matrix4f();
+    private static final Triangulator triangulator = new Triangulator();
+    private static int[] vertexIndices = new int[0];
 
     public static void start() {
-        if (batch != null) return;
+        if (!batches.isEmpty()) return;
         textureSlots = glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS);
         try {
             StringBuilder cases = new StringBuilder();
@@ -36,7 +42,7 @@ public class Renderer {
                 pixel.put((byte) 255).put((byte) 255).put((byte) 255).put((byte) 255).flip();
                 whiteTexture = new Texture(1, 1, pixel);
             }
-            batch = new RenderBatch(textureSlots, whiteTexture);
+            batches.add(new RenderBatch(textureSlots, whiteTexture));
             viewProjection.identity();
             setSamplers();
             glEnable(GL_DEPTH_TEST);
@@ -49,6 +55,7 @@ public class Renderer {
         }
     }
 
+    /** One planar face, with vertices ordered around its outline. Indices are generated automatically. */
     public static void addVertices(Vertex... vertices) {
         addVertices(vertices, null, null, null);
     }
@@ -65,12 +72,36 @@ public class Renderer {
         addVertices(vertices, indices, texture, null);
     }
 
-    /** Indices are local to this submission. Null texture uses white; null model uses world positions. */
+    /** Null indices triangulate one ordered planar face. Explicit triangle indices describe arbitrary meshes. */
     public static void addVertices(Vertex[] vertices, int[] indices, Texture texture, Matrix4f model) {
         requireStarted();
-        if (!batch.addVertices(vertices, indices, texture, model)) {
-            flush();
-            batch.addVertices(vertices, indices, texture, model);
+        if (indices != null) {
+            if (indices.length % 3 != 0) throw new IllegalArgumentException("Explicit triangle indices must come in groups of three");
+            for (int index : indices) {
+                if (index < 0 || index >= vertices.length) throw new IllegalArgumentException("Vertex index out of bounds: " + index);
+            }
+        }
+        for (Vertex vertex : vertices) {
+            if (vertex == null || vertex.position == null || vertex.color == null || vertex.uv == null) {
+                throw new IllegalArgumentException("Each vertex needs a position, color and UV");
+            }
+        }
+        if (texture != null && texture.getId() == 0) throw new IllegalStateException("Texture has ended");
+        if (vertices.length == 0) return;
+        if (indices == null) indices = triangulator.triangulate(vertices);
+        int count = indices.length;
+        if (vertexIndices.length < vertices.length) {
+            vertexIndices = new int[vertices.length];
+            Arrays.fill(vertexIndices, -1);
+        }
+
+        int offset = 0;
+        while (offset < count) {
+            offset = batches.get(currentBatch).addVertices(vertices, indices, texture, model, offset, vertexIndices);
+            if (offset < count) {
+                currentBatch++;
+                if (currentBatch == batches.size()) batches.add(new RenderBatch(textureSlots, whiteTexture));
+            }
         }
     }
 
@@ -103,18 +134,21 @@ public class Renderer {
         requireStarted();
         shader.bind();
         shader.setUniform("uViewProjection", viewProjection);
-        batch.flush();
+        for (int i = 0; i <= currentBatch; i++) batches.get(i).flush();
+        currentBatch = 0;
     }
 
     private static void requireStarted() {
-        if (batch == null) throw new IllegalStateException("Renderer.start() must be called with a current OpenGL context");
+        if (batches.isEmpty()) throw new IllegalStateException("Renderer.start() must be called with a current OpenGL context");
     }
 
     public static void end() {
-        if (batch != null) batch.end();
+        for (RenderBatch batch : batches) batch.end();
         if (whiteTexture != null) whiteTexture.end();
         if (defaultShader != null) defaultShader.end();
-        batch = null;
+        batches.clear();
+        vertexIndices = new int[0];
+        currentBatch = 0;
         whiteTexture = null;
         defaultShader = shader = null;
         textureSlots = 0;

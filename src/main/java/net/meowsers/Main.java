@@ -6,7 +6,8 @@ public abstract class Main {
     public static void main(String[] args) {
 
         Peach peach = new Peach();
-        peach.start(new Game());
+        peach.setGame(new MyGame());
+        peach.run();
 
     }
 }
