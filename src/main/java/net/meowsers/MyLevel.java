@@ -19,6 +19,7 @@ public class MyLevel extends PeachLevel {
 
     @Override
     public void update(float dt) {
+        cam.handleCameraMovement(dt);
         Renderer.addVertices(quad);
     }
 }
