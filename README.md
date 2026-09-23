@@ -21,6 +21,7 @@ cmake -S . -B cmake-build-debug -DFETCHCONTENT_FULLY_DISCONNECTED=ON -DGLAD_REPR
 - Math library - [CGLM](https://github.com/recp/cglm)
 - OpenGL Loader - [GLAD](https://glad.dav1d.de)
 - 3D model loader - [Assimp](https://assimp.org)
+- UI backend - [C-ImGui](https://github.com/cimgui/cimgui)
 
 ### What can it do?
 

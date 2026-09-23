@@ -37,6 +37,8 @@ add_library(peach_engine STATIC
         graphics/Texture.c
         graphics/Mesh.c
         graphics/Mesh.h
+        graphics/Ui.cpp
+        graphics/Ui.h
 )
 
 target_include_directories(peach_engine
@@ -53,6 +55,7 @@ target_link_libraries(peach_engine
         OpenGL::GL
         cglm
         assimp
+        PRIVATE peach_cimgui
 )
 
 if(UNIX AND NOT APPLE)

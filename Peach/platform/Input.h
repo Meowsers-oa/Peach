@@ -73,8 +73,8 @@ typedef enum {
     MOUSE_MIDDLE = 2
 } mMouseButton;
 
-void mInitInput(GLFWwindow* window);
-void mUpdateInput(void);
+void mInputStart(GLFWwindow* window);
+void mInputUpdate(void);
 
 int mIsKeyDown(mKey key);
 int mIsKeyPressed(mKey key);

@@ -168,6 +168,10 @@ typedef struct {
     mWindow window;
     mRenderer renderer;
     mTime time;
+    struct {
+        void* handle; // ImGui context, kept private to the UI implementation.
+        int frameActive;
+    } ui;
 } mContext;
 
 typedef struct {

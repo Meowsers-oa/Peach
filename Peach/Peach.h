@@ -14,5 +14,6 @@
 #include "Peach/graphics/Camera.h"
 #include "Peach/graphics/Renderer.h"
 #include "Peach/graphics/Mesh.h"
+#include "Peach/graphics/Ui.h"
 
 #endif //PEACH_PEACH_H

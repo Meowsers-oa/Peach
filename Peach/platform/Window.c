@@ -6,6 +6,7 @@
 #include "Peach/platform/Window.h"
 #include "Peach/platform/Input.h"
 #include "Peach/graphics/Renderer.h"
+#include "Peach/graphics/Ui.h"
 
 static mContext* ctx;
 static const char* lastTitle;
@@ -40,8 +41,14 @@ int mWindowCreate(mContext *context, int width, int height, const char *title) {
 
     lastTitle = context->window.title;
 
-    mInitInput(context->window.handle);
+    mInputStart(context->window.handle);
     mRendererInit(context);
+    if (!mUiStart(context)) {
+        mRendererShutdown(context);
+        mWindowEnd(context);
+        context->window.running = 0;
+        return -1;
+    }
 
     glClearColor(context->window.clearColor.r, context->window.clearColor.g, context->window.clearColor.b, context->window.clearColor.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

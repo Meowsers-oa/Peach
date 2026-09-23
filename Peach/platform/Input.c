@@ -26,7 +26,7 @@ static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
     inputCtx.scrollY = yoffset;
 }
 
-void mInitInput(GLFWwindow* window) {
+void mInputStart(GLFWwindow* window) {
     inputCtx.window = window;
     memset(inputCtx.keys, 0, sizeof(inputCtx.keys));
     memset(inputCtx.keysLast, 0, sizeof(inputCtx.keysLast));
@@ -36,7 +36,7 @@ void mInitInput(GLFWwindow* window) {
     glfwSetScrollCallback(window, scrollCallback);
 }
 
-void mUpdateInput(void) {
+void mInputUpdate(void) {
     memcpy(inputCtx.keysLast, inputCtx.keys, sizeof(inputCtx.keys));
     memcpy(inputCtx.mouseButtonsLast, inputCtx.mouseButtons, sizeof(inputCtx.mouseButtons));
 

@@ -12,6 +12,7 @@
 #include "Peach/platform/Window.h"
 #include "Peach/graphics/Renderer.h"
 #include "Peach/core/Utils.h"
+#include "Peach/graphics/Ui.h"
 
 static inline mContext mCreateContext() {
     mContext context = {0};
@@ -38,12 +39,15 @@ static inline mContext mCreateContext() {
 }
 
 static inline void mUpdate(mContext* ctx) {
+    mUiRender(ctx);
     mTimeUpdate(&ctx->time);
     mWindowUpdate(ctx);
-    mUpdateInput();
+    mInputUpdate();
+    mUiUpdate(ctx);
 }
 
 static inline void mEnd(mContext* ctx) {
+    mUiEnd(ctx);
     mRendererShutdown(ctx);
     if (ctx->window.handle != NULL) mWindowEnd(ctx);
     glfwTerminate();

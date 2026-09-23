@@ -1,5 +1,5 @@
 #include "Peach/Peach.h"
-#include <math.h>
+
 static void drawShowcase(mContext* ctx, float angle) {
     const mColor plaster = {0.76f, 0.78f, 0.82f, 1.0f};
     const mColor floor = {0.58f, 0.61f, 0.66f, 1.0f};
@@ -18,7 +18,6 @@ static void drawShowcase(mContext* ctx, float angle) {
                     (vec3){0.2f, angle, 0.12f}, objects);
     mAddCube(ctx, (vec3){4.6f, 0.5f, -2.0f}, (vec3){0.65f, 1.0f, 0.65f}, objects);
 }
-
 
 int main(void) {
     mContext ctx = mCreateContext();
@@ -47,7 +46,8 @@ int main(void) {
 
     while (ctx.window.running) {
         angle = fmodf(angle + mGetDeltaTime(&ctx) * 0.35f, 2.0f * GLM_PIf);
-        mCameraUpdateFree(&camera, mGetDeltaTime(&ctx), 6.0f, 0.15f);
+        if (!mUiWantsMouse(&ctx) && !mUiWantsKeyboard(&ctx))
+            mCameraUpdateFree(&camera, mGetDeltaTime(&ctx), 6.0f, 0.15f);
         mRendererSetCamera3D(&ctx, &camera);
 
         mRendererBegin(&ctx);
@@ -55,6 +55,12 @@ int main(void) {
         drawShowcase(&ctx, angle);
 
         mRendererEnd(&ctx);
+
+        mUiSetNextWindowPosition(20, 20, true);
+        if (mUiBeginWindow("Hello", NULL, mUiWindowAutoResize))
+            mUiText("Hello world");
+        mUiEndWindow();
+
         mUpdate(&ctx);
     }
 

@@ -47,6 +47,8 @@ foreach(shader scene.vert scene.frag shadow.vert shadow.frag)
     configure_file("assets/shaders/${shader}" "${PEACH_SHADER_DIR}/${shader}" COPYONLY)
 endforeach()
 
+include(cmake/Cimgui.cmake)
+
 add_subdirectory(Peach engine)
 
 add_executable(peach main.c)
