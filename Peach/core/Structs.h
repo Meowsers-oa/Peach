@@ -170,4 +170,13 @@ typedef struct {
     mTime time;
 } mContext;
 
+typedef struct {
+    mVertex* vertices;
+    unsigned int* indices;
+    unsigned int vertexCount;
+    unsigned int indexCount;
+    mTexture* textures; // Optional owned array; GPU textures remain caller-owned.
+    mColor colors;     // Global tint, multiplied with vertex/material colors.
+} mMesh;
+
 #endif //PEACH_STRUCTS_H

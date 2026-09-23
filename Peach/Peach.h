@@ -13,7 +13,6 @@
 #include "Peach/graphics/Texture.h"
 #include "Peach/graphics/Camera.h"
 #include "Peach/graphics/Renderer.h"
-
-void mPeachStart();
+#include "Peach/graphics/Mesh.h"
 
 #endif //PEACH_PEACH_H

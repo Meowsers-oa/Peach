@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 4.3)
 
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
-project(peach C)
+project(peach C CXX)
 
 set(CMAKE_C_STANDARD 11)
 
