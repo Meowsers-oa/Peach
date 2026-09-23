@@ -43,7 +43,7 @@ FetchContent_MakeAvailable(stb)
 find_package(OpenGL REQUIRED)
 
 set(PEACH_SHADER_DIR "${CMAKE_CURRENT_BINARY_DIR}/assets/shaders")
-foreach(shader scene.vert scene.frag shadow.vert shadow.frag)
+foreach(shader scene.vert scene.frag shadow.vert shadow.frag fullscreen.vert postprocess.frag)
     configure_file("assets/shaders/${shader}" "${PEACH_SHADER_DIR}/${shader}" COPYONLY)
 endforeach()
 

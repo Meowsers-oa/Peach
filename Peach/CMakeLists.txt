@@ -28,9 +28,11 @@ FetchContent_MakeAvailable(assimp)
 
 # Engine target
 add_library(peach_engine STATIC
+        core/Frame.c
         platform/Window.c
         platform/Input.c
         graphics/Camera.c
+        graphics/PostProcess.c
         graphics/Renderer.c
         graphics/Lighting.c
         graphics/Shader.c

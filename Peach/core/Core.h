@@ -13,6 +13,7 @@
 #include "Peach/graphics/Renderer.h"
 #include "Peach/core/Utils.h"
 #include "Peach/graphics/Ui.h"
+#include "Peach/core/Frame.h"
 
 static inline mContext mCreateContext() {
     mContext context = {0};
@@ -38,7 +39,12 @@ static inline mContext mCreateContext() {
     return context;
 }
 
+// Legacy manual loop support; new code uses mBeginFrame/mEndFrame.
 static inline void mUpdate(mContext* ctx) {
+    if (ctx->frame.active) {
+        mEndFrame(ctx);
+        return;
+    }
     mUiRender(ctx);
     mTimeUpdate(&ctx->time);
     mWindowUpdate(ctx);
@@ -47,6 +53,7 @@ static inline void mUpdate(mContext* ctx) {
 }
 
 static inline void mEnd(mContext* ctx) {
+    mFrameShutdown(ctx);
     mUiEnd(ctx);
     mRendererShutdown(ctx);
     if (ctx->window.handle != NULL) mWindowEnd(ctx);

@@ -17,7 +17,7 @@ int mWindowCreate(mContext *context, int width, int height, const char *title) {
     if (context->window.handle == NULL) {
         const char* desc;
         printf("ERROR: Failed to create window!: %d: %s", glfwGetError(&desc), desc);
-        return -1;
+        return 0;
     }
 
     context->window.running = 1;
@@ -26,7 +26,7 @@ int mWindowCreate(mContext *context, int width, int height, const char *title) {
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         printf("Failed to load rendering backend!");
-        return -1;
+        return 0;
     }
 
     context->window.title = title;
@@ -47,13 +47,13 @@ int mWindowCreate(mContext *context, int width, int height, const char *title) {
         mRendererShutdown(context);
         mWindowEnd(context);
         context->window.running = 0;
-        return -1;
+        return 0;
     }
 
     glClearColor(context->window.clearColor.r, context->window.clearColor.g, context->window.clearColor.b, context->window.clearColor.a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    return 0;
+    return 1;
 }
 
 void mOnWindowResize(GLFWwindow *window, int width, int height) {

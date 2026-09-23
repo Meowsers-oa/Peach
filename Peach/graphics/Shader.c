@@ -3,6 +3,7 @@
 //
 
 #include "Peach/graphics/Shader.h"
+#include "Peach/graphics/PostProcess.h"
 #include "Peach/core/Utils.h"
 #include <string.h>
 
@@ -80,6 +81,10 @@ unsigned int mCreateResourceShaderProgram(const char* vertexName, const char* fr
     free(vertexPath);
     free(fragmentPath);
     return program;
+}
+
+unsigned int mCreatePostProcessShader(const char* fragmentPath) {
+    return mCreateShaderProgram(PEACH_SHADER_DIR "/fullscreen.vert", fragmentPath);
 }
 
 static void useLoadedProgram(mContext* ctx, unsigned int program) {

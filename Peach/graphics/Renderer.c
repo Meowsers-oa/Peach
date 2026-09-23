@@ -146,6 +146,10 @@ void mRendererShutdown(mContext *ctx) {
     if (!ctx) return;
     mRendererDiscardBatches(ctx);
     mLightingShutdown(ctx);
+    if (ctx->renderer.fullscreenVao) {
+        glDeleteVertexArrays(1, &ctx->renderer.fullscreenVao);
+        ctx->renderer.fullscreenVao = 0;
+    }
 
     if (ctx->renderer.vertexBuffer) {
         free(ctx->renderer.vertexBuffer);

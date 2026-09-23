@@ -77,8 +77,6 @@ typedef struct {
     float texId;
 } mVertex;
 
-typedef mVertex Vertex;
-
 typedef struct {
     unsigned int id;
     int width;
@@ -86,7 +84,14 @@ typedef struct {
     int channels;
 } mTexture;
 
-typedef mTexture Texture;
+typedef struct {
+    unsigned int framebuffer;
+    unsigned int depthBuffer;
+    mTexture color;
+    int active;
+    int previousFramebuffer;
+    int previousViewport[4];
+} mRenderTarget;
 
 typedef enum {
     CAMERA_PERSPECTIVE = 0,
@@ -104,9 +109,6 @@ typedef struct {
     mCameraProjection projection;
 } mCamera3D;
 
-typedef mCamera3D mCamera;
-typedef mCamera3D Camera3D;
-typedef mCamera3D Camera;
 
 typedef struct {
     unsigned int drawCalls;
@@ -140,6 +142,7 @@ typedef struct {
     unsigned int vbo;
     unsigned int ebo;
     unsigned int whiteTexture;
+    unsigned int fullscreenVao;
     mVertex* vertexBuffer;
     mVertex* vertexBufferPtr;
     unsigned int* indexBuffer;
@@ -168,6 +171,11 @@ typedef struct {
     mWindow window;
     mRenderer renderer;
     mTime time;
+    struct {
+        mRenderTarget scene;
+        unsigned int postProcess;
+        int active;
+    } frame;
     struct {
         void* handle; // ImGui context, kept private to the UI implementation.
         int frameActive;
