@@ -41,6 +41,8 @@ add_library(peach_engine STATIC
         graphics/Mesh.h
         graphics/Ui.cpp
         graphics/Ui.h
+        platform/Map.c
+        platform/Map.h
 )
 
 target_include_directories(peach_engine
