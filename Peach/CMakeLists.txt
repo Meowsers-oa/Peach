@@ -43,6 +43,8 @@ add_library(peach_engine STATIC
         graphics/Ui.h
         platform/Map.c
         platform/Map.h
+        utils/Events.c
+        utils/Events.h
 )
 
 target_include_directories(peach_engine
