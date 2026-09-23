@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <stdbool.h>
 #include <stdint.h>
 
 #define VERTEX_HASH_CAPACITY 65536
@@ -42,7 +41,7 @@ static inline uint32_t hashVertex(const mVertex* v) {
     hash *= 16777619u;
     return hash;
 }
-static inline bool vertexEqual(const mVertex* a, const mVertex* b) {
+static inline int vertexEqual(const mVertex* a, const mVertex* b) {
     return fabsf(a->position[0] - b->position[0]) < 1e-4f &&
            fabsf(a->position[1] - b->position[1]) < 1e-4f &&
            fabsf(a->position[2] - b->position[2]) < 1e-4f &&
@@ -628,3 +627,32 @@ void mInitRenderer(mContext* ctx) { mRendererInit(ctx); }
 void mBeginBatch(mContext* ctx) { mRendererBegin(ctx); }
 void mEndBatch(mContext* ctx) { mRendererEnd(ctx); }
 void mFlushBatch(mContext* ctx) { mRendererFlush(ctx); }
+
+void mDrawLightMarker(mContext* ctx, const mLight* light, float radius) {
+    if (!ctx || !light || radius <= 0.0f) return;
+    // Finish the lit scene first, keeping its depth buffer for the debug pass.
+    mRendererEnd(ctx);
+    unsigned int lightCount = ctx->renderer.lightCount;
+    ctx->renderer.lightCount = 0;
+    mRendererBegin(ctx);
+    for (int ring = 0; ring < 12; ++ring) {
+        for (int slice = 0; slice < 24; ++slice) {
+            mVertex vertices[4] = {0};
+            const int rings[] = {ring, ring, ring + 1, ring + 1};
+            const int slices[] = {slice, slice + 1, slice + 1, slice};
+            for (int i = 0; i < 4; ++i) {
+                float latitude = GLM_PIf * rings[i] / 12.0f;
+                float longitude = 2.0f * GLM_PIf * slices[i] / 24.0f;
+                vec3 normal = {sinf(latitude) * cosf(longitude), cosf(latitude),
+                               sinf(latitude) * sinf(longitude)};
+                for (int axis = 0; axis < 3; ++axis)
+                    vertices[i].position[axis] = light->position[axis] + radius * normal[axis];
+                vertices[i].color = light->color;
+                vertices[i].color.a = 1.0f;
+            }
+            mAddQuad(ctx, vertices[0], vertices[1], vertices[2], vertices[3]);
+        }
+    }
+    mRendererEnd(ctx);
+    ctx->renderer.lightCount = lightCount;
+}

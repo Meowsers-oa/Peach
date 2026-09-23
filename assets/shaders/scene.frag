@@ -50,12 +50,13 @@ vec3 pointShadowUV(vec3 d) {
 float shadowVisibility(int index, vec3 normal, vec3 toLight) {
     Light light = uLights[index];
     if (!light.shadow) return 1.0;
-    // Offset the receiver towards the light in world units.
+    // Move off the receiver plane, rather than along a grazing light ray.
+    // One PCF footprint along the normal avoids self-shadow stripes without
+    // the large light-direction bias that detached shadows at cube edges.
     float footprint = 2.0 * length(light.position - vFragPos)
                     / float(textureSize(uShadowMaps, 0).x);
-    float bias = max(light.bias, 2.0 * footprint)
-               * max(1.0, 3.0 * (1.0 - max(dot(normal, toLight), 0.0)));
-    vec3 receiver = vFragPos + toLight * bias;
+    float bias = max(light.bias, 1.5 * footprint);
+    vec3 receiver = vFragPos + normal * bias;
     vec3 coords;
     float depth;
     if (light.type == 1) {

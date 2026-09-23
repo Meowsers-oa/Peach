@@ -48,6 +48,7 @@ foreach(shader scene.vert scene.frag shadow.vert shadow.frag fullscreen.vert pos
 endforeach()
 
 include(cmake/Cimgui.cmake)
+include(cmake/Cimguizmo.cmake)
 
 add_subdirectory(Peach engine)
 

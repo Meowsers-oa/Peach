@@ -5,7 +5,6 @@
 #ifndef PEACH_MAP_H
 #define PEACH_MAP_H
 
-#include <stdbool.h>
 #include <stddef.h>
 
 typedef struct {
@@ -20,7 +19,7 @@ typedef struct {
 } mMap;
 
 mMap* mMapCreate(void);
-bool mMapSet(mMap* map, const char* key, void* value);
+int mMapSet(mMap* map, const char* key, void* value);
 void* mMapGet(mMap* map, const char* key);
 void mMapDestroy(mMap* map);
 

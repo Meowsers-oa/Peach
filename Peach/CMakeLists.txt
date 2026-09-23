@@ -61,7 +61,7 @@ target_link_libraries(peach_engine
         OpenGL::GL
         cglm
         assimp
-        PRIVATE peach_cimgui
+        PRIVATE peach_cimgui peach_cimguizmo
 )
 
 if(UNIX AND NOT APPLE)

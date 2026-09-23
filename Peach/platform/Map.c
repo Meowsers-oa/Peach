@@ -35,9 +35,9 @@ mMap* mMapCreate(void) {
     return map;
 }
 
-static bool mMapResize(mMap* map, size_t new_capacity) {
+static int mMapResize(mMap* map, size_t new_capacity) {
     mMapEntry* new_entries = calloc(new_capacity, sizeof(mMapEntry));
-    if (!new_entries) return false;
+    if (!new_entries) return 0;
 
     // Rehash existing entries into the new larger array
     for (size_t i = 0; i < map->capacity; i++) {
@@ -55,15 +55,15 @@ static bool mMapResize(mMap* map, size_t new_capacity) {
     free(map->entries);
     map->entries = new_entries;
     map->capacity = new_capacity;
-    return true;
+    return 0;
 }
 
-bool mMapSet(mMap* map, const char* key, void* value) {
-    if (!map || !key) return false;
+int mMapSet(mMap* map, const char* key, void* value) {
+    if (!map || !key) return 0;
 
     // Expand map capacity if load factor threshold is hit
     if ((double)(map->count + 1) / map->capacity > LOAD_FACTOR_THRESHOLD) {
-        if (!mMapResize(map, map->capacity * 2)) return false;
+        if (!mMapResize(map, map->capacity * 2)) return 0;
     }
 
     uint64_t hash = hashKey(key);
@@ -73,18 +73,18 @@ bool mMapSet(mMap* map, const char* key, void* value) {
         // Update value if key already exists
         if (strcmp(map->entries[index].key, key) == 0) {
             map->entries[index].value = value;
-            return true;
+            return 1;
         }
         index = (index + 1) & (map->capacity - 1);
     }
 
     // Insert new key-value pair
     map->entries[index].key = strdup(key);
-    if (!map->entries[index].key) return false;
+    if (!map->entries[index].key) return 0;
 
     map->entries[index].value = value;
     map->count++;
-    return true;
+    return 1;
 }
 
 void* mMapGet(mMap* map, const char* key) {

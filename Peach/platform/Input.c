@@ -16,17 +16,19 @@ typedef struct {
     unsigned char mouseButtonsLast[MAX_MOUSE_BUTTONS];
     double mouseX, mouseY;
     double scrollX, scrollY;
+    double pendingScrollX, pendingScrollY;
 } mInputContext;
 
 static mInputContext inputCtx = {0};
 
 static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
     (void)window;
-    inputCtx.scrollX = xoffset;
-    inputCtx.scrollY = yoffset;
+    inputCtx.pendingScrollX += xoffset;
+    inputCtx.pendingScrollY += yoffset;
 }
 
 void mInputStart(GLFWwindow* window) {
+    memset(&inputCtx, 0, sizeof(inputCtx));
     inputCtx.window = window;
     memset(inputCtx.keys, 0, sizeof(inputCtx.keys));
     memset(inputCtx.keysLast, 0, sizeof(inputCtx.keysLast));
@@ -40,12 +42,13 @@ void mInputUpdate(void) {
     memcpy(inputCtx.keysLast, inputCtx.keys, sizeof(inputCtx.keys));
     memcpy(inputCtx.mouseButtonsLast, inputCtx.mouseButtons, sizeof(inputCtx.mouseButtons));
 
-    inputCtx.scrollX = 0.0;
-    inputCtx.scrollY = 0.0;
+    inputCtx.scrollX = inputCtx.pendingScrollX;
+    inputCtx.scrollY = inputCtx.pendingScrollY;
+    inputCtx.pendingScrollX = inputCtx.pendingScrollY = 0;
 
     if (!inputCtx.window) return;
 
-    for (int i = 0; i < MAX_KEYS; i++) {
+    for (int i = GLFW_KEY_SPACE; i <= GLFW_KEY_LAST; i++) {
         inputCtx.keys[i] = (unsigned char)(glfwGetKey(inputCtx.window, i) == GLFW_PRESS);
     }
 

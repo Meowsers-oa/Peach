@@ -8,15 +8,13 @@
 #include "Peach/graphics/Renderer.h"
 #include "Peach/graphics/Ui.h"
 
-static mContext* ctx;
-static const char* lastTitle;
-
 int mWindowCreate(mContext *context, int width, int height, const char *title) {
-    ctx = context;
+    if (!context || context->window.handle || width <= 0 || height <= 0 || !title) return 0;
     context->window.handle = glfwCreateWindow(width, height, title, NULL, NULL);
     if (context->window.handle == NULL) {
-        const char* desc;
-        printf("ERROR: Failed to create window!: %d: %s", glfwGetError(&desc), desc);
+        const char* desc = NULL;
+        int error = glfwGetError(&desc);
+        printf("ERROR: Failed to create window!: %d: %s", error, desc ? desc : "Unknown error");
         return 0;
     }
 
@@ -26,20 +24,20 @@ int mWindowCreate(mContext *context, int width, int height, const char *title) {
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         printf("Failed to load rendering backend!");
+        mWindowEnd(context);
         return 0;
     }
 
     context->window.title = title;
     glfwGetFramebufferSize(context->window.handle, &context->window.width, &context->window.height);
     glViewport(0, 0, context->window.width, context->window.height);
+    glfwSetWindowUserPointer(context->window.handle, context);
     glfwSetFramebufferSizeCallback(context->window.handle, mOnWindowResize);
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
     glfwSwapInterval(0);
-
-    lastTitle = context->window.title;
 
     mInputStart(context->window.handle);
     mRendererInit(context);
@@ -57,17 +55,17 @@ int mWindowCreate(mContext *context, int width, int height, const char *title) {
 }
 
 void mOnWindowResize(GLFWwindow *window, int width, int height) {
-    glViewport(0, 0, width, height);
-    ctx->window.width = width;
-    ctx->window.height = height;
+    mContext* context = glfwGetWindowUserPointer(window);
+    if (!context) return;
+    context->window.width = width;
+    context->window.height = height;
 }
 
 void mWindowUpdate(mContext *context) {
-    context = ctx;
-    if (context->window.title != lastTitle) {
-        lastTitle = context->window.title;
-        glfwSetWindowTitle(context->window.handle, context->window.title);
-    }
+    if (!context || !context->window.handle) return;
+    glfwMakeContextCurrent(context->window.handle);
+    glViewport(0, 0, context->window.width, context->window.height);
+    glfwSetWindowTitle(context->window.handle, context->window.title);
 
     context->window.running = !glfwWindowShouldClose(context->window.handle);
 
@@ -79,13 +77,16 @@ void mWindowUpdate(mContext *context) {
 }
 
 void mWindowStop(mContext *context) {
+    if (!context || !context->window.handle) return;
     context->window.running = 0;
     glfwSetWindowShouldClose(context->window.handle, 1);
 
 }
 
 void mWindowEnd(mContext *context) {
+    if (!context) return;
     if (context->window.handle) glfwDestroyWindow(context->window.handle);
     context->window.handle = NULL;
+    context->window.running = 0;
 }
 

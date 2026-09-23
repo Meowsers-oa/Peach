@@ -19,8 +19,9 @@ static inline mContext mCreateContext() {
     mContext context = {0};
 
     if (!glfwInit()) {
-        const char* desc;
-        printf("ERROR: Failed to initialize windowing system!: %d: %s", glfwGetError(&desc), desc);
+        const char* desc = NULL;
+        int error = glfwGetError(&desc);
+        printf("ERROR: Failed to initialize windowing system!: %d: %s", error, desc ? desc : "Unknown error");
         return context;
     }
 
@@ -39,6 +40,15 @@ static inline mContext mCreateContext() {
     return context;
 }
 
+// Initialize an empty context and its window in one call. Returns 1 on success.
+static inline int mInit(mContext* ctx, int width, int height, const char* title) {
+    if (!ctx) return 0;
+    *ctx = mCreateContext();
+    if (mWindowCreate(ctx, width, height, title)) return 1;
+    glfwTerminate();
+    return 0;
+}
+
 // Legacy manual loop support; new code uses mBeginFrame/mEndFrame.
 static inline void mUpdate(mContext* ctx) {
     if (ctx->frame.active) {
@@ -53,6 +63,8 @@ static inline void mUpdate(mContext* ctx) {
 }
 
 static inline void mEnd(mContext* ctx) {
+    if (!ctx) return;
+    if (ctx->window.handle) glfwMakeContextCurrent(ctx->window.handle);
     mFrameShutdown(ctx);
     mUiEnd(ctx);
     mRendererShutdown(ctx);

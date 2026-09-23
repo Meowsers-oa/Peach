@@ -61,6 +61,9 @@ void mAddQuad3DTexturedRotated(mContext* ctx, vec3 center, vec2 size, vec3 norma
 void mAddCubeRotated(mContext* ctx, vec3 position, vec3 size, vec3 rotation, mColor color);
 void mAddCubeTexturedRotated(mContext* ctx, vec3 position, vec3 size, vec3 rotation, const mTexture* texture, mColor tint);
 
+// Draw after scene geometry: a depth-tested, unlit ball that does not cast shadows.
+void mDrawLightMarker(mContext* ctx, const mLight* light, float radius);
+
 // Statistics
 mRendererStats mRendererGetStats(mContext* ctx);
 void mRendererResetStats(mContext* ctx);

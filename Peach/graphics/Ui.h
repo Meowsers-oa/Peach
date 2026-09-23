@@ -2,7 +2,6 @@
 #define PEACH_UI_H
 
 #include "Peach/core/Structs.h"
-#include <stdbool.h>
 #include <stddef.h>
 
 #ifdef __cplusplus
@@ -19,46 +18,59 @@ typedef enum {
 } mUiWindowFlags;
 
 
+typedef enum { mGizmoTranslate, mGizmoRotate, mGizmoScale } mGizmoOperation;
+typedef enum { mGizmoLocal, mGizmoWorld } mGizmoMode;
+
+// Call once per object per frame, outside UI windows. IDs must be unique.
+// Matrices use the same column-major layout as the renderer.
+int mUiGizmo(mContext* ctx, const mCamera3D* camera, int id, mat4 transform,
+             mGizmoOperation operation, mGizmoMode mode);
+int mUiGizmoPosition(mContext* ctx, const mCamera3D* camera, int id, vec3 position);
+int mUiGizmoIsUsing(void);
+int mUiGizmoIsOver(void);
+
 int mUiStart(mContext* ctx);
 void mUiUpdate(mContext* ctx);
 void mUiRender(mContext* ctx);
 void mUiEnd(mContext* ctx);
-bool mUiWantsMouse(mContext* ctx);
-bool mUiWantsKeyboard(mContext* ctx);
+int mUiWantsMouse(mContext* ctx);
+int mUiWantsKeyboard(mContext* ctx);
 
 
-bool mUiBeginWindow(const char* title, bool* open, int flags);
+// Always pair with mUiEndWindow, even when the return value is 0.
+int mUiBeginWindow(const char* title);
+int mUiBeginWindowEx(const char* title, int* open, int flags);
 void mUiEndWindow(void);
-void mUiSetNextWindowPosition(float x, float y, bool firstUseOnly);
-void mUiSetNextWindowSize(float width, float height, bool firstUseOnly);
+void mUiSetNextWindowPosition(float x, float y, int firstUseOnly);
+void mUiSetNextWindowSize(float width, float height, int firstUseOnly);
 
 void mUiText(const char* text);
 void mUiTextf(const char* format, ...);
 void mUiTextWrapped(const char* text);
 
-bool mUiButton(const char* label);
-bool mUiButtonSized(const char* label, float width, float height);
-bool mUiCheckbox(const char* label, bool* value);
-bool mUiSliderFloat(const char* label, float* value, float min, float max);
-bool mUiSliderInt(const char* label, int* value, int min, int max);
-bool mUiDragFloat(const char* label, float* value, float speed, float min, float max);
-bool mUiDragFloat2(const char* label, float values[2], float speed, float min, float max);
-bool mUiDragFloat3(const char* label, float values[3], float speed, float min, float max);
-bool mUiDragFloat4(const char* label, float values[4], float speed, float min, float max);
-bool mUiInputFloat(const char* label, float* value, float step);
-bool mUiInputInt(const char* label, int* value, int step);
-bool mUiInputText(const char* label, char* buffer, size_t capacity);
-bool mUiInputTextMultiline(const char* label, char* buffer, size_t capacity, float width, float height);
-bool mUiCombo(const char* label, int* selected, const char* const items[], int count);
-bool mUiColorEdit(const char* label, mColor* color);
-bool mUiCollapsingHeader(const char* label);
+int mUiButton(const char* label);
+int mUiButtonSized(const char* label, float width, float height);
+int mUiCheckbox(const char* label, int* value);
+int mUiSliderFloat(const char* label, float* value, float min, float max);
+int mUiSliderInt(const char* label, int* value, int min, int max);
+int mUiDragFloat(const char* label, float* value, float speed, float min, float max);
+int mUiDragFloat2(const char* label, float values[2], float speed, float min, float max);
+int mUiDragFloat3(const char* label, float values[3], float speed, float min, float max);
+int mUiDragFloat4(const char* label, float values[4], float speed, float min, float max);
+int mUiInputFloat(const char* label, float* value, float step);
+int mUiInputInt(const char* label, int* value, int step);
+int mUiInputText(const char* label, char* buffer, size_t capacity);
+int mUiInputTextMultiline(const char* label, char* buffer, size_t capacity, float width, float height);
+int mUiCombo(const char* label, int* selected, const char* const items[], int count);
+int mUiColorEdit(const char* label, mColor* color);
+int mUiCollapsingHeader(const char* label);
 
 void mUiSameLine(void);
 void mUiSeparator(void);
 void mUiSpacing(void);
 void mUiPushID(int id);
 void mUiPopID(void);
-void mUiBeginDisabled(bool disabled);
+void mUiBeginDisabled(int disabled);
 void mUiEndDisabled(void);
 
 #ifdef __cplusplus
