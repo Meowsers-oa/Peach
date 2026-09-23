@@ -5,7 +5,7 @@
 #ifndef PEACH_TEXTURE_H
 #define PEACH_TEXTURE_H
 
-#include "Structs.h"
+#include "Peach/core/Structs.h"
 
 // Load texture from file using stb_image
 mTexture mLoadTexture(const char* filePath);
@@ -14,7 +14,7 @@ mTexture mLoadTexture(const char* filePath);
 mTexture mCreateTexture(int width, int height, int channels, const unsigned char* data);
 
 // Create a 1x1 solid color texture
-mTexture mCreateColorTexture(Color color);
+mTexture mCreateColorTexture(mColor color);
 
 // Unload / Delete texture from GPU memory
 void mUnloadTexture(mTexture* texture);

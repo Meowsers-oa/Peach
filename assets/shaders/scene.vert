@@ -18,7 +18,7 @@ uniform mat4 uProjection;
 
 void main() {
     vColor = aColor;
-    vNormal = aNormal;
+    vNormal = transpose(inverse(mat3(uModel))) * aNormal;
     vTexCoord = aTexCoord;
     vTexId = aTexId;
     vFragPos = vec3(uModel * vec4(aPos, 1.0));

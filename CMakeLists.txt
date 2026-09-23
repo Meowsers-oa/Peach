@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 4.3)
 
-# Allow older subprojects to configure on modern CMake
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
 project(peach C)
@@ -9,7 +8,6 @@ set(CMAKE_C_STANDARD 11)
 
 include(FetchContent)
 
-# 1. Fetch GLFW
 FetchContent_Declare(
         glfw
         GIT_REPOSITORY https://github.com/glfw/glfw.git
@@ -20,7 +18,6 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(glfw)
 
-# 2. Fetch GLAD (it creates its own 'glad' target automatically)
 FetchContent_Declare(
         glad
         GIT_REPOSITORY https://github.com/Dav1dde/glad.git
@@ -28,7 +25,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glad)
 
-# 3. Fetch cglm (OpenGL Mathematics for C)
 FetchContent_Declare(
         cglm
         GIT_REPOSITORY https://github.com/recp/cglm.git
@@ -36,7 +32,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(cglm)
 
-# 4. Fetch stb (stb_image, etc.)
 FetchContent_Declare(
         stb
         GIT_REPOSITORY https://github.com/nothings/stb.git
@@ -47,32 +42,13 @@ FetchContent_MakeAvailable(stb)
 # Find system OpenGL
 find_package(OpenGL REQUIRED)
 
-add_executable(peach main.c
-        Peach/Peach.h
-        Peach/Window.c
-        Peach/Window.h
-        Peach/structs.h
-        Peach/Input.c
-        Peach/Input.h
-        Peach/Shader.c
-        Peach/Shader.h
-        Peach/utils.h
-        Peach/Renderer.c
-        Peach/Renderer.h
-        Peach/Texture.c
-        Peach/Texture.h
-        Peach/Camera.c
-        Peach/Camera.h)
+set(PEACH_SHADER_DIR "${CMAKE_CURRENT_BINARY_DIR}/assets/shaders")
+foreach(shader scene.vert scene.frag shadow.vert shadow.frag)
+    configure_file("assets/shaders/${shader}" "${PEACH_SHADER_DIR}/${shader}" COPYONLY)
+endforeach()
 
-target_include_directories(peach PRIVATE
-        ${stb_SOURCE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}
-)
+add_subdirectory(Peach engine)
 
-# Link GLFW, GLAD, OpenGL, and cglm
-target_link_libraries(peach PRIVATE
-        glfw
-        glad
-        OpenGL::GL
-        cglm
-)
+add_executable(peach main.c)
+target_link_libraries(peach PRIVATE peach_engine)
+

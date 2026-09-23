@@ -5,7 +5,7 @@
 #ifndef PEACH_CAMERA_H
 #define PEACH_CAMERA_H
 
-#include "Structs.h"
+#include "Peach/core/Structs.h"
 
 // Camera creation helpers
 mCamera3D mCreateCamera3D(vec3 position, vec3 target, vec3 up, float fov);

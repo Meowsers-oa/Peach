@@ -7,11 +7,11 @@
 
 #include <stdio.h>
 
-#include "Input.h"
-#include "Structs.h"
-#include "Window.h"
-#include "Renderer.h"
-#include "Utils.h"
+#include "Peach/platform/Input.h"
+#include "Peach/core/Structs.h"
+#include "Peach/platform/Window.h"
+#include "Peach/graphics/Renderer.h"
+#include "Peach/core/Utils.h"
 
 static inline mContext mCreateContext() {
     mContext context = {0};
@@ -45,7 +45,7 @@ static inline void mUpdate(mContext* ctx) {
 
 static inline void mEnd(mContext* ctx) {
     mRendererShutdown(ctx);
-    if (ctx->window.handle != NULL) mWindowStop(ctx);
+    if (ctx->window.handle != NULL) mWindowEnd(ctx);
     glfwTerminate();
 }
 

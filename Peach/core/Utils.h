@@ -7,9 +7,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include "Peach/core/Structs.h"
 
-static float lastTime;
 
 static inline const char* mReadFromFile(const char* filepath) {
     FILE* file = fopen(filepath, "rb");
@@ -56,18 +55,21 @@ static inline const char* mReadFromFile(const char* filepath) {
 }
 
 static inline void mTimeStart(mTime* time) {
-    time->startTime = (float)clock() / CLOCKS_PER_SEC;
+    time->startTime = (float)glfwGetTime();
     time->timeSinceStart = 0.0f;
     time->currentTime = time->startTime;
     time->deltaTime = 0.0f;
-    lastTime = time->startTime;
 }
 
 static inline void mTimeUpdate(mTime* time) {
-    time->currentTime = (float)clock() / CLOCKS_PER_SEC;
+    float previousTime = time->currentTime;
+    time->currentTime = (float)glfwGetTime();
     time->timeSinceStart = time->currentTime - time->startTime;
-    time->deltaTime = time->currentTime - lastTime;
-    lastTime = time->currentTime;
+    time->deltaTime = time->currentTime - previousTime;
+}
+
+static inline float mGetDeltaTime(mContext* ctx) {
+    return ctx->time.deltaTime;
 }
 
 #endif //PEACH_UTILS_H

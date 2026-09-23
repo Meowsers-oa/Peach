@@ -5,7 +5,7 @@
 #ifndef PEACH_INPUT_H
 #define PEACH_INPUT_H
 
-#include "Structs.h"
+#include "Peach/core/Structs.h"
 
 typedef enum {
     KEY_UNKNOWN      = -1,
@@ -67,7 +67,6 @@ typedef enum {
     KEY_LEFT_CONTROL = 341,
     KEY_LEFT_ALT     = 342
 } mKey;
-
 typedef enum {
     MOUSE_LEFT   = 0,
     MOUSE_RIGHT  = 1,
@@ -87,5 +86,8 @@ int mIsMouseButtonReleased(mMouseButton button);
 
 void mGetMousePosition(double* x, double* y);
 void mGetMouseScroll(double* xoffset, double* yoffset);
+
+void mDisableCursor(void);
+void mEnableCursor(void);
 
 #endif //PEACH_INPUT_H

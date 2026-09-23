@@ -5,13 +5,15 @@
 #ifndef PEACH_PEACH_H
 #define PEACH_PEACH_H
 
-#include "Window.h"
-#include "Structs.h"
-#include "Core.h"
-#include "Input.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "Camera.h"
-#include "Renderer.h"
+#include "Peach/platform/Window.h"
+#include "Peach/core/Structs.h"
+#include "Peach/core/Core.h"
+#include "Peach/platform/Input.h"
+#include "Peach/graphics/Shader.h"
+#include "Peach/graphics/Texture.h"
+#include "Peach/graphics/Camera.h"
+#include "Peach/graphics/Renderer.h"
+
+void mPeachStart();
 
 #endif //PEACH_PEACH_H

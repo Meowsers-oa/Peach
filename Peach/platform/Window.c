@@ -3,9 +3,9 @@
 //
 
 #include <stdio.h>
-#include "Window.h"
-#include "Input.h"
-#include "Renderer.h"
+#include "Peach/platform/Window.h"
+#include "Peach/platform/Input.h"
+#include "Peach/graphics/Renderer.h"
 
 static mContext* ctx;
 static const char* lastTitle;
@@ -32,6 +32,9 @@ int mWindowCreate(mContext *context, int width, int height, const char *title) {
     glfwGetFramebufferSize(context->window.handle, &context->window.width, &context->window.height);
     glViewport(0, 0, context->window.width, context->window.height);
     glfwSetFramebufferSizeCallback(context->window.handle, mOnWindowResize);
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     glfwSwapInterval(0);
 
@@ -71,11 +74,11 @@ void mWindowUpdate(mContext *context) {
 void mWindowStop(mContext *context) {
     context->window.running = 0;
     glfwSetWindowShouldClose(context->window.handle, 1);
-    mWindowEnd(context);
 
 }
 
 void mWindowEnd(mContext *context) {
-    glfwDestroyWindow(context->window.handle);
+    if (context->window.handle) glfwDestroyWindow(context->window.handle);
+    context->window.handle = NULL;
 }
 

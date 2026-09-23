@@ -4,7 +4,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-#include "Texture.h"
+#include "Peach/graphics/Texture.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -69,7 +69,7 @@ mTexture mCreateTexture(int width, int height, int channels, const unsigned char
     return texture;
 }
 
-mTexture mCreateColorTexture(Color color) {
+mTexture mCreateColorTexture(mColor color) {
     unsigned char pixel[4] = {
         (unsigned char)(color.r * 255.0f),
         (unsigned char)(color.g * 255.0f),

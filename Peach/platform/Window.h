@@ -5,7 +5,7 @@
 #ifndef PEACH_WINDOW_H
 #define PEACH_WINDOW_H
 
-#include "Structs.h"
+#include "Peach/core/Structs.h"
 
 int mWindowCreate(mContext* context, int width, int height, const char* title);
 void mOnWindowResize(GLFWwindow* window, int width, int height);

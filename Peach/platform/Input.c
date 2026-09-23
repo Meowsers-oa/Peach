@@ -2,7 +2,7 @@
 // Created by Štěpán Toman on 20.09.2026.
 //
 
-#include "Input.h"
+#include "Peach/platform/Input.h"
 #include <string.h>
 
 #define MAX_KEYS 512
@@ -94,4 +94,16 @@ void mGetMousePosition(double* x, double* y) {
 void mGetMouseScroll(double* xoffset, double* yoffset) {
     if (xoffset) *xoffset = inputCtx.scrollX;
     if (yoffset) *yoffset = inputCtx.scrollY;
+}
+
+void mDisableCursor(void) {
+    if (inputCtx.window) {
+        glfwSetInputMode(inputCtx.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
+}
+
+void mEnableCursor(void) {
+    if (inputCtx.window) {
+        glfwSetInputMode(inputCtx.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
 }

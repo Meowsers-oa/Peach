@@ -2,8 +2,8 @@
 // Created by Štěpán Toman on 20.09.2026.
 //
 
-#include "Camera.h"
-#include "Input.h"
+#include "Peach/graphics/Camera.h"
+#include "Peach/platform/Input.h"
 #include <math.h>
 #include <string.h>
 
@@ -200,47 +200,58 @@ void mCameraUpdateFree(mCamera3D* camera, float deltaTime, float moveSpeed, floa
 
     float speed = moveSpeed * deltaTime;
 
-    if (mIsKeyDown(KEY_W) || mIsKeyDown(KEY_UP)) {
-        mCameraMoveForward(camera, speed, 1);
+
+    if (mIsKeyDown(KEY_LEFT_SHIFT)) {
+        speed *= 3.0f;
     }
-    if (mIsKeyDown(KEY_S) || mIsKeyDown(KEY_DOWN)) {
-        mCameraMoveForward(camera, -speed, 1);
+
+    if (mIsKeyDown(KEY_W)) {
+        mCameraMoveForward(camera, speed, 0);
     }
-    if (mIsKeyDown(KEY_D) || mIsKeyDown(KEY_RIGHT)) {
-        mCameraMoveRight(camera, speed, 1);
+    if (mIsKeyDown(KEY_S)) {
+        mCameraMoveForward(camera, -speed, 0);
     }
-    if (mIsKeyDown(KEY_A) || mIsKeyDown(KEY_LEFT)) {
-        mCameraMoveRight(camera, -speed, 1);
+    if (mIsKeyDown(KEY_D)) {
+        mCameraMoveRight(camera, speed, 0);
     }
-    if (mIsKeyDown(KEY_SPACE) || mIsKeyDown(KEY_E)) {
+    if (mIsKeyDown(KEY_A)) {
+        mCameraMoveRight(camera, -speed, 0);
+    }
+    if (mIsKeyDown(KEY_E)) {
         mCameraMoveUp(camera, speed);
     }
-    if (mIsKeyDown(KEY_LEFT_SHIFT) || mIsKeyDown(KEY_Q)) {
+    if (mIsKeyDown(KEY_Q)) {
         mCameraMoveUp(camera, -speed);
     }
 
     static double lastMouseX = 0, lastMouseY = 0;
-    static int firstMouse = 1;
+    static int wasRightMouseDown = 0;
 
+    int isRightMouseDown = mIsMouseButtonDown(MOUSE_RIGHT);
     double mouseX, mouseY;
     mGetMousePosition(&mouseX, &mouseY);
 
-    if (firstMouse) {
-        lastMouseX = mouseX;
-        lastMouseY = mouseY;
-        firstMouse = 0;
-    }
+    if (isRightMouseDown) {
+        if (!wasRightMouseDown) {
+            // RMB was just pressed: hide/lock cursor and sync mouse coordinates to prevent camera jumps
+            mDisableCursor();
+            lastMouseX = mouseX;
+            lastMouseY = mouseY;
+        }
 
-    if (mIsMouseButtonDown(MOUSE_RIGHT)) {
         float xOffset = (float)(mouseX - lastMouseX) * mouseSensitivity;
         float yOffset = (float)(lastMouseY - mouseY) * mouseSensitivity;
 
         mCameraRotateYaw(camera, -glm_rad(xOffset), 0);
         mCameraRotatePitch(camera, glm_rad(yOffset), 1, 0, 0);
+
+        lastMouseX = mouseX;
+        lastMouseY = mouseY;
+    } else if (wasRightMouseDown) {
+        mEnableCursor();
     }
 
-    lastMouseX = mouseX;
-    lastMouseY = mouseY;
+    wasRightMouseDown = isRightMouseDown;
 }
 
 void mCameraUpdateOrbit(mCamera3D* camera, vec3 target, float radius, float speed, float deltaTime) {

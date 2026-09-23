@@ -5,9 +5,14 @@
 #ifndef PEACH_SHADER_H
 #define PEACH_SHADER_H
 
-#include "Structs.h"
+#include "Peach/core/Structs.h"
 #include <cglm/cglm.h>
 
+// Returned programs are caller-owned; zero indicates a read/compile/link failure.
+unsigned int mCreateShaderProgram(const char* vertexPath, const char* fragmentPath);
+unsigned int mCreateResourceShaderProgram(const char* vertexName, const char* fragmentName);
+// Load scene shaders from the configured resource directory.
+void mLoadDefaultShaders(mContext* ctx);
 void mLoadShaders(mContext* ctx, const char* vertexPath, const char* fragmentPath);
 void mUseProgram(mContext* ctx);
 void mSetUniformInt(mContext* ctx, const char* name, int val);
