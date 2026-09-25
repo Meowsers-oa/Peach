@@ -130,7 +130,8 @@ int mDrawFullscreenQuad(mContext* ctx, unsigned int program, const mTexture* sou
     glUniform2f(glGetUniformLocation(program, "uResolution"), (float)viewport[2], (float)viewport[3]);
     glUniform1f(glGetUniformLocation(program, "uTime"), ctx->time.timeSinceStart);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    ctx->renderer.stats.drawCalls++;
+    ctx->renderer.pendingStats.drawCalls++;
+    if (!ctx->frame.active) ctx->renderer.stats = ctx->renderer.pendingStats;
     glUseProgram((GLuint)oldProgram);
     glBindVertexArray((GLuint)vao);
     glBindTexture(GL_TEXTURE_2D, (GLuint)texture);

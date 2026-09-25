@@ -8,9 +8,15 @@ struct mRenderBatch {
     mVertex* vertices;
     unsigned int* indices;
     unsigned int vertexCount, indexCount;
+    GLint baseVertex;
+    size_t indexOffset;
+    vec3 boundsMin, boundsMax;
+    int frustumCulling, colorVisible, needed;
+    unsigned char shadowFaces[MAX_LIGHTS];
     unsigned int textures[MAX_TEXTURE_SLOTS];
     unsigned int textureCount;
     unsigned int shaderProgram;
+    float specular, shininess;
     mat4 model, view, projection;
     int viewport[4];
     unsigned int framebuffer;

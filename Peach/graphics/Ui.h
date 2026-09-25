@@ -73,6 +73,8 @@ void mUiPopID(void);
 void mUiBeginDisabled(int disabled);
 void mUiEndDisabled(void);
 
+void mUiStatsPanel(mContext* ctx);
+
 #ifdef __cplusplus
 }
 #endif

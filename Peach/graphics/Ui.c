@@ -1,18 +1,19 @@
 #include "Peach/graphics/Ui.h"
-#include <imgui.h>
-#include <imgui_internal.h>
+#include "Peach/graphics/Camera.h"
+#include <stdarg.h>
+#include <stdbool.h>
+
+// Request the C definitions instead of the original C++ library types.
+#define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
 #include <cimgui.h>
 #include <cimgui_impl.h>
-#include <cstdarg>
-#include "ImGuizmo/ImGuizmo.h"
 #include <cimguizmo.h>
-extern "C" {
-#include "Peach/graphics/Camera.h"
-}
+
+#include "Peach/core/Utils.h"
 
 static int selectUi(mContext* ctx) {
     if (!ctx || !ctx->ui.handle) return 0;
-    igSetCurrentContext(static_cast<ImGuiContext*>(ctx->ui.handle));
+    igSetCurrentContext((ImGuiContext*)ctx->ui.handle);
     return 1;
 }
 
@@ -27,16 +28,16 @@ int mUiStart(mContext* ctx) {
     igGetIO_Nil()->IniFilename = NULL;
     igGetIO_Nil()->ConfigDragClickToInputText = 1;
     igStyleColorsDark(NULL);
-    ImGuizmo_SetImGuiContext(static_cast<ImGuiContext*>(ctx->ui.handle));
+    ImGuizmo_SetImGuiContext((ImGuiContext*)ctx->ui.handle);
     if (!ImGui_ImplGlfw_InitForOpenGL(ctx->window.handle, 1)) {
-        igDestroyContext(static_cast<ImGuiContext*>(ctx->ui.handle));
+        igDestroyContext((ImGuiContext*)ctx->ui.handle);
         ctx->ui.handle = NULL;
         igSetCurrentContext(previous);
         return 0;
     }
     if (!ImGui_ImplOpenGL3_Init("#version 410 core")) {
         ImGui_ImplGlfw_Shutdown();
-        igDestroyContext(static_cast<ImGuiContext*>(ctx->ui.handle));
+        igDestroyContext((ImGuiContext*)ctx->ui.handle);
         ctx->ui.handle = NULL;
         igSetCurrentContext(previous);
         return 0;
@@ -68,7 +69,7 @@ void mUiEnd(mContext* ctx) {
     if (ctx->ui.frameActive) igEndFrame();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
-    igDestroyContext(static_cast<ImGuiContext*>(ctx->ui.handle));
+    igDestroyContext((ImGuiContext*)ctx->ui.handle);
     if (previous != ctx->ui.handle) igSetCurrentContext(previous);
     ctx->ui.handle = NULL;
     ctx->ui.frameActive = 0;
@@ -95,10 +96,10 @@ int mUiBeginWindowEx(const char* title, int* open, int flags) {
 }
 void mUiEndWindow(void) { igEnd(); }
 void mUiSetNextWindowPosition(float x, float y, int firstUseOnly) {
-    igSetNextWindowPos(ImVec2(x, y), firstUseOnly ? ImGuiCond_FirstUseEver : ImGuiCond_Always, ImVec2(0, 0));
+    igSetNextWindowPos((ImVec2){x, y}, firstUseOnly ? ImGuiCond_FirstUseEver : ImGuiCond_Always, (ImVec2){0, 0});
 }
 void mUiSetNextWindowSize(float width, float height, int firstUseOnly) {
-    igSetNextWindowSize(ImVec2(width, height), firstUseOnly ? ImGuiCond_FirstUseEver : ImGuiCond_Always);
+    igSetNextWindowSize((ImVec2){width, height}, firstUseOnly ? ImGuiCond_FirstUseEver : ImGuiCond_Always);
 }
 void mUiText(const char* text) { igTextUnformatted(text ? text : "", NULL); }
 void mUiTextf(const char* format, ...) {
@@ -109,8 +110,8 @@ void mUiTextf(const char* format, ...) {
     va_end(args);
 }
 void mUiTextWrapped(const char* text) { igTextWrapped("%s", text ? text : ""); }
-int mUiButton(const char* label) { return igButton(label, ImVec2(0, 0)); }
-int mUiButtonSized(const char* label, float width, float height) { return igButton(label, ImVec2(width, height)); }
+int mUiButton(const char* label) { return igButton(label, (ImVec2){0, 0}); }
+int mUiButtonSized(const char* label, float width, float height) { return igButton(label, (ImVec2){width, height}); }
 int mUiCheckbox(const char* label, int* value) {
     if (!value) return 0;
     bool nativeValue = *value != 0;
@@ -146,7 +147,7 @@ int mUiInputText(const char* label, char* buffer, size_t capacity) {
     return buffer && capacity && igInputText(label, buffer, capacity, 0, NULL, NULL);
 }
 int mUiInputTextMultiline(const char* label, char* buffer, size_t capacity, float width, float height) {
-    return buffer && capacity && igInputTextMultiline(label, buffer, capacity, ImVec2(width, height), 0, NULL, NULL);
+    return buffer && capacity && igInputTextMultiline(label, buffer, capacity, (ImVec2){width, height}, 0, NULL, NULL);
 }
 int mUiCombo(const char* label, int* selected, const char* const items[], int count) {
     if (!selected || !items || count <= 0) return 0;
@@ -157,7 +158,7 @@ int mUiColorEdit(const char* label, mColor* color) {
     if (!color) return 0;
     float values[] = {color->r, color->g, color->b, color->a};
     int changed = igColorEdit4(label, values, 0);
-    if (changed) *color = {values[0], values[1], values[2], values[3]};
+    if (changed) *color = (mColor){values[0], values[1], values[2], values[3]};
     return changed;
 }
 int mUiCollapsingHeader(const char* label) { return igCollapsingHeader_TreeNodeFlags(label, 0); }
@@ -178,13 +179,13 @@ int mUiGizmo(mContext* ctx, const mCamera3D* camera, int id, mat4 transform,
     mat4 view, projection;
     mCameraGetViewMatrix(camera, view);
     mCameraGetProjectionMatrix(camera, io->DisplaySize.x / io->DisplaySize.y, projection);
-    const ImGuizmo::OPERATION operations[] = {ImGuizmo::TRANSLATE, ImGuizmo::ROTATE, ImGuizmo::SCALE};
+    const OPERATION operations[] = {TRANSLATE, ROTATE, SCALE};
     ImGuizmo_PushID_Int(id);
     ImGuizmo_SetOrthographic(camera->projection == CAMERA_ORTHOGRAPHIC);
     ImGuizmo_SetDrawlist(igGetBackgroundDrawList_Nil());
     ImGuizmo_SetRect(0, 0, io->DisplaySize.x, io->DisplaySize.y);
     int changed = ImGuizmo_Manipulate(&view[0][0], &projection[0][0], operations[operation],
-                              mode == mGizmoWorld ? ImGuizmo::WORLD : ImGuizmo::LOCAL,
+                              mode == mGizmoWorld ? WORLD : LOCAL,
                               &transform[0][0], NULL, NULL, NULL, NULL);
     ImGuizmo_PopID();
     return changed;
@@ -200,3 +201,12 @@ int mUiGizmoPosition(mContext* ctx, const mCamera3D* camera, int id, vec3 positi
 }
 int mUiGizmoIsUsing(void) { return igGetCurrentContext() && ImGuizmo_IsUsingAny(); }
 int mUiGizmoIsOver(void) { return igGetCurrentContext() && ImGuizmo_IsOver_Nil(); }
+
+void mUiStatsPanel(mContext *ctx) {
+    mUiSetNextWindowPosition(10, 10, 1);
+    mUiSetNextWindowSize(150, 100, 1);
+    mUiBeginWindow("Stats");
+    mUiTextf("Draw Calls: %u", ctx->renderer.stats.drawCalls);
+    mUiTextf("FPS: %.1f", mGetFPS(ctx));
+    mUiEndWindow();
+}

@@ -49,6 +49,7 @@ int mBeginFrame(mContext* ctx) {
     mRendererClear(ctx);
     mRendererBegin(ctx);
     mUiUpdate(ctx);
+    memset(&ctx->renderer.pendingStats, 0, sizeof(ctx->renderer.pendingStats));
     ctx->frame.active = 1;
     return 1;
 }
@@ -61,6 +62,7 @@ void mEndFrame(mContext* ctx) {
     } else {
         mRendererEnd(ctx);
     }
+    ctx->renderer.stats = ctx->renderer.pendingStats;
     mUiRender(ctx);
     glfwSetWindowTitle(ctx->window.handle, ctx->window.title);
     glfwSwapBuffers(ctx->window.handle);

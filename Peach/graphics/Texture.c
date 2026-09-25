@@ -18,13 +18,13 @@ mTexture mLoadTexture(const char* filePath) {
     stbi_set_flip_vertically_on_load(1);
 
     int width = 0, height = 0, channels = 0;
-    unsigned char* data = stbi_load(filePath, &width, &height, &channels, 0);
+    unsigned char* data = stbi_load(filePath, &width, &height, &channels, 4);
     if (!data) {
         fprintf(stderr, "[Peach Texture] Failed to load image at '%s': %s\n", filePath, stbi_failure_reason());
         return texture;
     }
 
-    texture = mCreateTexture(width, height, channels, data);
+    texture = mCreateTexture(width, height, 4, data);
     stbi_image_free(data);
 
     return texture;

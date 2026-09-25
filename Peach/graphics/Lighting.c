@@ -1,6 +1,8 @@
 #include "Peach/graphics/Lighting.h"
+#include "Peach/graphics/Culling.h"
 #include "Peach/graphics/Shader.h"
 #include <math.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -130,12 +132,39 @@ static void bindTextures(GLuint program, mRenderBatch* batch) {
     glUniform1iv(glGetUniformLocation(program, "uTextures"), MAX_TEXTURE_SLOTS, samplers);
 }
 
-static void uploadBatch(mRenderer* r, mRenderBatch* batch) {
+static int uploadScene(mRenderer* r) {
+    size_t vertexCount = 0, indexCount = 0;
+    for (mRenderBatch* batch = r->firstBatch; batch; batch = batch->next) {
+        if (!batch->needed) continue;
+        if (batch->vertexCount > INT_MAX - vertexCount ||
+            batch->indexCount > (size_t)PTRDIFF_MAX / sizeof(unsigned int) - indexCount)
+            return 0;
+        batch->baseVertex = (GLint)vertexCount;
+        batch->indexOffset = indexCount * sizeof(unsigned int);
+        vertexCount += batch->vertexCount;
+        indexCount += batch->indexCount;
+    }
+    if (vertexCount > (size_t)PTRDIFF_MAX / sizeof(mVertex)) return 0;
     glBindVertexArray(r->vao);
     glBindBuffer(GL_ARRAY_BUFFER, r->vbo);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, batch->vertexCount * sizeof(mVertex), batch->vertices);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->ebo);
-    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, batch->indexCount * sizeof(unsigned int), batch->indices);
+    // Orphan the previous storage so we don't overwrite data still being drawn.
+    // Each batch occupies its own range, reused by every shadow and color pass.
+    glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(mVertex), NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(unsigned int), NULL, GL_STREAM_DRAW);
+    for (mRenderBatch* batch = r->firstBatch; batch; batch = batch->next) {
+        if (!batch->needed) continue;
+        glBufferSubData(GL_ARRAY_BUFFER, (size_t)batch->baseVertex * sizeof(mVertex),
+                        batch->vertexCount * sizeof(mVertex), batch->vertices);
+        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, batch->indexOffset,
+                        batch->indexCount * sizeof(unsigned int), batch->indices);
+    }
+    return 1;
+}
+
+static void drawBatch(const mRenderBatch* batch) {
+    glDrawElementsBaseVertex(GL_TRIANGLES, (GLsizei)batch->indexCount, GL_UNSIGNED_INT,
+                             (const void*)(uintptr_t)batch->indexOffset, batch->baseVertex);
 }
 
 static void buildLightMatrices(mRenderer* r, unsigned int index, mLight* light) {
@@ -194,6 +223,30 @@ static void toggle(GLenum cap, int enabled) {
     if (enabled) glEnable(cap); else glDisable(cap);
 }
 
+static void cullScene(mRenderer* r, mLight* lights, int shadows) {
+    for (mRenderBatch* b = r->firstBatch; b; b = b->next) {
+        mat4 viewProjection, clip;
+        glm_mat4_mul(b->projection, b->view, viewProjection);
+        glm_mat4_mul(viewProjection, b->model, clip);
+        b->colorVisible = !b->frustumCulling || mBoundsInFrustum(b->boundsMin, b->boundsMax, clip);
+        b->needed = b->colorVisible;
+        if (!b->colorVisible) r->pendingStats.culledDrawCalls++;
+        memset(b->shadowFaces, 0, sizeof(b->shadowFaces));
+        if (!shadows) continue;
+        for (unsigned int i = 0; i < r->lightCount; ++i) {
+            if (!lights[i].castsShadows || lights[i].intensity <= 0.0f) continue;
+            int faces = lights[i].type == mSpotLight ? 1 : 6;
+            for (int face = 0; face < faces; ++face) {
+                glm_mat4_mul(r->lightMatrices[i][face], b->model, clip);
+                if (!b->frustumCulling || mBoundsInFrustum(b->boundsMin, b->boundsMax, clip)) {
+                    b->shadowFaces[i] |= (unsigned char)(1u << face);
+                    b->needed = 1;
+                } else r->pendingStats.culledDrawCalls++;
+            }
+        }
+    }
+}
+
 void mLightingRenderScene(mContext* ctx) {
     mRenderer* r = &ctx->renderer;
     if (!r->firstBatch) return;
@@ -234,6 +287,13 @@ void mLightingRenderScene(mContext* ctx) {
         if (lights[i].castsShadows && lights[i].intensity > 0.0f) shadows = 1;
     }
     if (shadows) shadows = initShadows(r);
+    cullScene(r, lights, shadows);
+    if (!uploadScene(r)) {
+        fprintf(stderr, "Peach: scene exceeds GPU buffer address limits.\n");
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, (GLuint)framebuffer);
+        glActiveTexture((GLenum)activeTexture);
+        return;
+    }
     if (shadows) {
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, r->shadowFramebuffer);
         glViewport(0, 0, SHADOW_MAP_SIZE, SHADOW_MAP_SIZE);
@@ -257,11 +317,11 @@ void mLightingRenderScene(mContext* ctx) {
                 glClear(GL_DEPTH_BUFFER_BIT);
                 setMatrix(r->shadowProgram, "uLightMatrix", r->lightMatrices[i][face]);
                 for (mRenderBatch* b = r->firstBatch; b; b = b->next) {
-                    uploadBatch(r, b);
+                    if (!(b->shadowFaces[i] & (1u << face))) continue;
                     setMatrix(r->shadowProgram, "uModel", b->model);
                     bindTextures(r->shadowProgram, b);
-                    glDrawElements(GL_TRIANGLES, (GLsizei)b->indexCount, GL_UNSIGNED_INT, NULL);
-                    r->stats.drawCalls++;
+                    drawBatch(b);
+                    r->pendingStats.drawCalls++;
                 }
             }
         }
@@ -272,6 +332,7 @@ void mLightingRenderScene(mContext* ctx) {
     glDepthRange(depthRange[0], depthRange[1]);
     glPolygonMode(GL_FRONT_AND_BACK, (GLenum)polygonMode[0]);
     for (mRenderBatch* b = r->firstBatch; b; b = b->next) {
+        if (!b->colorVisible) continue;
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, b->framebuffer);
         glViewport(b->viewport[0], b->viewport[1], b->viewport[2], b->viewport[3]);
         toggle(GL_DEPTH_TEST, b->depthTest);
@@ -285,11 +346,15 @@ void mLightingRenderScene(mContext* ctx) {
         setMatrix(b->shaderProgram, "uView", b->view);
         setMatrix(b->shaderProgram, "uProjection", b->projection);
         setMatrix(b->shaderProgram, "uModel", b->model);
+        mat4 inverseView;
+        glm_mat4_inv(b->view, inverseView);
+        glUniform3fv(glGetUniformLocation(b->shaderProgram, "uCameraPosition"), 1, inverseView[3]);
+        glUniform1f(glGetUniformLocation(b->shaderProgram, "uSpecular"), b->specular);
+        glUniform1f(glGetUniformLocation(b->shaderProgram, "uShininess"), b->shininess);
         bindTextures(b->shaderProgram, b);
         uploadLights(r, b->shaderProgram, lights, shadows);
-        uploadBatch(r, b);
-        glDrawElements(GL_TRIANGLES, (GLsizei)b->indexCount, GL_UNSIGNED_INT, NULL);
-        r->stats.drawCalls++;
+        drawBatch(b);
+        r->pendingStats.drawCalls++;
     }
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, (GLuint)framebuffer);
     glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);

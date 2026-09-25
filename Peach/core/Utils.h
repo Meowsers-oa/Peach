@@ -72,4 +72,18 @@ static inline float mGetDeltaTime(mContext* ctx) {
     return ctx->time.deltaTime;
 }
 
+static inline float mGetFPS(mContext* ctx) {
+    return ctx && ctx->time.deltaTime > 0.0f ? 1.0f / ctx->time.deltaTime : 0.0f;
+}
+
+static inline mObject mMakeObject(mMesh* mesh, mTransform* transform) {
+    mObject obj = {
+        .mesh = mesh,
+        .transform = transform,
+    };
+
+    return obj;
+}
+
+
 #endif //PEACH_UTILS_H

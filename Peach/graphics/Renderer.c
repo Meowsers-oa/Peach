@@ -5,11 +5,11 @@
 #include "Peach/graphics/Renderer.h"
 #include "Peach/graphics/Shader.h"
 #include "Peach/graphics/Lighting.h"
+#include "Peach/graphics/Mesh.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <stdint.h>
 
 #define VERTEX_HASH_CAPACITY 65536
 #define VERTEX_HASH_MASK (VERTEX_HASH_CAPACITY - 1)
@@ -130,8 +130,12 @@ void mRendererInit(mContext *ctx) {
     glm_mat4_identity(ctx->renderer.modelMatrix);
 
     memset(&ctx->renderer.stats, 0, sizeof(mRendererStats));
+    memset(&ctx->renderer.pendingStats, 0, sizeof(mRendererStats));
     ctx->renderer.isBatching = 0;
+    ctx->renderer.frustumCulling = 1;
     ctx->renderer.ambientLight = 0.12f;
+    ctx->renderer.materialSpecular = 0.0f;
+    ctx->renderer.materialShininess = 1.0f;
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -201,12 +205,21 @@ void mRendererFlush(mContext *ctx) {
         return;
     }
     batch->vertexCount = r->vertexCount;
+    batch->frustumCulling = r->frustumCulling;
+    glm_vec3_copy(r->vertexBuffer[0].position, batch->boundsMin);
+    glm_vec3_copy(r->vertexBuffer[0].position, batch->boundsMax);
+    for (unsigned int i = 1; i < r->vertexCount; ++i) {
+        glm_vec3_minv(batch->boundsMin, r->vertexBuffer[i].position, batch->boundsMin);
+        glm_vec3_maxv(batch->boundsMax, r->vertexBuffer[i].position, batch->boundsMax);
+    }
     batch->indexCount = r->indexCount;
     memcpy(batch->vertices, r->vertexBuffer, r->vertexCount * sizeof(mVertex));
     memcpy(batch->indices, r->indexBuffer, r->indexCount * sizeof(unsigned int));
     memcpy(batch->textures, r->textureSlots, sizeof(batch->textures));
     batch->textureCount = r->textureSlotIndex;
     batch->shaderProgram = r->shaderProgram;
+    batch->specular = r->materialSpecular;
+    batch->shininess = r->materialShininess;
     glm_mat4_copy(r->modelMatrix, batch->model);
     glm_mat4_copy(r->viewMatrix, batch->view);
     glm_mat4_copy(r->projectionMatrix, batch->projection);
@@ -237,6 +250,7 @@ void mRendererEnd(mContext *ctx) {
     mLightingRenderScene(ctx);
     mRendererDiscardBatches(ctx);
     ctx->renderer.isBatching = 0;
+    if (!ctx->frame.active) ctx->renderer.stats = ctx->renderer.pendingStats;
 }
 void mRendererClear(mContext *ctx) {
     if (!ctx) return;
@@ -260,6 +274,11 @@ void mRendererSetCullFace(int enable) {
     } else {
         glDisable(GL_CULL_FACE);
     }
+}
+void mRendererSetFrustumCulling(mContext* ctx, int enable) {
+    if (!ctx || ctx->renderer.frustumCulling == !!enable) return;
+    mRendererFlush(ctx);
+    ctx->renderer.frustumCulling = !!enable;
 }
 void mRendererSetProjection(mContext *ctx, mat4 proj) {
     if (!ctx) return;
@@ -390,11 +409,11 @@ void mAddVertices(mContext* ctx, const mVertex* vertices, unsigned int count) {
                 *ctx->renderer.vertexBufferPtr++ = v;
                 s_vertexNext[foundIndex] = s_vertexHashTable[bucket];
                 s_vertexHashTable[bucket] = foundIndex;
-                ctx->renderer.stats.vertexCount++;
+                ctx->renderer.pendingStats.vertexCount++;
             }
             *ctx->renderer.indexBufferPtr++ = (unsigned int)foundIndex;
             ctx->renderer.indexCount++;
-            ctx->renderer.stats.indexCount++;
+            ctx->renderer.pendingStats.indexCount++;
         }
     }
 }
@@ -443,8 +462,8 @@ void mAddVerticesIndexed(mContext* ctx, const mVertex* vertices, unsigned int ve
     for (unsigned int i = 0; i < indexCount; ++i)
         *ctx->renderer.indexBufferPtr++ = baseVertex + indices[i];
     ctx->renderer.indexCount += indexCount;
-    ctx->renderer.stats.vertexCount += vertexCount;
-    ctx->renderer.stats.indexCount += indexCount;
+    ctx->renderer.pendingStats.vertexCount += vertexCount;
+    ctx->renderer.pendingStats.indexCount += indexCount;
 }
 void mAddVertex(mContext* ctx, mVertex vertex) {
     mAddVertices(ctx, &vertex, 1);
@@ -620,6 +639,7 @@ mRendererStats mRendererGetStats(mContext* ctx) {
 void mRendererResetStats(mContext* ctx) {
     if (ctx) {
         memset(&ctx->renderer.stats, 0, sizeof(mRendererStats));
+        memset(&ctx->renderer.pendingStats, 0, sizeof(mRendererStats));
     }
 }
 
@@ -655,4 +675,14 @@ void mDrawLightMarker(mContext* ctx, const mLight* light, float radius) {
     }
     mRendererEnd(ctx);
     ctx->renderer.lightCount = lightCount;
+}
+
+void mDraw(mContext *ctx, mObject* obj) {
+    mMeshSubmit(ctx, obj->mesh, obj->material, obj->transform);
+}
+
+void mDrawLightMarkers(mContext *ctx, float radius) {
+    for (int i = 0; i < ctx->renderer.lightCount; i++) {
+        mDrawLightMarker(ctx, ctx->renderer.lights[i], radius);
+    }
 }

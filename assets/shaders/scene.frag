@@ -25,6 +25,9 @@ struct Light {
 uniform Light uLights[8];
 uniform int uLightCount;
 uniform float uAmbientLight;
+uniform vec3 uCameraPosition;
+uniform float uSpecular;
+uniform float uShininess;
 uniform sampler2DArray uShadowMaps;
 uniform mat4 uSpotMatrices[8];
 const float shadowNear = 0.05;
@@ -119,6 +122,9 @@ void main() {
     }
     vec3 normal = length(vNormal) > 0.00001 ? normalize(vNormal) : vec3(0,1,0);
     vec3 lighting = vec3(uAmbientLight);
+    vec3 specularLighting = vec3(0.0);
+    vec3 viewDelta = uCameraPosition - vFragPos;
+    vec3 toView = viewDelta / max(length(viewDelta), 0.00001);
     for (int i = 0; i < uLightCount; ++i) {
         Light light = uLights[i];
         vec3 delta = light.position - vFragPos;
@@ -133,9 +139,15 @@ void main() {
         float falloff = max(1.0 - pow(distanceToLight / light.range, 4.0), 0.0);
         float attenuation = falloff * falloff / (1.0 + distanceToLight * distanceToLight);
         float diffuse = max(dot(normal, toLight), 0.0);
-        if (diffuse > 0.0 && cone > 0.0)
-            lighting += light.color * light.intensity * attenuation * diffuse * cone
-                      * shadowVisibility(i, normal, toLight);
+        if (diffuse > 0.0 && cone > 0.0) {
+            vec3 radiance = light.color * light.intensity * attenuation * cone
+                          * shadowVisibility(i, normal, toLight);
+            lighting += radiance * diffuse;
+            vec3 halfway = toLight + toView;
+            halfway /= max(length(halfway), 0.00001);
+            float highlight = pow(max(dot(normal, halfway), 0.0), max(uShininess, 1.0));
+            specularLighting += radiance * uSpecular * highlight;
+        }
     }
-    FragColor = vec4(surface.rgb * lighting, surface.a);
+    FragColor = vec4(surface.rgb * lighting + specularLighting, surface.a);
 }
