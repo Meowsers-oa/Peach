@@ -55,3 +55,7 @@ add_subdirectory(Peach engine)
 add_executable(peach main.c)
 target_link_libraries(peach PRIVATE peach_engine)
 
+
+# Demo assets resolve independently of the process working directory.
+target_compile_definitions(peach PRIVATE PEACH_ASSET_DIR="${CMAKE_CURRENT_SOURCE_DIR}/assets")
+

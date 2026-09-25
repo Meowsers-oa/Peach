@@ -39,12 +39,14 @@ add_library(peach_engine STATIC
         graphics/Texture.c
         graphics/Mesh.c
         graphics/Mesh.h
-        graphics/Ui.cpp
+        graphics/Ui.c
         graphics/Ui.h
         platform/Map.c
         platform/Map.h
         utils/Events.c
         utils/Events.h
+        graphics/Material.c
+        graphics/Material.h
 )
 
 target_include_directories(peach_engine

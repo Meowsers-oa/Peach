@@ -8,6 +8,7 @@
 // Returns 0 on close/error. A minimized window waits for events until restored.
 int mBeginFrame(mContext* ctx);
 // Finishes geometry, applies post-processing, draws UI, and swaps buffers.
+// Publishes this frame's counters in ctx->renderer.stats (excluding UI draws).
 void mEndFrame(mContext* ctx);
 
 // Set once outside a frame. Peach owns the shader and the intermediate target.

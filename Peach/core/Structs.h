@@ -112,6 +112,7 @@ typedef struct {
 
 typedef struct {
     unsigned int drawCalls;
+    unsigned int culledDrawCalls; // Batch/pass combinations rejected by frustum culling.
     unsigned int quadCount;
     unsigned int vertexCount;
     unsigned int indexCount;
@@ -154,11 +155,15 @@ typedef struct {
     mat4 viewMatrix;
     mat4 projectionMatrix;
     mat4 modelMatrix;
-    mRendererStats stats;
+    mRendererStats stats; // Last completed frame; safe to read anywhere in the next frame.
+    mRendererStats pendingStats; // Counters for work currently being submitted.
     int isBatching;
+    int frustumCulling;
     mLight* lights[MAX_LIGHTS]; // Borrowed pointers; caller owns each light.
     unsigned int lightCount;
     float ambientLight;
+    float materialSpecular;
+    float materialShininess;
     unsigned int shadowTexture;
     unsigned int shadowFramebuffer;
     unsigned int shadowProgram;
@@ -183,13 +188,42 @@ typedef struct {
 } mContext;
 
 typedef struct {
+    mColor color;
+    mTexture texture; // Borrowed; id == 0 means plain color.
+    float specular;
+    float shininess;
+} mMaterial;
+
+typedef struct {
+    unsigned int firstVertex, vertexCount;
+    unsigned int firstIndex, indexCount;
+    unsigned int materialIndex;
+} mMeshPart;
+
+typedef struct {
     mVertex* vertices;
-    unsigned int* indices;
+    unsigned int* indices; // Global vertex indices, including for imported parts.
     unsigned int vertexCount;
     unsigned int indexCount;
-    mTexture* textures; // Optional owned array; GPU textures remain caller-owned.
-    mColor colors;     // Global tint, multiplied with vertex/material colors.
+    mTexture* textures; // Unique GPU textures owned by this imported mesh.
+    mColor colors;     // Global tint; initialize manually constructed meshes to WHITE.
+    unsigned int textureCount;
+    mMaterial* materials;
+    unsigned int materialCount;
+    mMeshPart* parts;
+    unsigned int partCount;
 } mMesh;
 
+typedef struct {
+    vec3 position;
+    vec3 rotation;
+    vec3 scale;
+} mTransform;
+
+typedef struct {
+    mMesh* mesh;
+    mTransform* transform;
+    mMaterial* material;
+} mObject;
 
 #endif //PEACH_STRUCTS_H

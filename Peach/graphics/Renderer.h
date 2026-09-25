@@ -26,6 +26,9 @@ void mRendererClear(mContext* ctx);
 void mRendererClearColor(mColor color);
 void mRendererSetDepthTest(int enable);
 void mRendererSetCullFace(int enable);
+// Enabled by default. Culls whole batches independently for the camera and
+// each shadow face. Disable for custom shaders that move vertices beyond bounds.
+void mRendererSetFrustumCulling(mContext* ctx, int enable);
 
 // Camera and transformation matrices
 void mRendererSetProjection(mContext* ctx, mat4 proj);
@@ -61,8 +64,11 @@ void mAddQuad3DTexturedRotated(mContext* ctx, vec3 center, vec2 size, vec3 norma
 void mAddCubeRotated(mContext* ctx, vec3 position, vec3 size, vec3 rotation, mColor color);
 void mAddCubeTexturedRotated(mContext* ctx, vec3 position, vec3 size, vec3 rotation, const mTexture* texture, mColor tint);
 
+void mDraw(mContext *ctx, mObject* obj);
+
 // Draw after scene geometry: a depth-tested, unlit ball that does not cast shadows.
 void mDrawLightMarker(mContext* ctx, const mLight* light, float radius);
+void mDrawLightMarkers(mContext* ctx, float radius);
 
 // Statistics
 mRendererStats mRendererGetStats(mContext* ctx);

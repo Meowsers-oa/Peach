@@ -16,5 +16,6 @@
 #include "Peach/graphics/PostProcess.h"
 #include "Peach/graphics/Mesh.h"
 #include "Peach/graphics/Ui.h"
+#include "Peach/core/Utils.h"
 
 #endif //PEACH_PEACH_H
