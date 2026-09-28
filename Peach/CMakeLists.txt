@@ -26,7 +26,6 @@ target_link_libraries(Peach
         glad
         glfw
         cglm
-        assimp
         OpenGL::GL
         PRIVATE
         stb_image
