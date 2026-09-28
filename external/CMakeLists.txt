@@ -25,21 +25,7 @@ FetchContent_Declare(
         GIT_TAG        v0.9.4
 )
 
-# Assimp
-set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(ASSIMP_INJECT_DEBUG_POSTFIX OFF CACHE BOOL "" FORCE)
-set(ASSIMP_INSTALL OFF CACHE BOOL "" FORCE)
-set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT ON CACHE BOOL "" FORCE)
-# Disable treating warnings as errors for Assimp
-set(ASSIMP_WARNINGS_AS_ERRORS OFF CACHE BOOL "" FORCE)
-
-FetchContent_Declare(
-        assimp
-        GIT_REPOSITORY https://github.com/assimp/assimp.git
-        GIT_TAG        v5.4.3
-)
-
-FetchContent_MakeAvailable(glfw cglm assimp)
+FetchContent_MakeAvailable(glfw cglm)
 
 # Local Glad Library
 add_library(glad STATIC glad/src/glad.c)
