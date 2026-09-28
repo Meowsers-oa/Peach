@@ -4,7 +4,7 @@
 
 int mCameraCreate(mCamera* camera, float width, float height) {
     if (camera == NULL) return M_FAILURE;
-    mCamera result = {.x = width * .5f, .y = height * .5f, .zoom = 1.0f,
+    mCamera result = {.zoom = 1.0f,
                       .width = width, .height = height};
     if (mCameraUpdate(&result) == M_FAILURE) return M_FAILURE;
     *camera = result;
@@ -29,7 +29,7 @@ int mCameraUpdate(mCamera* camera) {
         2.0f * camera->zoom / camera->width, 0, 0, 0,
         0, -2.0f * camera->zoom / camera->height, 0, 0,
         0, 0, -1, 0,
-        0, 0, 0, 1
+        -1, 1, 0, 1
     };
     float viewProjection[16] = {0};
     for (int column = 0; column < 4; column++) {

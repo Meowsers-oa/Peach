@@ -13,7 +13,7 @@ void main() {
     vec2 dy = dFdy(vUV);
     vec4 sampled = vec4(1.0);
 
-    // OpenGL 4.1 requires constant sampler indices for per-primitive selection.
+
     switch (vTextureSlot) {
         case 0: sampled = textureGrad(uTextures[0], vUV, dx, dy); break;
         case 1: sampled = textureGrad(uTextures[1], vUV, dx, dy); break;

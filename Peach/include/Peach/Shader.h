@@ -3,10 +3,6 @@
 
 #include <Peach/Common.h>
 
-typedef struct {
-    unsigned int handle;
-}mShader;
-
 // Initialize shader to {0}. Requires a current OpenGL context.
 // Reads, compiles and links vertex/fragment GLSL files. Paths are used as supplied.
 // Returns M_FAILURE with diagnostics on stderr; failed loads leave shader unchanged.

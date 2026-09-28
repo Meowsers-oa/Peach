@@ -5,6 +5,7 @@
 #include <Peach/mWindow.h>
 #include <Peach/Input.h>
 #include <Peach/Renderer.h>
+#include <Peach/Time.h>
 
 int mWindowCreate(mContext *ctx, mWindowInfo* info) {
     GLFWwindow* window = glfwCreateWindow(info->width, info->height, info->title, NULL, NULL);

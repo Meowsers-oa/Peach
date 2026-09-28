@@ -6,19 +6,6 @@
 #include <Peach/Texture.h>
 #include <Peach/Transform.h>
 
-#define M_RENDERER_MAX_VERTICES 16384
-#define M_RENDERER_MAX_INDICES 24576
-#define M_RENDERER_MAX_TEXTURES 16
-
-typedef struct {
-    float x;
-    float y;
-    float z;
-    float u;
-    float v;
-    mColor color;
-}mVertex;
-
 // Managed by the window lifecycle. The owning OpenGL context must be current.
 int mRendererCreate(mContext* ctx);
 void mRendererDestroy(mContext* ctx);
@@ -34,6 +21,9 @@ void mRendererSetViewProjection(mContext* ctx, const float* viewProjection);
 // NULL restores the automatic window-sized camera.
 void mRendererSetCamera(mContext* ctx, const mCamera* camera);
 
+// Vertex X/Y and transform positions are in window pixels, not NDC.
+// With the default camera, (0, 0) is top-left; X goes right and Y goes down.
+// UVs remain normalized texture coordinates. Z defaults to 0 for 2D drawing.
 // Triangle lists. Counts must be multiples of three (indexCount for indexed lists).
 // Indices are local to this submission. Oversized submissions are split automatically.
 // transform contains position, Euler rotation (radians), and scale; NULL means

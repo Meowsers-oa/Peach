@@ -1,22 +1,7 @@
 #ifndef PEACH_TIME_H
 #define PEACH_TIME_H
 
-#include <stdint.h>
-
-typedef struct {
-    double deltaTime;
-    double elapsedTime;
-    double frameTime;
-    double fps;
-    double averageFPS;
-    uint64_t frameCount;
-
-    // Internal clock and averaging state.
-    uint64_t lastTick;
-    uint64_t frequency;
-    double fpsElapsed;
-    uint64_t fpsFrames;
-}mTime;
+#include <Peach/Common.h>
 
 // Requires GLFW initialization. All values start at zero.
 // deltaTime/elapsedTime are seconds; frameTime is milliseconds.

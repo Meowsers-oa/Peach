@@ -12,7 +12,13 @@ add_library(Peach STATIC ${PEACH_SOURCES}
         include/Peach/Texture.h
         include/Peach/Transform.h
         include/Peach/Shader.h
-        include/Peach/Time.h)
+        include/Peach/Time.h
+        include/Peach/Shape.h
+        src/Sprite.c
+        include/Peach/Sprite.h
+        src/Map.c
+        include/Peach/Map.h
+        include/Peach/Resource.h)
 
 target_include_directories(Peach
         PUBLIC

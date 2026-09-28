@@ -6,31 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct {
-    float position[4];
-    float uv[2];
-    mColor color;
-    float textureSlot;
-}mBatchVertex;
-
-struct mRenderer {
-    unsigned int vao;
-    unsigned int vbo;
-    unsigned int ebo;
-    mShader shader;
-    int viewProjectionLocation;
-    float viewProjection[16];
-    int customCamera;
-    mTexture whiteTexture;
-    unsigned int textures[M_RENDERER_MAX_TEXTURES];
-    unsigned int textureCount;
-    unsigned int textureLimit;
-    unsigned int vertexCount;
-    unsigned int indexCount;
-    mBatchVertex vertices[M_RENDERER_MAX_VERTICES];
-    unsigned int indices[M_RENDERER_MAX_INDICES];
-};
-
 int mRendererCreate(mContext* ctx) {
     if (ctx == NULL || ctx->window.handle == NULL || ctx->renderer != NULL) return M_FAILURE;
     mRenderer* renderer = calloc(1, sizeof(mRenderer));

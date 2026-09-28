@@ -3,12 +3,6 @@
 
 #include <Peach/Common.h>
 
-typedef struct {
-    unsigned int handle;
-    int width;
-    int height;
-}mTexture;
-
 // Initialize texture to {0}. All operations require the owning OpenGL context.
 // Uploads packed RGBA8 pixels, with nearest-neighbor filtering and clamp-to-edge wrapping.
 // The first pixel row is sampled at v = 0. Source pixels are copied immediately.
@@ -18,7 +12,8 @@ int mTextureCreate(mTexture* texture, int width, int height, const unsigned char
 int mTextureLoad(mTexture* texture, const char* path);
 // Decode encoded image bytes, not raw pixels. size is the byte count.
 int mTextureLoadMemory(mTexture* texture, const unsigned char* data, int size);
-// Flush pending draws before deletion. Destroy user textures before mDestroy.
+// Flush pending draws before deletion. For registered textures use mRemoveResource
+// or mEnd; directly destroy only textures still owned by the caller.
 void mTextureDestroy(mContext* ctx, mTexture* texture);
 
 #endif //PEACH_TEXTURE_H
