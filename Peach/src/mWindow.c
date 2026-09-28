@@ -45,6 +45,11 @@ int mWindowCreate(mContext* ctx, mWindowInfo* info) {
     mInputInit(ctx);
     ctx->time = mTimeCreate();
 
+    info->renderWidth = info->width;
+    info->renderHeight = info->height;
+
+    mRendererSetResolution(ctx, info->renderWidth   , info->renderHeight);
+
     return M_SUCCESS;
 }
 
@@ -53,7 +58,7 @@ void frameBufferSizeCallback(GLFWwindow* window, int width, int height) {
 }
 
 void mWindowUpdate(mContext* ctx) {
-    mRendererFlush(ctx);
+    mRendererPresent(ctx);
     glfwSwapBuffers(ctx->window.handle);
 
     mInputUpdate(ctx);

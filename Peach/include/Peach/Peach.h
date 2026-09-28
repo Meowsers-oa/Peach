@@ -20,6 +20,7 @@
 #include <Peach/Map.h>
 #include <Peach/Resource.h>
 #include <Peach/Sprite.h>
+#include <Peach/Light.h>
 
 mContext mContextCreate();
 void mUpdate(mContext* ctx);

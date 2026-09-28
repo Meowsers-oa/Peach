@@ -19,6 +19,7 @@ mContext mContextCreate() {
 
     ctx.resourcePool = mMapCreate();
     ctx.sprites = mMapCreate();
+    ctx.lights = mMapCreate();
 
     return ctx;
 }
@@ -43,6 +44,9 @@ void mEnd(mContext* ctx) {
         mMapDestroy(ctx->sprites);
         ctx->sprites = NULL;
     }
+
+    mMapDestroy(ctx->lights);
+    ctx->lights = NULL;
 
     // Shapes can reference texture records, so release their buffers first.
     if (ctx->resourcePool != NULL) {

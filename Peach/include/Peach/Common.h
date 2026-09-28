@@ -100,6 +100,8 @@ typedef struct {
     int width;
     int height;
     char* title;
+    int renderWidth;
+    int renderHeight;
 }mWindowInfo;
 
 typedef struct {
@@ -190,11 +192,44 @@ typedef struct {
     float textureSlot;
 }mBatchVertex;
 
+typedef struct {
+    float x;
+    float y;
+    float radius;
+    float intensity;
+    mColor color;
+    M_BOOL enabled;
+}mLight;
+
+typedef struct {
+    unsigned int framebuffer;
+    unsigned int texture;
+    int width;
+    int height;
+}mRenderTarget;
+
+typedef struct {
+    int x;
+    int y;
+    int width;
+    int height;
+}mViewport;
+
 struct mRenderer {
     unsigned int vao;
     unsigned int vbo;
     unsigned int ebo;
     mShader shader;
+    mShader lightShader;
+    mShader compositeShader;
+    mRenderTarget sceneTarget;
+    mRenderTarget lightTarget;
+    mColor ambient;
+    int resolutionWidth;
+    int resolutionHeight;
+    int lightProjectionLocation;
+    int lightPositionLocation;
+    int lightColorLocation;
     int viewProjectionLocation;
     float viewProjection[16];
     int customCamera;
@@ -224,6 +259,7 @@ typedef struct {
     mTime time;
     mRenderer* renderer;
     mMap* sprites;
+    mMap* lights;
     mMap* resourcePool;
 }mContext;
 

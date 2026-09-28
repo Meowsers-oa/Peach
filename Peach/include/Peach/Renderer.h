@@ -11,10 +11,15 @@ void mRendererDestroy(mContext* ctx);
 // Clears the next frame. mUpdate flushes, presents, then calls this.
 void mRendererBegin(mContext* ctx);
 void mRendererFlush(mContext* ctx);
+void mRendererPresent(mContext* ctx);
+// Call between frames. Fixed pixels upscale by integers with letterboxing; 0,0 restores window size.
+int mRendererSetResolution(mContext* ctx, int width, int height);
+// Converts GLFW window coordinates to render pixels. Returns false in the letterbox bars.
+M_BOOL mRendererWindowToScreen(mContext* ctx, double x, double y, double* screenX, double* screenY);
 
 // Column-major camera matrix; NULL restores pixel coordinates.
 void mRendererSetViewProjection(mContext* ctx, const float* viewProjection);
-// Copies the camera matrix; reapply after camera changes.
+// Set before drawing the frame. Lights and geometry share this camera.
 void mRendererSetCamera(mContext* ctx, const mCamera* camera);
 
 // Triangle lists in pixels. NULL transform means identity; NULL texture means white.
