@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="9" type="long" />
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="12" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
@@ -23,6 +23,7 @@
   <component name="CMakeRunConfigurationManager">
     <generated>
       <config projectName="peach" targetName="glad-generate-files" />
+      <config projectName="peach" targetName="stb_image" />
       <config projectName="peach" targetName="update_mappings" folderName="GLFW3" />
       <config projectName="peach" targetName="sandbox" />
       <config projectName="peach" targetName="peach_cimguizmo" />
@@ -43,19 +44,19 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd073e8c-2fca-4062-b576-109fa18593a6" name="Changes" comment="Merge remote-tracking branch 'origin/main'">
-      <change afterPath="$PROJECT_DIR$/.idea/icon.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Peach/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Peach/include/Peach/Peach.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Peach/src/Peach.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/external/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/external/glad/include/KHR/khrplatform.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/external/glad/include/glad/glad.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/external/glad/src/glad.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sandbox/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sandbox/src/Main.c" afterDir="false" />
+    <list default="true" id="dd073e8c-2fca-4062-b576-109fa18593a6" name="Changes" comment="Structure">
+      <change afterPath="$PROJECT_DIR$/Peach/include/Peach/Common.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Peach/include/Peach/mWindow.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Peach/src/mWindow.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Peach/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Peach/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Peach/include/Peach/Peach.h" beforeDir="false" afterPath="$PROJECT_DIR$/Peach/include/Peach/Peach.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Peach/src/Peach.c" beforeDir="false" afterPath="$PROJECT_DIR$/Peach/src/Peach.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/external/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/external/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sandbox/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/sandbox/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sandbox/src/Main.c" beforeDir="false" afterPath="$PROJECT_DIR$/sandbox/src/Main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +67,7 @@
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="121" />
+    <option name="cachedIndexableFilesCount" value="656" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
@@ -96,12 +97,7 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Users/meowsers/Desktop/Code/C/peach/Peach/Renderer.c" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/meowsers/Desktop/Code/C/peach/Peach/Renderer.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/meowsers/Desktop/Code/C/peach/Peach/Structs.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/meowsers/Desktop/Code/C/peach/Peach/Texture.c" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/meowsers/Desktop/Code/C/peach/Peach/Texture.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/meowsers/Desktop/Code/C/peach/main.c" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="IZ4QVPt4" />
@@ -112,61 +108,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="6.149112843823333E-10" />
-      <entry key="MS500" value="0.017797429422631888" />
-      <entry key="S2" value="0.5880964494312141" />
-      <entry key="S5" value="1.2210451676968916" />
-      <entry key="S10" value="1.5617606260272037" />
-      <entry key="S30" value="2.130238521044288" />
-      <entry key="S60" value="4.501588931030181" />
-      <entry key="M2" value="10.470490418304784" />
-      <entry key="M5" value="38.13996281916205" />
-      <entry key="M10" value="106.82612441614687" />
-      <entry key="M15" value="176.1108544878533" />
-      <entry key="M30" value="344.6904383820564" />
-      <entry key="H1" value="558.7561887831844" />
-      <entry key="H2" value="873.8063641793136" />
-      <entry key="H4" value="1378.879446410368" />
-      <entry key="D1" value="2559.0403251178063" />
-      <entry key="W1" value="2916.664288740604" />
+      <entry key="MS100" value="1.451864281154928E-196" />
+      <entry key="MS500" value="6.815602442306459E-40" />
+      <entry key="S2" value="2.2335465062447162E-10" />
+      <entry key="S5" value="2.8788601972750587E-4" />
+      <entry key="S10" value="0.03684028166519626" />
+      <entry key="S30" value="1.3855183279244432" />
+      <entry key="S60" value="4.927838942867584" />
+      <entry key="M2" value="11.49082098370006" />
+      <entry key="M5" value="23.26281729806762" />
+      <entry key="M10" value="33.06143237871252" />
+      <entry key="M15" value="42.08005051130378" />
+      <entry key="M30" value="103.77986389182766" />
+      <entry key="H1" value="320.0554732444316" />
+      <entry key="H2" value="747.4371866096261" />
+      <entry key="H4" value="1400.9256977524435" />
+      <entry key="D1" value="3021.2556500362057" />
+      <entry key="W1" value="3550.8589866814036" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="1.0" />
       <entry key="MS500" value="1.0" />
       <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0000000000211025" />
-      <entry key="S10" value="1.0000045937379782" />
-      <entry key="S30" value="1.0166237206042474" />
-      <entry key="S60" value="1.1295821350179684" />
-      <entry key="M2" value="1.4068353453127953" />
-      <entry key="M5" value="3.029216344166951" />
-      <entry key="M10" value="7.863634348374553" />
-      <entry key="M15" value="12.909677026788675" />
-      <entry key="M30" value="24.640429212912657" />
-      <entry key="H1" value="38.7918849690231" />
-      <entry key="H2" value="56.74095127313393" />
-      <entry key="H4" value="77.96119367169241" />
-      <entry key="D1" value="115.34108713853966" />
-      <entry key="W1" value="125.21488956900195" />
+      <entry key="S5" value="1.0000000000000016" />
+      <entry key="S10" value="1.0000000850636743" />
+      <entry key="S30" value="1.0138718955148396" />
+      <entry key="S60" value="1.288681025860996" />
+      <entry key="M2" value="2.3815284859644397" />
+      <entry key="M5" value="5.375412200951661" />
+      <entry key="M10" value="8.943980879901098" />
+      <entry key="M15" value="11.775493763790035" />
+      <entry key="M30" value="22.256501490770855" />
+      <entry key="H1" value="47.45655484005021" />
+      <entry key="H2" value="86.1775943484683" />
+      <entry key="H4" value="129.58151752758914" />
+      <entry key="D1" value="204.27337175889687" />
+      <entry key="W1" value="224.34567461068002" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.03491522306630481" />
-      <entry key="MS500" value="0.5170595554722827" />
-      <entry key="S2" value="1.2992081453198527" />
-      <entry key="S5" value="2.037637939273808" />
-      <entry key="S10" value="2.4514855797094723" />
-      <entry key="S30" value="3.1036855232540193" />
-      <entry key="S60" value="5.604238664714399" />
-      <entry key="M2" value="11.8564802683113" />
-      <entry key="M5" value="41.13446910772284" />
-      <entry key="M10" value="114.63102957378467" />
-      <entry key="M15" value="188.95160822084225" />
-      <entry key="M30" value="369.26042655861943" />
-      <entry key="H1" value="597.490469545158" />
-      <entry key="H2" value="930.5041736477316" />
-      <entry key="H4" value="1456.8105285586212" />
-      <entry key="D1" value="2674.373875044985" />
-      <entry key="W1" value="3041.878006423651" />
+      <entry key="MS100" value="0.0010040174088438152" />
+      <entry key="MS500" value="0.25139014509961705" />
+      <entry key="S2" value="0.7080877192322956" />
+      <entry key="S5" value="0.8712775379764932" />
+      <entry key="S10" value="0.9676939597203433" />
+      <entry key="S30" value="2.3527181814413196" />
+      <entry key="S60" value="6.161772363051536" />
+      <entry key="M2" value="13.810722418564232" />
+      <entry key="M5" value="28.586206216523777" />
+      <entry key="M10" value="41.96691377830382" />
+      <entry key="M15" value="53.823255514772974" />
+      <entry key="M30" value="126.00437246592304" />
+      <entry key="H1" value="367.47214003332186" />
+      <entry key="H2" value="833.5731529759416" />
+      <entry key="H4" value="1530.4726172944243" />
+      <entry key="D1" value="3225.5189141020314" />
+      <entry key="W1" value="3775.2030437141143" />
     </decayedShown>
   </component>
   <component name="ProjectApplicationVersion">
@@ -190,48 +186,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "CMake Application.peach.executor": "Run",
-    "CMake Application.sandbox.executor": "Run",
-    "CTest Application.All CTest.executor": "Run",
-    "CidrDebugProfileConversion": "true",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.RadMigrateCodeStyle": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SearchEverywhere.PersistedScope.FileSearchEverywhereContributor": "Project Files",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "ctest.advertisement.all.test.configuration.is.created": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/meowsers/Desktop/Code/C/peach/external",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.jshint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.jshint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "python.packages.toolwindow.project.migrated.to.right.top.v2": "true",
-    "settings.editor.selected.configurable": "preferences.editor.code.editing",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;CMake Application.peach.executor&quot;: &quot;Run&quot;,
+    &quot;CMake Application.sandbox.executor&quot;: &quot;Run&quot;,
+    &quot;CTest Application.All CTest.executor&quot;: &quot;Run&quot;,
+    &quot;CidrDebugProfileConversion&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SearchEverywhere.PersistedScope.FileSearchEverywhereContributor&quot;: &quot;Project Files&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;ctest.advertisement.all.test.configuration.is.created&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/meowsers/Desktop/Code/C/peach/external&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;python.packages.toolwindow.project.migrated.to.right.top.v2&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor.code.editing&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/external" />
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Peach/include/Peach" />
       <recent name="$PROJECT_DIR$/sandbox/src" />
       <recent name="$PROJECT_DIR$/assets/models" />
       <recent name="$PROJECT_DIR$/assets/shaders" />
@@ -239,6 +236,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.sandbox">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="BeforeTestRunTask" enabled="true" />
@@ -264,12 +266,12 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="sandbox" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="peach" TARGET_NAME="sandbox" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="peach" RUN_TARGET_NAME="sandbox">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="sandbox" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="peach" TARGET_NAME="sandbox" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="peach" RUN_TARGET_NAME="sandbox">
+    <configuration name="stb_image" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="peach" TARGET_NAME="stb_image" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -281,30 +283,31 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="CMake Application.stb_image" />
       <item itemvalue="CMake Application.Peach" />
       <item itemvalue="CMake Application.sandbox" />
       <item itemvalue="CTest Application.All CTest" />
     </list>
   </component>
-  <component name="SelectedDebugProfileService"><![CDATA[{
-  "profileIdByStamp": [
+  <component name="SelectedDebugProfileService">{
+  &quot;profileIdByStamp&quot;: [
     {
-      "first": {
-        "##RUN_CONFIGURATION##": "CMake Application.sandbox",
-        "cmake": "CMakeBuildProfile:Debug"
+      &quot;first&quot;: {
+        &quot;##RUN_CONFIGURATION##&quot;: &quot;CMake Application.sandbox&quot;,
+        &quot;cmake&quot;: &quot;CMakeBuildProfile:Debug&quot;
       },
-      "second": "0ca020d9-9597-4598-acf1-9c4345f25ba2"
+      &quot;second&quot;: &quot;0ca020d9-9597-4598-acf1-9c4345f25ba2&quot;
     },
     {
-      "first": {
-        "##RUN_CONFIGURATION##": "CTest Application.All CTest",
-        "cmake": "CMakeBuildProfile:Debug"
+      &quot;first&quot;: {
+        &quot;##RUN_CONFIGURATION##&quot;: &quot;CTest Application.All CTest&quot;,
+        &quot;cmake&quot;: &quot;CMakeBuildProfile:Debug&quot;
       },
-      "second": "0ca020d9-9597-4598-acf1-9c4345f25ba2"
+      &quot;second&quot;: &quot;0ca020d9-9597-4598-acf1-9c4345f25ba2&quot;
     }
   ],
-  "modificationCount": 26
-}]]></component>
+  &quot;modificationCount&quot;: 26
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="dd073e8c-2fca-4062-b576-109fa18593a6" name="Changes" comment="" />
@@ -374,7 +377,8 @@
     <MESSAGE value="ImGuizmo support" />
     <MESSAGE value="general polish and yoshi" />
     <MESSAGE value="Merge remote-tracking branch 'origin/main'" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/main'" />
+    <MESSAGE value="Structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="Structure" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

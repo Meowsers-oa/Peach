@@ -1,0 +1,163 @@
+#ifndef PEACH_INPUT_H
+#define PEACH_INPUT_H
+
+#include <Peach/Common.h>
+
+typedef enum {
+    M_KEY_UNKNOWN = GLFW_KEY_UNKNOWN,
+    M_KEY_SPACE = GLFW_KEY_SPACE,
+    M_KEY_APOSTROPHE = GLFW_KEY_APOSTROPHE,
+    M_KEY_COMMA = GLFW_KEY_COMMA,
+    M_KEY_MINUS = GLFW_KEY_MINUS,
+    M_KEY_PERIOD = GLFW_KEY_PERIOD,
+    M_KEY_SLASH = GLFW_KEY_SLASH,
+    M_KEY_0 = GLFW_KEY_0,
+    M_KEY_1 = GLFW_KEY_1,
+    M_KEY_2 = GLFW_KEY_2,
+    M_KEY_3 = GLFW_KEY_3,
+    M_KEY_4 = GLFW_KEY_4,
+    M_KEY_5 = GLFW_KEY_5,
+    M_KEY_6 = GLFW_KEY_6,
+    M_KEY_7 = GLFW_KEY_7,
+    M_KEY_8 = GLFW_KEY_8,
+    M_KEY_9 = GLFW_KEY_9,
+    M_KEY_SEMICOLON = GLFW_KEY_SEMICOLON,
+    M_KEY_EQUAL = GLFW_KEY_EQUAL,
+    M_KEY_A = GLFW_KEY_A,
+    M_KEY_B = GLFW_KEY_B,
+    M_KEY_C = GLFW_KEY_C,
+    M_KEY_D = GLFW_KEY_D,
+    M_KEY_E = GLFW_KEY_E,
+    M_KEY_F = GLFW_KEY_F,
+    M_KEY_G = GLFW_KEY_G,
+    M_KEY_H = GLFW_KEY_H,
+    M_KEY_I = GLFW_KEY_I,
+    M_KEY_J = GLFW_KEY_J,
+    M_KEY_K = GLFW_KEY_K,
+    M_KEY_L = GLFW_KEY_L,
+    M_KEY_M = GLFW_KEY_M,
+    M_KEY_N = GLFW_KEY_N,
+    M_KEY_O = GLFW_KEY_O,
+    M_KEY_P = GLFW_KEY_P,
+    M_KEY_Q = GLFW_KEY_Q,
+    M_KEY_R = GLFW_KEY_R,
+    M_KEY_S = GLFW_KEY_S,
+    M_KEY_T = GLFW_KEY_T,
+    M_KEY_U = GLFW_KEY_U,
+    M_KEY_V = GLFW_KEY_V,
+    M_KEY_W = GLFW_KEY_W,
+    M_KEY_X = GLFW_KEY_X,
+    M_KEY_Y = GLFW_KEY_Y,
+    M_KEY_Z = GLFW_KEY_Z,
+    M_KEY_LEFT_BRACKET = GLFW_KEY_LEFT_BRACKET,
+    M_KEY_BACKSLASH = GLFW_KEY_BACKSLASH,
+    M_KEY_RIGHT_BRACKET = GLFW_KEY_RIGHT_BRACKET,
+    M_KEY_GRAVE_ACCENT = GLFW_KEY_GRAVE_ACCENT,
+    M_KEY_WORLD_1 = GLFW_KEY_WORLD_1,
+    M_KEY_WORLD_2 = GLFW_KEY_WORLD_2,
+    M_KEY_ESCAPE = GLFW_KEY_ESCAPE,
+    M_KEY_ENTER = GLFW_KEY_ENTER,
+    M_KEY_TAB = GLFW_KEY_TAB,
+    M_KEY_BACKSPACE = GLFW_KEY_BACKSPACE,
+    M_KEY_INSERT = GLFW_KEY_INSERT,
+    M_KEY_DELETE = GLFW_KEY_DELETE,
+    M_KEY_RIGHT = GLFW_KEY_RIGHT,
+    M_KEY_LEFT = GLFW_KEY_LEFT,
+    M_KEY_DOWN = GLFW_KEY_DOWN,
+    M_KEY_UP = GLFW_KEY_UP,
+    M_KEY_PAGE_UP = GLFW_KEY_PAGE_UP,
+    M_KEY_PAGE_DOWN = GLFW_KEY_PAGE_DOWN,
+    M_KEY_HOME = GLFW_KEY_HOME,
+    M_KEY_END = GLFW_KEY_END,
+    M_KEY_CAPS_LOCK = GLFW_KEY_CAPS_LOCK,
+    M_KEY_SCROLL_LOCK = GLFW_KEY_SCROLL_LOCK,
+    M_KEY_NUM_LOCK = GLFW_KEY_NUM_LOCK,
+    M_KEY_PRINT_SCREEN = GLFW_KEY_PRINT_SCREEN,
+    M_KEY_PAUSE = GLFW_KEY_PAUSE,
+    M_KEY_F1 = GLFW_KEY_F1,
+    M_KEY_F2 = GLFW_KEY_F2,
+    M_KEY_F3 = GLFW_KEY_F3,
+    M_KEY_F4 = GLFW_KEY_F4,
+    M_KEY_F5 = GLFW_KEY_F5,
+    M_KEY_F6 = GLFW_KEY_F6,
+    M_KEY_F7 = GLFW_KEY_F7,
+    M_KEY_F8 = GLFW_KEY_F8,
+    M_KEY_F9 = GLFW_KEY_F9,
+    M_KEY_F10 = GLFW_KEY_F10,
+    M_KEY_F11 = GLFW_KEY_F11,
+    M_KEY_F12 = GLFW_KEY_F12,
+    M_KEY_F13 = GLFW_KEY_F13,
+    M_KEY_F14 = GLFW_KEY_F14,
+    M_KEY_F15 = GLFW_KEY_F15,
+    M_KEY_F16 = GLFW_KEY_F16,
+    M_KEY_F17 = GLFW_KEY_F17,
+    M_KEY_F18 = GLFW_KEY_F18,
+    M_KEY_F19 = GLFW_KEY_F19,
+    M_KEY_F20 = GLFW_KEY_F20,
+    M_KEY_F21 = GLFW_KEY_F21,
+    M_KEY_F22 = GLFW_KEY_F22,
+    M_KEY_F23 = GLFW_KEY_F23,
+    M_KEY_F24 = GLFW_KEY_F24,
+    M_KEY_F25 = GLFW_KEY_F25,
+    M_KEY_KP_0 = GLFW_KEY_KP_0,
+    M_KEY_KP_1 = GLFW_KEY_KP_1,
+    M_KEY_KP_2 = GLFW_KEY_KP_2,
+    M_KEY_KP_3 = GLFW_KEY_KP_3,
+    M_KEY_KP_4 = GLFW_KEY_KP_4,
+    M_KEY_KP_5 = GLFW_KEY_KP_5,
+    M_KEY_KP_6 = GLFW_KEY_KP_6,
+    M_KEY_KP_7 = GLFW_KEY_KP_7,
+    M_KEY_KP_8 = GLFW_KEY_KP_8,
+    M_KEY_KP_9 = GLFW_KEY_KP_9,
+    M_KEY_KP_DECIMAL = GLFW_KEY_KP_DECIMAL,
+    M_KEY_KP_DIVIDE = GLFW_KEY_KP_DIVIDE,
+    M_KEY_KP_MULTIPLY = GLFW_KEY_KP_MULTIPLY,
+    M_KEY_KP_SUBTRACT = GLFW_KEY_KP_SUBTRACT,
+    M_KEY_KP_ADD = GLFW_KEY_KP_ADD,
+    M_KEY_KP_ENTER = GLFW_KEY_KP_ENTER,
+    M_KEY_KP_EQUAL = GLFW_KEY_KP_EQUAL,
+    M_KEY_LEFT_SHIFT = GLFW_KEY_LEFT_SHIFT,
+    M_KEY_LEFT_CONTROL = GLFW_KEY_LEFT_CONTROL,
+    M_KEY_LEFT_ALT = GLFW_KEY_LEFT_ALT,
+    M_KEY_LEFT_SUPER = GLFW_KEY_LEFT_SUPER,
+    M_KEY_RIGHT_SHIFT = GLFW_KEY_RIGHT_SHIFT,
+    M_KEY_RIGHT_CONTROL = GLFW_KEY_RIGHT_CONTROL,
+    M_KEY_RIGHT_ALT = GLFW_KEY_RIGHT_ALT,
+    M_KEY_RIGHT_SUPER = GLFW_KEY_RIGHT_SUPER,
+    M_KEY_MENU = GLFW_KEY_MENU,
+    M_KEY_LAST = GLFW_KEY_LAST
+}mKey;
+
+typedef enum {
+    M_MOUSE_BUTTON_1 = GLFW_MOUSE_BUTTON_1,
+    M_MOUSE_BUTTON_2 = GLFW_MOUSE_BUTTON_2,
+    M_MOUSE_BUTTON_3 = GLFW_MOUSE_BUTTON_3,
+    M_MOUSE_BUTTON_4 = GLFW_MOUSE_BUTTON_4,
+    M_MOUSE_BUTTON_5 = GLFW_MOUSE_BUTTON_5,
+    M_MOUSE_BUTTON_6 = GLFW_MOUSE_BUTTON_6,
+    M_MOUSE_BUTTON_7 = GLFW_MOUSE_BUTTON_7,
+    M_MOUSE_BUTTON_8 = GLFW_MOUSE_BUTTON_8,
+    M_MOUSE_BUTTON_LAST = GLFW_MOUSE_BUTTON_LAST,
+    M_MOUSE_BUTTON_LEFT = GLFW_MOUSE_BUTTON_LEFT,
+    M_MOUSE_BUTTON_RIGHT = GLFW_MOUSE_BUTTON_RIGHT,
+    M_MOUSE_BUTTON_MIDDLE = GLFW_MOUSE_BUTTON_MIDDLE
+}mMouseButton;
+
+// Called by the window lifecycle. The window user pointer belongs to Peach.
+void mInputInit(mContext* ctx);
+void mInputUpdate(mContext* ctx);
+
+// Query after mUpdate. Pressed and released last for one update; down persists.
+int mKeyDown(mContext* ctx, mKey key);
+int mKeyPressed(mContext* ctx, mKey key);
+int mKeyReleased(mContext* ctx, mKey key);
+int mMouseButtonDown(mContext* ctx, mMouseButton button);
+int mMouseButtonPressed(mContext* ctx, mMouseButton button);
+int mMouseButtonReleased(mContext* ctx, mMouseButton button);
+
+// Cursor coordinates use window units, with the origin at the top left.
+void mMousePosition(mContext* ctx, double* x, double* y);
+// Scroll offsets accumulate during each update. Either output may be NULL.
+void mMouseScroll(mContext* ctx, double* x, double* y);
+
+#endif //PEACH_INPUT_H

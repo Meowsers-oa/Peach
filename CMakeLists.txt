@@ -11,3 +11,13 @@ find_package(OpenGL REQUIRED)
 add_subdirectory(external)
 add_subdirectory(Peach)
 add_subdirectory(sandbox)
+option(PEACH_BUILD_TESTS "Build renderer tests (requires a graphical OpenGL session)" OFF)
+if(PEACH_BUILD_TESTS)
+    enable_testing()
+    add_executable(renderer_tests tests/Renderer.c)
+    target_link_libraries(renderer_tests PRIVATE Peach)
+    target_compile_definitions(renderer_tests PRIVATE
+            PEACH_TEST_ASSET_DIR="${CMAKE_CURRENT_SOURCE_DIR}/sandbox/assets"
+    )
+    add_test(NAME renderer COMMAND renderer_tests)
+endif()

@@ -44,3 +44,6 @@ FetchContent_MakeAvailable(glfw cglm assimp)
 # Local Glad Library
 add_library(glad STATIC glad/src/glad.c)
 target_include_directories(glad PUBLIC glad/include)
+# Local stb_image library
+add_library(stb_image STATIC stb/src/stb_image.c)
+target_include_directories(stb_image PUBLIC stb/include)
