@@ -3,7 +3,6 @@
 //
 
 #include <Peach/Peach.h>
-#include <cglm/cglm.h>
 
 int main() {
     mContext ctx = mContextCreate();
@@ -39,17 +38,22 @@ int main() {
         return -1;
     }
 
+    mTransform transform = mTransformCreate();
+    mTimeReset(&ctx.time);
+
+
     while (ctx.window.running) {
         int width, height;
         glfwGetWindowSize(ctx.window.handle, &width, &height);
         if (width > 0 && height > 0) mCameraResize(&camera, (float)width, (float)height);
         mRendererSetCamera(&ctx, &camera);
-        mat4 transform = GLM_MAT4_IDENTITY_INIT;
-        glm_translate(transform, (vec3){600.0f, 400.0f, 0.0f});
-        glm_rotate_z(transform, (float)glfwGetTime(), transform);
+        transform.position = (vec3s){.x = 600.0f, .y = 400.0f};
+        transform.rotation.z += (float)ctx.time.deltaTime;
         mAddVertices(&ctx, triangle, 3, NULL, NULL);
-        mAddVerticesIndexed(&ctx, quad, 4, indices, 6, &transform[0][0], &texture);
+        mAddVerticesIndexed(&ctx, quad, 4, indices, 6, &transform, &texture);
+
         mUpdate(&ctx);
+
         if (mKeyPressed(&ctx, M_KEY_ESCAPE)) ctx.window.running = M_FALSE;
     }
 

@@ -11,6 +11,9 @@
 #include <Peach/Camera.h>
 #include <Peach/Texture.h>
 #include <Peach/Renderer.h>
+#include <Peach/Transform.h>
+#include <Peach/Shader.h>
+#include <Peach/Time.h>
 
 mContext mContextCreate();
 void mUpdate(mContext* ctx);

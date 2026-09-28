@@ -1,4 +1,6 @@
 #include <Peach/Renderer.h>
+#include <Peach/Shader.h>
+#include "TransformInternal.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,7 +17,7 @@ struct mRenderer {
     unsigned int vao;
     unsigned int vbo;
     unsigned int ebo;
-    unsigned int program;
+    mShader shader;
     int viewProjectionLocation;
     float viewProjection[16];
     int customCamera;
@@ -29,93 +31,6 @@ struct mRenderer {
     unsigned int indices[M_RENDERER_MAX_INDICES];
 };
 
-static unsigned int compileShader(unsigned int type, const char* source) {
-    unsigned int shader = glCreateShader(type);
-    if (shader == 0) return 0;
-    glShaderSource(shader, 1, &source, NULL);
-    glCompileShader(shader);
-
-    int success;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        char log[2048];
-        glGetShaderInfoLog(shader, sizeof(log), NULL, log);
-        printf("Failed to compile renderer shader: %s\n", log);
-        glDeleteShader(shader);
-        return 0;
-    }
-    return shader;
-}
-
-static unsigned int createProgram(unsigned int textureLimit) {
-    const char* vertexSource =
-        "#version 410 core\n"
-        "layout(location = 0) in vec4 aPosition;\n"
-        "layout(location = 1) in vec2 aUV;\n"
-        "layout(location = 2) in vec4 aColor;\n"
-        "layout(location = 3) in float aTextureSlot;\n"
-        "uniform mat4 uViewProjection;\n"
-        "out vec2 vUV;\n"
-        "out vec4 vColor;\n"
-        "flat out int vTextureSlot;\n"
-        "void main() {\n"
-        "    gl_Position = uViewProjection * aPosition;\n"
-        "    vUV = aUV;\n"
-        "    vColor = aColor;\n"
-        "    vTextureSlot = int(aTextureSlot);\n"
-        "}\n";
-
-    // Constant sampler indices work on OpenGL 4.1, including macOS drivers.
-    char fragmentSource[8192];
-    int length = snprintf(fragmentSource, sizeof(fragmentSource),
-        "#version 410 core\n"
-        "in vec2 vUV;\n"
-        "in vec4 vColor;\n"
-        "flat in int vTextureSlot;\n"
-        "uniform sampler2D uTextures[%u];\n"
-        "out vec4 fragColor;\n"
-        "void main() {\n"
-        "    vec2 dx = dFdx(vUV);\n"
-        "    vec2 dy = dFdy(vUV);\n"
-        "    vec4 sampled = vec4(1.0);\n"
-        "    switch (vTextureSlot) {\n", textureLimit);
-    for (unsigned int i = 0; i < textureLimit; i++) {
-        length += snprintf(fragmentSource + length, sizeof(fragmentSource) - (size_t)length,
-            "    case %u: sampled = textureGrad(uTextures[%u], vUV, dx, dy); break;\n", i, i);
-    }
-    snprintf(fragmentSource + length, sizeof(fragmentSource) - (size_t)length,
-        "    }\n    fragColor = sampled * vColor;\n}\n");
-
-    unsigned int vertex = compileShader(GL_VERTEX_SHADER, vertexSource);
-    unsigned int fragment = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
-    if (vertex == 0 || fragment == 0) {
-        if (vertex != 0) glDeleteShader(vertex);
-        if (fragment != 0) glDeleteShader(fragment);
-        return 0;
-    }
-
-    unsigned int program = glCreateProgram();
-    if (program != 0) {
-        glAttachShader(program, vertex);
-        glAttachShader(program, fragment);
-        glLinkProgram(program);
-    }
-    glDeleteShader(vertex);
-    glDeleteShader(fragment);
-    if (program == 0) return 0;
-
-    int success;
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    if (!success) {
-        char log[2048];
-        glGetProgramInfoLog(program, sizeof(log), NULL, log);
-        printf("Failed to link renderer shader: %s\n", log);
-        glDeleteProgram(program);
-        return 0;
-    }
-    return program;
-}
-
 int mRendererCreate(mContext* ctx) {
     if (ctx == NULL || ctx->window.handle == NULL || ctx->renderer != NULL) return M_FAILURE;
     mRenderer* renderer = calloc(1, sizeof(mRenderer));
@@ -124,21 +39,33 @@ int mRendererCreate(mContext* ctx) {
 
     int textureLimit;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &textureLimit);
-    if (textureLimit < 2) {
+    if (mShaderLoad(&renderer->shader, PEACH_SHADER_DIR "/Batch2D.vert",
+                    PEACH_SHADER_DIR "/Batch2D.frag") == M_FAILURE) {
         mRendererDestroy(ctx);
         return M_FAILURE;
     }
-    renderer->textureLimit = textureLimit < M_RENDERER_MAX_TEXTURES ? (unsigned int)textureLimit : M_RENDERER_MAX_TEXTURES;
-    renderer->program = createProgram(renderer->textureLimit);
-    if (renderer->program == 0) {
+    // Match batching to the sampler array actually declared in the shader file.
+    const char* samplerName = "uTextures[0]";
+    unsigned int samplerIndex;
+    glGetUniformIndices(renderer->shader.handle, 1, &samplerName, &samplerIndex);
+    int samplerCount = 0;
+    int samplerType = 0;
+    if (samplerIndex != GL_INVALID_INDEX) {
+        glGetActiveUniformsiv(renderer->shader.handle, 1, &samplerIndex, GL_UNIFORM_SIZE, &samplerCount);
+        glGetActiveUniformsiv(renderer->shader.handle, 1, &samplerIndex, GL_UNIFORM_TYPE, &samplerType);
+    }
+    renderer->viewProjectionLocation = glGetUniformLocation(renderer->shader.handle, "uViewProjection");
+    if (samplerCount < 2 || samplerCount > M_RENDERER_MAX_TEXTURES || samplerCount > textureLimit ||
+        samplerType != GL_SAMPLER_2D || renderer->viewProjectionLocation < 0) {
+        fprintf(stderr, "Invalid batch shader uniforms or texture capacity.\n");
         mRendererDestroy(ctx);
         return M_FAILURE;
     }
-    renderer->viewProjectionLocation = glGetUniformLocation(renderer->program, "uViewProjection");
+    renderer->textureLimit = (unsigned int)samplerCount;
     int samplers[M_RENDERER_MAX_TEXTURES];
     for (unsigned int i = 0; i < renderer->textureLimit; i++) samplers[i] = (int)i;
-    glUseProgram(renderer->program);
-    glUniform1iv(glGetUniformLocation(renderer->program, "uTextures[0]"), (int)renderer->textureLimit, samplers);
+    mShaderUse(&renderer->shader);
+    glUniform1iv(glGetUniformLocation(renderer->shader.handle, "uTextures[0]"), (int)renderer->textureLimit, samplers);
 
     glGenVertexArrays(1, &renderer->vao);
     glGenBuffers(1, &renderer->vbo);
@@ -188,7 +115,7 @@ void mRendererDestroy(mContext* ctx) {
     glDeleteBuffers(1, &renderer->vbo);
     glDeleteBuffers(1, &renderer->ebo);
     glDeleteVertexArrays(1, &renderer->vao);
-    glDeleteProgram(renderer->program);
+    mShaderDestroy(&renderer->shader);
     free(renderer);
     ctx->renderer = NULL;
 }
@@ -236,7 +163,7 @@ void mRendererSetCamera(mContext* ctx, const mCamera* camera) {
 void mRendererFlush(mContext* ctx) {
     if (ctx == NULL || ctx->renderer == NULL || ctx->renderer->indexCount == 0) return;
     mRenderer* renderer = ctx->renderer;
-    glUseProgram(renderer->program);
+    mShaderUse(&renderer->shader);
     glUniformMatrix4fv(renderer->viewProjectionLocation, 1, GL_FALSE, renderer->viewProjection);
     glBindVertexArray(renderer->vao);
     glBindBuffer(GL_ARRAY_BUFFER, renderer->vbo);
@@ -306,7 +233,7 @@ static void appendVertex(mRenderer* renderer, const mVertex* vertex, const float
 
 static int addVertices(mContext* ctx, const mVertex* vertices, unsigned int vertexCount,
                        const unsigned int* indices, unsigned int indexCount,
-                       const float* transform, const mTexture* texture) {
+                       const mTransform* transform, const mTexture* texture) {
     if (ctx == NULL || ctx->renderer == NULL) return M_FAILURE;
     if (indexCount == 0) return M_SUCCESS;
     if (vertices == NULL || vertexCount == 0 || indexCount % 3 != 0) return M_FAILURE;
@@ -318,12 +245,15 @@ static int addVertices(mContext* ctx, const mVertex* vertices, unsigned int vert
         }
     }
 
+    float matrix[16];
+    if (mTransformMatrix(transform, matrix) == M_FAILURE) return M_FAILURE;
+
     mRenderer* renderer = ctx->renderer;
     unsigned int handle = texture != NULL ? texture->handle : renderer->whiteTexture.handle;
     if (vertexCount <= M_RENDERER_MAX_VERTICES && indexCount <= M_RENDERER_MAX_INDICES) {
         unsigned int slot = prepareBatch(ctx, vertexCount, indexCount, handle);
         unsigned int base = renderer->vertexCount;
-        for (unsigned int i = 0; i < vertexCount; i++) appendVertex(renderer, &vertices[i], transform, slot);
+        for (unsigned int i = 0; i < vertexCount; i++) appendVertex(renderer, &vertices[i], matrix, slot);
         for (unsigned int i = 0; i < indexCount; i++) {
             renderer->indices[renderer->indexCount++] = base + (indices != NULL ? indices[i] : i);
         }
@@ -333,7 +263,7 @@ static int addVertices(mContext* ctx, const mVertex* vertices, unsigned int vert
             unsigned int slot = prepareBatch(ctx, 3, 3, handle);
             for (unsigned int j = 0; j < 3; j++) {
                 renderer->indices[renderer->indexCount++] = renderer->vertexCount;
-                appendVertex(renderer, &vertices[indices != NULL ? indices[i + j] : i + j], transform, slot);
+                appendVertex(renderer, &vertices[indices != NULL ? indices[i + j] : i + j], matrix, slot);
             }
         }
     }
@@ -341,13 +271,13 @@ static int addVertices(mContext* ctx, const mVertex* vertices, unsigned int vert
 }
 
 int mAddVertices(mContext* ctx, const mVertex* vertices, unsigned int vertexCount,
-                 const float* transform, const mTexture* texture) {
+                 const mTransform* transform, const mTexture* texture) {
     return addVertices(ctx, vertices, vertexCount, NULL, vertexCount, transform, texture);
 }
 
 int mAddVerticesIndexed(mContext* ctx, const mVertex* vertices, unsigned int vertexCount,
                         const unsigned int* indices, unsigned int indexCount,
-                        const float* transform, const mTexture* texture) {
+                        const mTransform* transform, const mTexture* texture) {
     if (indices == NULL && indexCount != 0) return M_FAILURE;
     return addVertices(ctx, vertices, vertexCount, indices, indexCount, transform, texture);
 }

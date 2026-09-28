@@ -18,6 +18,11 @@ if(PEACH_BUILD_TESTS)
     target_link_libraries(renderer_tests PRIVATE Peach)
     target_compile_definitions(renderer_tests PRIVATE
             PEACH_TEST_ASSET_DIR="${CMAKE_CURRENT_SOURCE_DIR}/sandbox/assets"
+            PEACH_TEST_SHADER_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Peach/shaders"
+            PEACH_TEST_SHADER_FIXTURE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/shaders"
     )
     add_test(NAME renderer COMMAND renderer_tests)
+    add_executable(time_tests tests/Time.c)
+    target_link_libraries(time_tests PRIVATE Peach)
+    add_test(NAME time COMMAND time_tests)
 endif()

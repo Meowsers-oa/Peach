@@ -28,6 +28,7 @@
       <config projectName="peach" targetName="sandbox" />
       <config projectName="peach" targetName="peach_cimguizmo" />
       <config projectName="peach" targetName="cglm" />
+      <config projectName="peach" targetName="renderer_tests" />
       <config projectName="peach" targetName="peach" />
       <config projectName="peach" targetName="peach_engine" />
       <config projectName="peach" targetName="Peach" />
@@ -44,19 +45,21 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd073e8c-2fca-4062-b576-109fa18593a6" name="Changes" comment="Structure">
-      <change afterPath="$PROJECT_DIR$/Peach/include/Peach/Common.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Peach/include/Peach/mWindow.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Peach/src/mWindow.c" afterDir="false" />
+    <list default="true" id="dd073e8c-2fca-4062-b576-109fa18593a6" name="Changes" comment="å">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Peach/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Peach/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Peach/include/Peach/Common.h" beforeDir="false" afterPath="$PROJECT_DIR$/Peach/include/Peach/Common.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Peach/include/Peach/Peach.h" beforeDir="false" afterPath="$PROJECT_DIR$/Peach/include/Peach/Peach.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Peach/include/Peach/Renderer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Peach/include/Peach/Renderer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Peach/include/Peach/Texture.h" beforeDir="false" afterPath="$PROJECT_DIR$/Peach/include/Peach/Texture.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Peach/src/Peach.c" beforeDir="false" afterPath="$PROJECT_DIR$/Peach/src/Peach.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Peach/src/Renderer.c" beforeDir="false" afterPath="$PROJECT_DIR$/Peach/src/Renderer.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Peach/src/Texture.c" beforeDir="false" afterPath="$PROJECT_DIR$/Peach/src/Texture.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Peach/src/mWindow.c" beforeDir="false" afterPath="$PROJECT_DIR$/Peach/src/mWindow.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/external/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/external/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sandbox/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/sandbox/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sandbox/src/Main.c" beforeDir="false" afterPath="$PROJECT_DIR$/sandbox/src/Main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Renderer.c" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Renderer.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,61 +111,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.451864281154928E-196" />
-      <entry key="MS500" value="6.815602442306459E-40" />
-      <entry key="S2" value="2.2335465062447162E-10" />
-      <entry key="S5" value="2.8788601972750587E-4" />
-      <entry key="S10" value="0.03684028166519626" />
-      <entry key="S30" value="1.3855183279244432" />
-      <entry key="S60" value="4.927838942867584" />
-      <entry key="M2" value="11.49082098370006" />
-      <entry key="M5" value="23.26281729806762" />
-      <entry key="M10" value="33.06143237871252" />
-      <entry key="M15" value="42.08005051130378" />
-      <entry key="M30" value="103.77986389182766" />
-      <entry key="H1" value="320.0554732444316" />
-      <entry key="H2" value="747.4371866096261" />
-      <entry key="H4" value="1400.9256977524435" />
-      <entry key="D1" value="3021.2556500362057" />
-      <entry key="W1" value="3550.8589866814036" />
-    </decayedCancelled>
-    <decayedSelected>
       <entry key="MS100" value="1.0" />
       <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0000000000000016" />
-      <entry key="S10" value="1.0000000850636743" />
-      <entry key="S30" value="1.0138718955148396" />
-      <entry key="S60" value="1.288681025860996" />
-      <entry key="M2" value="2.3815284859644397" />
-      <entry key="M5" value="5.375412200951661" />
-      <entry key="M10" value="8.943980879901098" />
-      <entry key="M15" value="11.775493763790035" />
-      <entry key="M30" value="22.256501490770855" />
-      <entry key="H1" value="47.45655484005021" />
-      <entry key="H2" value="86.1775943484683" />
-      <entry key="H4" value="129.58151752758914" />
-      <entry key="D1" value="204.27337175889687" />
-      <entry key="W1" value="224.34567461068002" />
+      <entry key="S2" value="1.0000000002215814" />
+      <entry key="S5" value="1.0002869695635923" />
+      <entry key="S10" value="1.036781596260947" />
+      <entry key="S30" value="2.3847822412973696" />
+      <entry key="S60" value="5.9265297583646745" />
+      <entry key="M2" value="12.489294492653213" />
+      <entry key="M5" value="24.261581114937066" />
+      <entry key="M10" value="34.06055392690194" />
+      <entry key="M15" value="43.07930512193617" />
+      <entry key="M30" value="104.77894473003073" />
+      <entry key="H1" value="321.0540559010075" />
+      <entry key="H2" value="748.4355316209713" />
+      <entry key="H4" value="1401.9241467743407" />
+      <entry key="D1" value="3022.25509255916" />
+      <entry key="W1" value="3551.8588930816004" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.8526348917679567" />
+      <entry key="MS500" value="0.9686181892266277" />
+      <entry key="S2" value="0.9920604931322485" />
+      <entry key="S5" value="0.9968166007640689" />
+      <entry key="S10" value="0.9984071165360551" />
+      <entry key="S30" value="1.0133332541061963" />
+      <entry key="S60" value="1.2883386605264524" />
+      <entry key="M2" value="2.381212113277337" />
+      <entry key="M5" value="5.375126552236055" />
+      <entry key="M10" value="8.943743235744979" />
+      <entry key="M15" value="11.775285177351968" />
+      <entry key="M30" value="22.256304368466623" />
+      <entry key="H1" value="47.45634468199463" />
+      <entry key="H2" value="86.1774035325128" />
+      <entry key="H4" value="129.58137406666432" />
+      <entry key="D1" value="204.27333406671553" />
+      <entry key="W1" value="224.3456686969811" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.0010040174088438152" />
-      <entry key="MS500" value="0.25139014509961705" />
-      <entry key="S2" value="0.7080877192322956" />
-      <entry key="S5" value="0.8712775379764932" />
-      <entry key="S10" value="0.9676939597203433" />
-      <entry key="S30" value="2.3527181814413196" />
-      <entry key="S60" value="6.161772363051536" />
-      <entry key="M2" value="13.810722418564232" />
-      <entry key="M5" value="28.586206216523777" />
-      <entry key="M10" value="41.96691377830382" />
-      <entry key="M15" value="53.823255514772974" />
-      <entry key="M30" value="126.00437246592304" />
-      <entry key="H1" value="367.47214003332186" />
-      <entry key="H2" value="833.5731529759416" />
-      <entry key="H4" value="1530.4726172944243" />
-      <entry key="D1" value="3225.5189141020314" />
-      <entry key="W1" value="3775.2030437141143" />
+      <entry key="MS100" value="0.8534909520426793" />
+      <entry key="MS500" value="1.212119256362438" />
+      <entry key="S2" value="1.694526345054729" />
+      <entry key="S5" value="1.8653205144918807" />
+      <entry key="S10" value="1.9645594854371522" />
+      <entry key="S30" value="3.350936977275365" />
+      <entry key="S60" value="7.15986968694954" />
+      <entry key="M2" value="14.808754897252976" />
+      <entry key="M5" value="29.584634009316314" />
+      <entry key="M10" value="42.96577213499051" />
+      <entry key="M15" value="54.82228439731323" />
+      <entry key="M30" value="127.00324760833665" />
+      <entry key="H1" value="368.47050828005314" />
+      <entry key="H2" value="834.571305049287" />
+      <entry key="H4" value="1531.470921786591" />
+      <entry key="D1" value="3226.518318750151" />
+      <entry key="W1" value="3776.202944174295" />
     </decayedShown>
   </component>
   <component name="ProjectApplicationVersion">
@@ -266,12 +269,22 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="renderer_tests" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="peach" TARGET_NAME="renderer_tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="peach" RUN_TARGET_NAME="renderer_tests">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="sandbox" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="peach" TARGET_NAME="sandbox" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="peach" RUN_TARGET_NAME="sandbox">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="stb_image" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="peach" TARGET_NAME="stb_image" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="time_tests" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="peach" TARGET_NAME="time_tests" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="peach" RUN_TARGET_NAME="time_tests">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -283,6 +296,8 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="CMake Application.renderer_tests" />
+      <item itemvalue="CMake Application.time_tests" />
       <item itemvalue="CMake Application.stb_image" />
       <item itemvalue="CMake Application.Peach" />
       <item itemvalue="CMake Application.sandbox" />
@@ -378,7 +393,8 @@
     <MESSAGE value="general polish and yoshi" />
     <MESSAGE value="Merge remote-tracking branch 'origin/main'" />
     <MESSAGE value="Structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="Structure" />
+    <MESSAGE value="å" />
+    <option name="LAST_COMMIT_MESSAGE" value="å" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -4,6 +4,7 @@
 #include <Peach/Common.h>
 #include <Peach/Camera.h>
 #include <Peach/Texture.h>
+#include <Peach/Transform.h>
 
 #define M_RENDERER_MAX_VERTICES 16384
 #define M_RENDERER_MAX_INDICES 24576
@@ -35,15 +36,15 @@ void mRendererSetCamera(mContext* ctx, const mCamera* camera);
 
 // Triangle lists. Counts must be multiples of three (indexCount for indexed lists).
 // Indices are local to this submission. Oversized submissions are split automatically.
-// transform is a column-major model matrix; NULL means identity. Vertices and
-// matrices are copied during submission. NULL texture uses an internal white texture.
+// transform contains position, Euler rotation (radians), and scale; NULL means
+// identity. Vertex and transform data are consumed during submission. NULL texture uses an internal white texture.
 // Color multiplies the sampled texture. Draw order is preserved, with straight-alpha
 // blending and no depth test. Textures must remain valid until the batch is flushed.
 int mAddVertices(mContext* ctx, const mVertex* vertices, unsigned int vertexCount,
-                 const float* transform, const mTexture* texture);
+                 const mTransform* transform, const mTexture* texture);
 int mAddVerticesIndexed(mContext* ctx, const mVertex* vertices, unsigned int vertexCount,
                         const unsigned int* indices, unsigned int indexCount,
-                        const float* transform, const mTexture* texture);
+                        const mTransform* transform, const mTexture* texture);
 
 // Flush before changing external GL state, texture contents, or render targets.
 // Flush sets its own shader, VAO, textures, blend/depth/cull/scissor state and does

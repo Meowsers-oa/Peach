@@ -24,6 +24,7 @@ mContext mContextCreate() {
 
 void mUpdate(mContext *ctx) {
     mWindowUpdate(ctx);
+    mTimeUpdate(&ctx->time);
 }
 
 void mDestroy(mContext *ctx) {

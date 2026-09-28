@@ -6,6 +6,7 @@
 #define PEACH_COMMON_H
 
 #include <glad/glad.h>
+#include <Peach/Time.h>
 
 #include <GLFW/glfw3.h>
 
@@ -79,6 +80,7 @@ typedef struct mRenderer mRenderer;
 typedef struct {
     mWindow window;
     mInput input;
+    mTime time;
     mRenderer* renderer;
 }mContext;
 

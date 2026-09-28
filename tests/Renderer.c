@@ -35,6 +35,39 @@ int main(void) {
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
     mWindowInfo info = {.width = 64, .height = 64, .title = "Renderer tests"};
     CHECK(mWindowCreate(&ctx, &info) == M_SUCCESS);
+    // File loading, compilation/link failures, and program ownership.
+    mShader shader = {0};
+    CHECK(mShaderLoad(&shader, PEACH_TEST_SHADER_DIR "/missing.vert",
+                      PEACH_TEST_SHADER_DIR "/Batch2D.frag") == M_FAILURE);
+    CHECK(shader.handle == 0);
+    CHECK(mShaderLoad(&shader, PEACH_TEST_SHADER_DIR "/Batch2D.vert",
+                      PEACH_TEST_SHADER_FIXTURE_DIR "/Invalid.frag") == M_FAILURE);
+    CHECK(shader.handle == 0);
+    CHECK(mShaderLoad(&shader, PEACH_TEST_SHADER_DIR "/Batch2D.vert",
+                      PEACH_TEST_SHADER_FIXTURE_DIR "/Mismatch.frag") == M_FAILURE);
+    CHECK(shader.handle == 0);
+    CHECK(mShaderLoad(&shader, PEACH_TEST_SHADER_DIR "/Batch2D.vert",
+                      PEACH_TEST_SHADER_DIR "/Batch2D.frag") == M_SUCCESS);
+    unsigned int program = shader.handle;
+    CHECK(glIsProgram(program));
+    CHECK(mShaderLoad(&shader, PEACH_TEST_SHADER_DIR "/Batch2D.vert",
+                      PEACH_TEST_SHADER_DIR "/Batch2D.frag") == M_FAILURE);
+    CHECK(shader.handle == program);
+    mShaderUse(&shader);
+    int activeProgram;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &activeProgram);
+    CHECK((unsigned int)activeProgram == program);
+    mShaderUse(NULL);
+    glGetIntegerv(GL_CURRENT_PROGRAM, &activeProgram);
+    CHECK(activeProgram == 0);
+    mShaderUse(&shader);
+    mShaderDestroy(&shader);
+    CHECK(shader.handle == 0 && !glIsProgram(program));
+    glGetIntegerv(GL_CURRENT_PROGRAM, &activeProgram);
+    CHECK(activeProgram == 0);
+    mShaderDestroy(&shader);
+    CHECK(glGetError() == GL_NO_ERROR);
+
     ctx.window.bgColor = M_COLOR_BLACK;
     mRendererBegin(&ctx);
 
@@ -44,8 +77,11 @@ int main(void) {
         {.x = 8, .y = 0, .color = M_COLOR_RED},
         {.x = 0, .y = 8, .color = M_COLOR_RED}
     };
-    float transform[] = {0, 2, 0, 0, -2, 0, 0, 0, 0, 0, 1, 0, 32, 10, 0, 1};
-    CHECK(mAddVertices(&ctx, triangle, 3, transform, NULL) == M_SUCCESS);
+    mTransform transform = mTransformCreate();
+    transform.position = (vec3s){.x = 32, .y = 10};
+    transform.rotation.z = 1.57079632679f;
+    transform.scale = (vec3s){.x = 2, .y = 2, .z = 1};
+    CHECK(mAddVertices(&ctx, triangle, 3, &transform, NULL) == M_SUCCESS);
     mRendererFlush(&ctx);
     pixel(&ctx, 28, 14, 255, 0, 0);
     pixel(&ctx, 4, 4, 0, 0, 0);
@@ -73,6 +109,13 @@ int main(void) {
     glPixelStorei(GL_UNPACK_ROW_LENGTH, 5);
     glPixelStorei(GL_UNPACK_SKIP_ROWS, 1);
     CHECK(mTextureCreate(&imageTexture, 2, 2, image) == M_SUCCESS);
+    int textureBinding, minFilter, magFilter;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &textureBinding);
+    glBindTexture(GL_TEXTURE_2D, imageTexture.handle);
+    glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &minFilter);
+    glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &magFilter);
+    CHECK(minFilter == GL_NEAREST && magFilter == GL_NEAREST);
+    glBindTexture(GL_TEXTURE_2D, (unsigned int)textureBinding);
     int rowLength, skipRows;
     glGetIntegerv(GL_UNPACK_ROW_LENGTH, &rowLength);
     glGetIntegerv(GL_UNPACK_SKIP_ROWS, &skipRows);
@@ -87,6 +130,9 @@ int main(void) {
     pixel(&ctx, 28, 4, 0, 255, 0);
     pixel(&ctx, 4, 28, 0, 0, 255);
     pixel(&ctx, 28, 28, 255, 255, 255);
+    // Sampling near a texel boundary remains sharp instead of blending colors.
+    pixel(&ctx, 15, 4, 255, 0, 0);
+    pixel(&ctx, 16, 4, 0, 255, 0);
     mTextureDestroy(&ctx, &imageTexture);
 
     // stb_image converts encoded RGB data to RGBA, retaining top-down rows.
@@ -104,6 +150,9 @@ int main(void) {
     pixel(&ctx, 28, 4, 0, 255, 0);
     pixel(&ctx, 4, 28, 0, 0, 255);
     pixel(&ctx, 28, 28, 255, 255, 255);
+    // Sampling near a texel boundary remains sharp instead of blending colors.
+    pixel(&ctx, 15, 4, 255, 0, 0);
+    pixel(&ctx, 16, 4, 0, 255, 0);
     mTextureDestroy(&ctx, &imageTexture);
     CHECK(mTextureLoadMemory(&imageTexture, tga, 4) == M_FAILURE);
     CHECK(imageTexture.handle == 0);
@@ -152,11 +201,12 @@ int main(void) {
     pixel(&ctx, 20, 4, 0, 0, 255);
     mRendererSetViewProjection(&ctx, NULL);
 
-    // Keep homogeneous W through model transformation, rather than dropping it.
+    // Indexed submissions use the same transform component, including non-unit scale.
     mRendererBegin(&ctx);
-    float projective[] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2};
+    mTransform scaled = mTransformCreate();
+    scaled.scale = (vec3s){.x = .5f, .y = .5f, .z = 1};
     makeQuad(quad, 32, 32, 16, M_COLOR_RED);
-    CHECK(mAddVerticesIndexed(&ctx, quad, 4, quadIndices, 6, projective, NULL) == M_SUCCESS);
+    CHECK(mAddVerticesIndexed(&ctx, quad, 4, quadIndices, 6, &scaled, NULL) == M_SUCCESS);
     mRendererFlush(&ctx);
     pixel(&ctx, 20, 20, 255, 0, 0);
     pixel(&ctx, 36, 36, 0, 0, 0);
@@ -224,7 +274,10 @@ int main(void) {
     mTextureDestroy(&ctx, &texture);
     CHECK(texture.handle == 0);
     pixel(&ctx, 4, 4, 0, 255, 0);
+    mTimeReset(&ctx.time);
     mUpdate(&ctx);
+    CHECK(ctx.time.frameCount == 1 && ctx.time.deltaTime >= 0.0);
+    CHECK(isfinite(ctx.time.fps) && ctx.time.frameTime == ctx.time.deltaTime * 1000.0);
     CHECK(glGetError() == GL_NO_ERROR);
     pixel(&ctx, 4, 4, 0, 0, 0);
     mDestroy(&ctx);

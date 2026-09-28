@@ -10,7 +10,7 @@ typedef struct {
 }mTexture;
 
 // Initialize texture to {0}. All operations require the owning OpenGL context.
-// Uploads packed RGBA8 pixels, with linear filtering and clamp-to-edge wrapping.
+// Uploads packed RGBA8 pixels, with nearest-neighbor filtering and clamp-to-edge wrapping.
 // The first pixel row is sampled at v = 0. Source pixels are copied immediately.
 int mTextureCreate(mTexture* texture, int width, int height, const unsigned char* pixels);
 // Decode an image file (PNG, JPEG, BMP, TGA and other stb_image formats) to RGBA8.

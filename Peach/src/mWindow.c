@@ -42,6 +42,7 @@ int mWindowCreate(mContext *ctx, mWindowInfo* info) {
     }
 
     mInputInit(ctx);
+    ctx->time = mTimeCreate();
 
     return M_SUCCESS;
 }
