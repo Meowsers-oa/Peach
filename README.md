@@ -1,6 +1,6 @@
 # Peach
 
-#### A lightweight 2D Game engine in Camera
+#### A lightweight 2D Game engine in C
 
 I'm not entirely sure where I'm going with this yet. It's mostly just me playing and messing around. And mainly just having fun!
 
