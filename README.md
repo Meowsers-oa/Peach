@@ -20,7 +20,7 @@ You're free to do whatever with this, really.
 
 ----
 
-### Building: 
+### Building:
 ```
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DPEACH_BUILD_TESTS=ON && cmake --build build --parallel
 ```
