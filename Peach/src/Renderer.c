@@ -189,16 +189,9 @@ static unsigned int prepareBatch(mContext* ctx, unsigned int vertexCount, unsign
 
 static void appendVertex(mRenderer* renderer, const mVertex* vertex, const float* transform, unsigned int textureSlot) {
     mBatchVertex* output = &renderer->vertices[renderer->vertexCount++];
-    if (transform != NULL) {
-        for (int row = 0; row < 4; row++) {
-            output->position[row] = transform[row] * vertex->x + transform[4 + row] * vertex->y +
-                                    transform[8 + row] * vertex->z + transform[12 + row];
-        }
-    } else {
-        output->position[0] = vertex->x;
-        output->position[1] = vertex->y;
-        output->position[2] = vertex->z;
-        output->position[3] = 1.0f;
+    for (int row = 0; row < 4; row++) {
+        output->position[row] = transform[row] * vertex->x + transform[4 + row] * vertex->y +
+                                transform[8 + row] * vertex->z + transform[12 + row];
     }
     output->uv[0] = vertex->u;
     output->uv[1] = vertex->v;

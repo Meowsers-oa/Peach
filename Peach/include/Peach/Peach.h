@@ -5,6 +5,8 @@
 #ifndef PEACH_PEACH_H
 #define PEACH_PEACH_H
 
+#include <stdio.h>
+
 #include <Peach/Common.h>
 #include <Peach/mWindow.h>
 #include <Peach/Input.h>
@@ -21,12 +23,7 @@
 
 mContext mContextCreate();
 void mUpdate(mContext* ctx);
-// Releases all registered sprites/resources, renderer, maps and window, then GLFW.
-// Safe after partial setup and safe to call again. Unregistered resources stay caller-owned.
 void mEnd(mContext* ctx);
-// Compatibility alias for mEnd.
 void mDestroy(mContext* ctx);
-
-
 
 #endif //PEACH_PEACH_H

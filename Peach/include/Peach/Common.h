@@ -129,7 +129,6 @@ typedef struct {
     double averageFPS;
     uint64_t frameCount;
 
-
     uint64_t lastTick;
     uint64_t frequency;
     double fpsElapsed;
@@ -226,8 +225,7 @@ typedef struct {
     mRenderer* renderer;
     mMap* sprites;
     mMap* resourcePool;
-} mContext;
-
+}mContext;
 
 static inline uint64_t rand_ui64() {
     uint64_t x = prng_state;

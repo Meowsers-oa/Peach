@@ -4,7 +4,6 @@ file(GLOB_RECURSE PEACH_SOURCES CONFIGURE_DEPENDS "src/*.c")
 
 add_library(Peach STATIC ${PEACH_SOURCES}
         include/Peach/Common.h
-        src/mWindow.c
         include/Peach/mWindow.h
         include/Peach/Input.h
         include/Peach/Renderer.h
@@ -14,9 +13,7 @@ add_library(Peach STATIC ${PEACH_SOURCES}
         include/Peach/Shader.h
         include/Peach/Time.h
         include/Peach/Shape.h
-        src/Sprite.c
         include/Peach/Sprite.h
-        src/Map.c
         include/Peach/Map.h
         include/Peach/Resource.h)
 

@@ -9,9 +9,8 @@
 #include <math.h>
 #include <inttypes.h>
 #include <stdio.h>
-#include <stdlib.h>
 
-mSprite* mSpriteCreate(mContext *ctx, const char* textureResourceLocation) {
+mSprite* mSpriteCreate(mContext* ctx, const char* textureResourceLocation) {
     if (ctx == NULL || ctx->sprites == NULL || textureResourceLocation == NULL) return NULL;
     if (mResourceTypeOf(ctx, textureResourceLocation) != M_RESOURCE_TEXTURE) return NULL;
     mTexture* texPtr = mGetResource(ctx, textureResourceLocation);
@@ -20,13 +19,8 @@ mSprite* mSpriteCreate(mContext *ctx, const char* textureResourceLocation) {
         return NULL;
     }
 
-    mSprite sprite = {0};
-    sprite.texture = *texPtr;
-    sprite.width = sprite.texture.width;
-    sprite.height = sprite.texture.height;
-    sprite.scale = 1.f;
-    sprite.x = 0;
-    sprite.y = 0;
+    mSprite sprite = {.texture = *texPtr, .width = texPtr->width,
+                      .height = texPtr->height, .scale = 1.0f};
     char key[21];
     do {
         sprite.id = rand_ui64();
@@ -35,7 +29,6 @@ mSprite* mSpriteCreate(mContext *ctx, const char* textureResourceLocation) {
 
     if (!mMapSet(ctx->sprites, key, mSprite, sprite)) return NULL;
     return mMapGet(ctx->sprites, key);
-
 }
 
 void mSpriteSetSize(mContext* ctx, mSprite* sprite, int width, int height) {

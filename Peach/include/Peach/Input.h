@@ -143,11 +143,10 @@ typedef enum {
     M_MOUSE_BUTTON_MIDDLE = GLFW_MOUSE_BUTTON_MIDDLE
 }mMouseButton;
 
-// Called by the window lifecycle. The window user pointer belongs to Peach.
 void mInputInit(mContext* ctx);
 void mInputUpdate(mContext* ctx);
 
-// Query after mUpdate. Pressed and released last for one update; down persists.
+// Query after mUpdate; pressed/released last one update.
 int mKeyDown(mContext* ctx, mKey key);
 int mKeyPressed(mContext* ctx, mKey key);
 int mKeyReleased(mContext* ctx, mKey key);
@@ -155,9 +154,8 @@ int mMouseButtonDown(mContext* ctx, mMouseButton button);
 int mMouseButtonPressed(mContext* ctx, mMouseButton button);
 int mMouseButtonReleased(mContext* ctx, mMouseButton button);
 
-// Cursor coordinates use window units, with the origin at the top left.
+// Window pixels, top-left origin. Either output may be NULL.
 void mMousePosition(mContext* ctx, double* x, double* y);
-// Scroll offsets accumulate during each update. Either output may be NULL.
 void mMouseScroll(mContext* ctx, double* x, double* y);
 
 #endif //PEACH_INPUT_H

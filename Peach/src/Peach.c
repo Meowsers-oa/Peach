@@ -3,9 +3,9 @@
 //
 
 #include <Peach/Peach.h>
+
 mContext mContextCreate() {
     mContext ctx = (mContext){0};
-    ctx.window = (mWindow){0};
 
     if (!glfwInit()) {
         printf("Failed to initialize windowing system!");
@@ -23,7 +23,7 @@ mContext mContextCreate() {
     return ctx;
 }
 
-void mUpdate(mContext *ctx) {
+void mUpdate(mContext* ctx) {
     mWindowUpdate(ctx);
     mTimeUpdate(&ctx->time);
 }

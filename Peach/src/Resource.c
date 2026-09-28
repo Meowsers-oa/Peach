@@ -6,12 +6,10 @@
 #include <string.h>
 
 static mMapSlot* resourceSlot(mContext* ctx, const char* key) {
-    if (ctx == NULL || ctx->resourcePool == NULL) return NULL;
-    void* value = mMapGet(ctx->resourcePool, key);
-    if (value == NULL) return NULL;
+    if (ctx == NULL || ctx->resourcePool == NULL || key == NULL) return NULL;
     for (size_t i = 0; i < ctx->resourcePool->capacity; i++) {
         mMapSlot* slot = &ctx->resourcePool->entries[i];
-        if (slot->is_occupied && slot->value == value) return slot;
+        if (slot->is_occupied && strcmp(slot->key, key) == 0) return slot;
     }
     return NULL;
 }

@@ -7,7 +7,7 @@
 #include <Peach/Renderer.h>
 #include <Peach/Time.h>
 
-int mWindowCreate(mContext *ctx, mWindowInfo* info) {
+int mWindowCreate(mContext* ctx, mWindowInfo* info) {
     GLFWwindow* window = glfwCreateWindow(info->width, info->height, info->title, NULL, NULL);
 
     if (window == NULL) {
@@ -48,11 +48,11 @@ int mWindowCreate(mContext *ctx, mWindowInfo* info) {
     return M_SUCCESS;
 }
 
-void frameBufferSizeCallback(GLFWwindow *window, int width, int height) {
+void frameBufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-void mWindowUpdate(mContext *ctx) {
+void mWindowUpdate(mContext* ctx) {
     mRendererFlush(ctx);
     glfwSwapBuffers(ctx->window.handle);
 
@@ -61,7 +61,7 @@ void mWindowUpdate(mContext *ctx) {
     mRendererBegin(ctx);
 }
 
-void mWindowDestroy(mContext *ctx) {
+void mWindowDestroy(mContext* ctx) {
     if (ctx->window.handle == NULL) return;
     glfwMakeContextCurrent(ctx->window.handle);
     mRendererDestroy(ctx);
