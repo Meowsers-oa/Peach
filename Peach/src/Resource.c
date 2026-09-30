@@ -3,6 +3,7 @@
 #include <Peach/Texture.h>
 #include <Peach/Shader.h>
 #include <Peach/Shape.h>
+#include <Peach/SpriteSheet.h>
 #include <string.h>
 
 static mMapSlot* resourceSlot(mContext* ctx, const char* key) {
@@ -15,6 +16,13 @@ static mMapSlot* resourceSlot(mContext* ctx, const char* key) {
 }
 
 static void updateSprites(mContext* ctx, unsigned int handle, const mTexture* replacement) {
+    mMapIter animations = mMap_iter(ctx->animations);
+    mMapEntry animationEntry;
+    while (mMap_next(&animations, &animationEntry)) {
+        if (animationEntry.valueSize != sizeof(mAnimation)) continue;
+        mAnimation* animation = animationEntry.value;
+        if (animation->textureHandle == handle) animation->sheet = NULL;
+    }
     mMapIter iter = mMap_iter(ctx->sprites);
     mMapEntry entry;
     while (mMap_next(&iter, &entry)) {
@@ -22,6 +30,8 @@ static void updateSprites(mContext* ctx, unsigned int handle, const mTexture* re
         mSprite* sprite = entry.value;
         if (sprite->texture.handle == handle) {
             sprite->texture = replacement != NULL ? *replacement : (mTexture){0};
+            sprite->animation = NULL;
+            sprite->playing = M_FALSE;
         }
     }
 }
@@ -36,6 +46,10 @@ static void releaseResource(mContext* ctx, mResourceType type, void* value) {
         mTexture* texture = value;
         updateSprites(ctx, texture->handle, NULL);
         mTextureDestroy(ctx, texture);
+    } else if (type == M_RESOURCE_SPRITE_SHEET) {
+        mSpriteSheet* sheet = value;
+        updateSprites(ctx, sheet->info.texture.handle, NULL);
+        mSpriteSheetDestroy(ctx, sheet);
     } else if (type == M_RESOURCE_SHADER) {
         mShaderDestroy(value);
     } else if (type == M_RESOURCE_SHAPE) {
@@ -45,12 +59,27 @@ static void releaseResource(mContext* ctx, mResourceType type, void* value) {
 
 M_BOOL mResourceStore(mContext* ctx, const char* key, const void* value, size_t size, mResourceType type) {
     if (ctx == NULL || ctx->resourcePool == NULL || key == NULL || value == NULL || size == 0) return M_FALSE;
-    if (type < M_RESOURCE_VALUE || type > M_RESOURCE_SHAPE ||
+    if (type < M_RESOURCE_VALUE || type > M_RESOURCE_SPRITE_SHEET ||
         (type == M_RESOURCE_TEXTURE && size != sizeof(mTexture)) ||
         (type == M_RESOURCE_SHADER && size != sizeof(mShader)) ||
-        (type == M_RESOURCE_SHAPE && size != sizeof(mShape))) return M_FALSE;
+        (type == M_RESOURCE_SHAPE && size != sizeof(mShape)) ||
+        (type == M_RESOURCE_SPRITE_SHEET && size != sizeof(mSpriteSheet))) return M_FALSE;
 
     mMapSlot* old = resourceSlot(ctx, key);
+    unsigned int textureHandle = type == M_RESOURCE_TEXTURE ? ((const mTexture*)value)->handle :
+        type == M_RESOURCE_SPRITE_SHEET ? ((const mSpriteSheet*)value)->info.texture.handle : 0;
+    if (textureHandle != 0) {
+        for (size_t i = 0; i < ctx->resourcePool->capacity; i++) {
+            mMapSlot* slot = &ctx->resourcePool->entries[i];
+            if (!slot->is_occupied) continue;
+            unsigned int storedHandle = slot->resourceType == M_RESOURCE_TEXTURE ? ((mTexture*)slot->value)->handle :
+                slot->resourceType == M_RESOURCE_SPRITE_SHEET ? ((mSpriteSheet*)slot->value)->info.texture.handle : 0;
+            if (textureHandle == storedHandle) {
+                return slot == old && slot->resourceType == type && slot->valueSize == size &&
+                    memcmp(slot->value, value, size) == 0;
+            }
+        }
+    }
     // Each GPU handle or heap buffer has one owning resource entry.
     for (size_t i = 0; i < ctx->resourcePool->capacity; i++) {
         mMapSlot* slot = &ctx->resourcePool->entries[i];
@@ -62,6 +91,9 @@ M_BOOL mResourceStore(mContext* ctx, const char* key, const void* value, size_t 
         } else if (type == M_RESOURCE_SHADER) {
             unsigned int handle = ((const mShader*)value)->handle;
             shared = handle != 0 && handle == ((mShader*)slot->value)->handle;
+        } else if (type == M_RESOURCE_SPRITE_SHEET) {
+            mSprite* sprites = ((const mSpriteSheet*)value)->sprites;
+            shared = sprites != NULL && sprites == ((mSpriteSheet*)slot->value)->sprites;
         } else if (type == M_RESOURCE_SHAPE) {
             const mShape* shape = value;
             mShape* stored = slot->value;
@@ -78,9 +110,11 @@ M_BOOL mResourceStore(mContext* ctx, const char* key, const void* value, size_t 
     mTexture oldTexture = {0};
     mShader oldShader = {0};
     mShape oldShape = {0};
+    mSpriteSheet oldSheet = {0};
     if (oldType == M_RESOURCE_TEXTURE) oldTexture = *(mTexture*)old->value;
     if (oldType == M_RESOURCE_SHADER) oldShader = *(mShader*)old->value;
     if (oldType == M_RESOURCE_SHAPE) oldShape = *(mShape*)old->value;
+    if (oldType == M_RESOURCE_SPRITE_SHEET) oldSheet = *(mSpriteSheet*)old->value;
 
     if (!mMapSetBytes(ctx->resourcePool, key, value, size)) return M_FALSE;
     mMapSlot* stored = resourceSlot(ctx, key);
@@ -90,6 +124,8 @@ M_BOOL mResourceStore(mContext* ctx, const char* key, const void* value, size_t 
         if (oldType == M_RESOURCE_TEXTURE) {
             updateSprites(ctx, oldTexture.handle, type == M_RESOURCE_TEXTURE ? stored->value : NULL);
             mTextureDestroy(ctx, &oldTexture);
+        } else if (oldType == M_RESOURCE_SPRITE_SHEET) {
+            releaseResource(ctx, oldType, &oldSheet);
         } else if (oldType == M_RESOURCE_SHADER) {
             mShaderDestroy(&oldShader);
         } else if (oldType == M_RESOURCE_SHAPE) {

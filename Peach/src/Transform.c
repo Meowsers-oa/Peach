@@ -1,6 +1,6 @@
 #include <Peach/Common.h>
 #include <Peach/Transform.h>
-#include "TransformInternal.h"
+#include "../include/Peach/TransformInternal.h"
 #include <cglm/struct.h>
 #include <math.h>
 #include <string.h>

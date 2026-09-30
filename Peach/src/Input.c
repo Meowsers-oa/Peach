@@ -1,5 +1,14 @@
 #include <Peach/Input.h>
+#include <Peach/Renderer.h>
 #include <string.h>
+
+static void updateMousePosition(mContext* ctx) {
+    double x, y;
+    glfwGetCursorPos(ctx->window.handle, &x, &y);
+    mRendererWindowToScreen(ctx, x, y, &x, &y);
+    ctx->input.mouseX = x;
+    ctx->input.mouseY = y;
+}
 
 static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     mContext* ctx = glfwGetWindowUserPointer(window);
@@ -46,7 +55,7 @@ void mInputInit(mContext* ctx) {
     glfwSetKeyCallback(ctx->window.handle, keyCallback);
     glfwSetMouseButtonCallback(ctx->window.handle, mouseButtonCallback);
     glfwSetScrollCallback(ctx->window.handle, scrollCallback);
-    glfwGetCursorPos(ctx->window.handle, &ctx->input.mouseX, &ctx->input.mouseY);
+    updateMousePosition(ctx);
 }
 
 void mInputUpdate(mContext* ctx) {
@@ -58,7 +67,7 @@ void mInputUpdate(mContext* ctx) {
     ctx->input.scrollY = 0.0;
 
     glfwPollEvents();
-    glfwGetCursorPos(ctx->window.handle, &ctx->input.mouseX, &ctx->input.mouseY);
+    updateMousePosition(ctx);
 }
 
 int mKeyDown(mContext* ctx, mKey key) {
@@ -92,6 +101,7 @@ int mMouseButtonReleased(mContext* ctx, mMouseButton button) {
 }
 
 void mMousePosition(mContext* ctx, double* x, double* y) {
+    updateMousePosition(ctx);
     if (x != NULL) *x = ctx->input.mouseX;
     if (y != NULL) *y = ctx->input.mouseY;
 }

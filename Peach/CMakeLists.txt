@@ -16,7 +16,13 @@ add_library(Peach STATIC ${PEACH_SOURCES}
         include/Peach/Sprite.h
         include/Peach/Map.h
         include/Peach/Resource.h
-        include/Peach/Light.h)
+        include/Peach/Animation.h
+        include/Peach/Light.h
+        src/Utils.c
+        include/Peach/Utils.h
+        src/SpriteSheet.c
+        include/Peach/SpriteSheet.h
+)
 
 target_include_directories(Peach
         PUBLIC

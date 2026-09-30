@@ -9,6 +9,8 @@
 
 // Returns a map-owned sprite; the texture is borrowed from the resource pool.
 mSprite* mSpriteCreate(mContext* ctx, const char* resourceLocation);
+mSprite* mSpriteCreateFromSheet(mContext* ctx, const char* resourceLocation, int frame);
+int mSpriteSetFrame(mSprite* sprite, const mSpriteSheet* sheet, int frame);
 // Pixel size and top-left position. Scale 0 hides the sprite.
 void mSpriteSetSize(mContext* ctx, mSprite* sprite, int width, int height);
 void mSpriteSetPos(mContext* ctx, mSprite* sprite, int x, int y);

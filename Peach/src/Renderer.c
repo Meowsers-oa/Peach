@@ -2,7 +2,7 @@
 #include <Peach/Shader.h>
 #include <Peach/Map.h>
 #include <math.h>
-#include "TransformInternal.h"
+#include "../include/Peach/TransformInternal.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>

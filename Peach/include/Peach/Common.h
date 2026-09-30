@@ -27,7 +27,8 @@ typedef enum {
     M_RESOURCE_VALUE,
     M_RESOURCE_TEXTURE,
     M_RESOURCE_SHADER,
-    M_RESOURCE_SHAPE
+    M_RESOURCE_SHAPE,
+    M_RESOURCE_SPRITE_SHEET
 }mResourceType;
 
 typedef struct mMap mMap;
@@ -243,6 +244,8 @@ struct mRenderer {
     unsigned int indices[M_RENDERER_MAX_INDICES];
 };
 
+typedef struct mAnimation mAnimation;
+
 typedef struct {
     mTexture texture;
     int x;
@@ -251,6 +254,14 @@ typedef struct {
     int height;
     float scale;
     uint64_t id;
+    int sourceX;
+    int sourceY;
+    int sourceWidth;
+    int sourceHeight;
+    const mAnimation* animation;
+    int frame;
+    double frameTime;
+    M_BOOL playing;
 }mSprite;
 
 typedef struct {
@@ -260,8 +271,32 @@ typedef struct {
     mRenderer* renderer;
     mMap* sprites;
     mMap* lights;
+    mMap* animations;
     mMap* resourcePool;
 }mContext;
+
+typedef struct {
+    mTexture texture;
+    int spriteWidth;
+    int spriteHeight;
+    int spritesAmount;
+}mSpriteSheetInfo;
+
+typedef struct {
+    mSpriteSheetInfo info;
+    mSprite* sprites;
+    int spritesAmount;
+}mSpriteSheet;
+
+struct mAnimation {
+    const mSpriteSheet* sheet;
+    unsigned int textureHandle;
+    int firstFrame;
+    int frameCount;
+    double fps;
+    M_BOOL loop;
+};
+
 
 static inline uint64_t rand_ui64() {
     uint64_t x = prng_state;

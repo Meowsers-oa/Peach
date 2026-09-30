@@ -20,6 +20,7 @@ mContext mContextCreate() {
     ctx.resourcePool = mMapCreate();
     ctx.sprites = mMapCreate();
     ctx.lights = mMapCreate();
+    ctx.animations = mMapCreate();
 
     return ctx;
 }
@@ -27,6 +28,7 @@ mContext mContextCreate() {
 void mUpdate(mContext* ctx) {
     mWindowUpdate(ctx);
     mTimeUpdate(&ctx->time);
+    mAnimationUpdate(ctx, ctx->time.deltaTime);
 }
 
 void mEnd(mContext* ctx) {
@@ -44,6 +46,9 @@ void mEnd(mContext* ctx) {
         mMapDestroy(ctx->sprites);
         ctx->sprites = NULL;
     }
+
+    mMapDestroy(ctx->animations);
+    ctx->animations = NULL;
 
     mMapDestroy(ctx->lights);
     ctx->lights = NULL;

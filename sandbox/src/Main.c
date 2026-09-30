@@ -6,14 +6,37 @@ int main() {
     mWindowCreate(&ctx, &info);
     mRendererSetResolution(&ctx, 320, 180);
 
-    mTexture checker = {0};
-    mTextureLoad(&checker, PEACH_SANDBOX_ASSET_DIR "/Checker.png");
-    mAddResource(&ctx, "checkerTex", mTexture, checker);
-    mSprite* sprite = mSpriteCreate(&ctx, "checkerTex");
-    mSpriteSetPos(&ctx, sprite, 96, 26);
-    mSpriteSetSize(&ctx, sprite, 128, 128);
+    mSpriteSheet sheet = mCreateSpriteSheet(
+        (mSpriteSheetInfo){.spriteWidth = 16, .spriteHeight = 16},
+        PEACH_SANDBOX_ASSET_DIR "/TinyDungeon.png"
+    );
+    if (sheet.spritesAmount != 132 || !mAddSpriteSheet(&ctx, "dungeon", sheet)) {
+        mSpriteSheetDestroy(&ctx, &sheet);
+        mEnd(&ctx);
+        return 1;
+    }
 
-    mLightSetAmbient(&ctx, M_COLOR(.08f, .08f, .12f, 1));
+    mSprite* sprites[132];
+    for (int i = 0; i < 132; i++) {
+        sprites[i] = mSpriteCreateFromSheet(&ctx, "dungeon", i);
+        if (sprites[i] == NULL) {
+            mEnd(&ctx);
+            return 1;
+        }
+        mSpriteSetPos(&ctx, sprites[i], 64 + (i % 12) * 16, 2 + (i / 12) * 16);
+    }
+
+    mAnimation* preview = mAnimationCreate(&ctx, "preview", "dungeon", 0, 132, 8, M_TRUE);
+    mSprite* animated = mSpriteCreateFromSheet(&ctx, "dungeon", 0);
+    if (animated == NULL || mSpriteSetAnimation(animated, preview) == M_FAILURE) {
+        mEnd(&ctx);
+        return 1;
+    }
+    mSpriteSetPos(&ctx, animated, 16, 74);
+    mSpriteSetScale(&ctx, animated, 2);
+    mSpritePlay(animated);
+
+    mLightSetAmbient(&ctx, M_COLOR(.5f, .5f, .55f, 1));
     mLight* warm = mLightCreate(&ctx, "warm");
     mLightMake(warm, 130, 80, 100, M_COLOR(1, .7, .4, 1), 1.5f);
 
@@ -23,11 +46,11 @@ int main() {
     while (ctx.window.running) {
         double x, y;
         mMousePosition(&ctx, &x, &y);
-        mRendererWindowToScreen(&ctx, x, y, &x, &y);
         warm->x = (float)x;
         warm->y = (float)y;
 
-        mDrawSprite(&ctx, sprite);
+        for (int i = 0; i < 132; i++) mDrawSprite(&ctx, sprites[i]);
+        mDrawSprite(&ctx, animated);
         mUpdate(&ctx);
     }
 

@@ -154,7 +154,7 @@ int mMouseButtonDown(mContext* ctx, mMouseButton button);
 int mMouseButtonPressed(mContext* ctx, mMouseButton button);
 int mMouseButtonReleased(mContext* ctx, mMouseButton button);
 
-// Window pixels, top-left origin. Either output may be NULL.
+// Render pixels, top-left origin. Either output may be NULL.
 void mMousePosition(mContext* ctx, double* x, double* y);
 void mMouseScroll(mContext* ctx, double* x, double* y);
 

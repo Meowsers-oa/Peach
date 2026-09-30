@@ -20,6 +20,8 @@
 #include <Peach/Map.h>
 #include <Peach/Resource.h>
 #include <Peach/Sprite.h>
+#include <Peach/SpriteSheet.h>
+#include <Peach/Animation.h>
 #include <Peach/Light.h>
 
 mContext mContextCreate();
