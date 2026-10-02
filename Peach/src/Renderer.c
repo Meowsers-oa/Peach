@@ -80,15 +80,12 @@ static mViewport outputViewport(mContext* ctx) {
     mViewport viewport = {.width = width, .height = height};
     mRenderer* renderer = ctx->renderer;
     if (width <= 0 || height <= 0 || renderer->resolutionWidth == 0) return viewport;
-    double scale = fmin((double)width / renderer->sceneTarget.width,
-                        (double)height / renderer->sceneTarget.height);
-    if (scale >= 1.0) scale = floor(scale);
-    viewport.width = (int)(renderer->sceneTarget.width * scale);
-    viewport.height = (int)(renderer->sceneTarget.height * scale);
-    if (viewport.width < 1) viewport.width = 1;
-    if (viewport.height < 1) viewport.height = 1;
-    viewport.x = (width - viewport.width) / 2;
-    viewport.y = (height - viewport.height) / 2;
+    int windowWidth, windowHeight;
+    glfwGetWindowSize(ctx->window.handle, &windowWidth, &windowHeight);
+    if (windowWidth <= 0 || windowHeight <= 0) return viewport;
+    viewport.width = (int)ceil(renderer->sceneTarget.width * renderer->pixelScale * width / windowWidth);
+    viewport.height = (int)ceil(renderer->sceneTarget.height * renderer->pixelScale * height / windowHeight);
+    viewport.y = height - viewport.height;
     return viewport;
 }
 
@@ -214,8 +211,8 @@ static void updateProjection(mContext* ctx) {
     int width, height;
     glfwGetWindowSize(ctx->window.handle, &width, &height);
     if (renderer->resolutionWidth != 0) {
-        width = renderer->resolutionWidth;
-        height = renderer->resolutionHeight;
+        width = renderer->sceneTarget.width;
+        height = renderer->sceneTarget.height;
     }
     if (width <= 0) width = 1;
     if (height <= 0) height = 1;
@@ -231,7 +228,13 @@ void mRendererBegin(mContext* ctx) {
     mRenderer* renderer = ctx->renderer;
     int width = renderer->resolutionWidth;
     int height = renderer->resolutionHeight;
-    if (width == 0) glfwGetFramebufferSize(ctx->window.handle, &width, &height);
+    if (width == 0) {
+        glfwGetFramebufferSize(ctx->window.handle, &width, &height);
+    } else {
+        glfwGetWindowSize(ctx->window.handle, &width, &height);
+        width = (int)ceil(width / renderer->pixelScale);
+        height = (int)ceil(height / renderer->pixelScale);
+    }
     if (width < 1) width = 1;
     if (height < 1) height = 1;
     if (resizeTargets(renderer, width, height) == M_FAILURE) {
@@ -250,13 +253,23 @@ void mRendererBegin(mContext* ctx) {
 int mRendererSetResolution(mContext* ctx, int width, int height) {
     if (ctx == NULL || ctx->renderer == NULL || width < 0 || height < 0 || (width == 0) != (height == 0)) return M_FAILURE;
     int targetWidth = width, targetHeight = height;
+    double pixelScale = 1.0;
     if (width == 0) {
         glfwGetFramebufferSize(ctx->window.handle, &targetWidth, &targetHeight);
         if (targetWidth < 1) targetWidth = 1;
         if (targetHeight < 1) targetHeight = 1;
+    } else {
+        int windowWidth, windowHeight;
+        glfwGetWindowSize(ctx->window.handle, &windowWidth, &windowHeight);
+        if (windowWidth <= 0 || windowHeight <= 0) return M_FAILURE;
+        pixelScale = fmin((double)windowWidth / width, (double)windowHeight / height);
+        if (pixelScale >= 1.0) pixelScale = floor(pixelScale);
+        targetWidth = (int)ceil(windowWidth / pixelScale);
+        targetHeight = (int)ceil(windowHeight / pixelScale);
     }
     mRendererFlush(ctx);
     if (resizeTargets(ctx->renderer, targetWidth, targetHeight) == M_FAILURE) return M_FAILURE;
+    ctx->renderer->pixelScale = pixelScale;
     ctx->renderer->resolutionWidth = width;
     ctx->renderer->resolutionHeight = height;
     mRendererBegin(ctx);
@@ -265,18 +278,13 @@ int mRendererSetResolution(mContext* ctx, int width, int height) {
 
 M_BOOL mRendererWindowToScreen(mContext* ctx, double x, double y, double* screenX, double* screenY) {
     if (ctx == NULL || ctx->renderer == NULL || !isfinite(x) || !isfinite(y)) return M_FALSE;
-    int width, height, windowWidth, windowHeight;
-    glfwGetFramebufferSize(ctx->window.handle, &width, &height);
-    glfwGetWindowSize(ctx->window.handle, &windowWidth, &windowHeight);
-    mViewport viewport = outputViewport(ctx);
-    if (windowWidth <= 0 || windowHeight <= 0 || viewport.width <= 0 || viewport.height <= 0) return M_FALSE;
-    x = x * width / windowWidth - viewport.x;
-    y = y * height / windowHeight - (height - viewport.y - viewport.height);
-    int screenWidth = ctx->renderer->resolutionWidth != 0 ? ctx->renderer->resolutionWidth : windowWidth;
-    int screenHeight = ctx->renderer->resolutionHeight != 0 ? ctx->renderer->resolutionHeight : windowHeight;
-    if (screenX != NULL) *screenX = x * screenWidth / viewport.width;
-    if (screenY != NULL) *screenY = y * screenHeight / viewport.height;
-    return x >= 0 && y >= 0 && x < viewport.width && y < viewport.height;
+    int width, height;
+    glfwGetWindowSize(ctx->window.handle, &width, &height);
+    if (width <= 0 || height <= 0) return M_FALSE;
+    double scale = ctx->renderer->resolutionWidth != 0 ? ctx->renderer->pixelScale : 1.0;
+    if (screenX != NULL) *screenX = x / scale;
+    if (screenY != NULL) *screenY = y / scale;
+    return x >= 0 && y >= 0 && x < width && y < height;
 }
 
 void mRendererPresent(mContext* ctx) {

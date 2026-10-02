@@ -1,0 +1,13 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/meowsers/Desktop/Code/C/peach/build-debug/cmake_install.cmake",
+		"/Users/meowsers/Desktop/Code/C/peach/build-debug/external/cmake_install.cmake",
+		"/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/glfw-build/cmake_install.cmake",
+		"/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/glfw-build/src/cmake_install.cmake",
+		"/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/cglm-build/cmake_install.cmake",
+		"/Users/meowsers/Desktop/Code/C/peach/build-debug/Peach/cmake_install.cmake",
+		"/Users/meowsers/Desktop/Code/C/peach/build-debug/sandbox/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

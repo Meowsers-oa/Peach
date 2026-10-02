@@ -22,6 +22,9 @@ add_library(Peach STATIC ${PEACH_SOURCES}
         include/Peach/Utils.h
         src/SpriteSheet.c
         include/Peach/SpriteSheet.h
+        src/Particles.c
+        include/Peach/Particles.h
+        include/Peach/List.h
 )
 
 target_include_directories(Peach

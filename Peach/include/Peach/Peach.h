@@ -23,6 +23,9 @@
 #include <Peach/SpriteSheet.h>
 #include <Peach/Animation.h>
 #include <Peach/Light.h>
+#include <Peach/Utils.h>
+#include <Peach/Particles.h>
+#include <Peach/List.h>
 
 mContext mContextCreate();
 void mUpdate(mContext* ctx);

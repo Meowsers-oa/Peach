@@ -12,9 +12,9 @@ void mRendererDestroy(mContext* ctx);
 void mRendererBegin(mContext* ctx);
 void mRendererFlush(mContext* ctx);
 void mRendererPresent(mContext* ctx);
-// Call between frames. Fixed pixels upscale by integers with letterboxing; 0,0 restores window size.
+// Call between frames. Sets pixel scale from the current window; resizing reveals more scene. 0,0 restores native pixels.
 int mRendererSetResolution(mContext* ctx, int width, int height);
-// Converts GLFW window coordinates to render pixels. Returns false in the letterbox bars.
+// Converts GLFW window coordinates to render pixels. Returns false outside the window.
 M_BOOL mRendererWindowToScreen(mContext* ctx, double x, double y, double* screenX, double* screenY);
 
 // Column-major camera matrix; NULL restores pixel coordinates.

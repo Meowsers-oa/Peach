@@ -22,6 +22,10 @@ static inline M_BOOL mAddSpriteSheet(mContext* ctx, const char* key, mSpriteShee
     return mResourceStore(ctx, key, &sheet, sizeof(sheet), M_RESOURCE_SPRITE_SHEET);
 }
 
+static inline M_BOOL mAddParticleEmitter(mContext* ctx, const char* key, mParticleEmitter emitter) {
+    return mResourceStore(ctx, key, &emitter, sizeof(emitter), M_RESOURCE_PARTICLE_EMITTER);
+}
+
 void* mGetResource(mContext* ctx, const char* key);
 mResourceType mResourceTypeOf(mContext* ctx, const char* key);
 M_BOOL mContainsResource(mContext* ctx, const char* key);

@@ -28,7 +28,8 @@ typedef enum {
     M_RESOURCE_TEXTURE,
     M_RESOURCE_SHADER,
     M_RESOURCE_SHAPE,
-    M_RESOURCE_SPRITE_SHEET
+    M_RESOURCE_SPRITE_SHEET,
+    M_RESOURCE_PARTICLE_EMITTER
 }mResourceType;
 
 typedef struct mMap mMap;
@@ -228,6 +229,7 @@ struct mRenderer {
     mColor ambient;
     int resolutionWidth;
     int resolutionHeight;
+    double pixelScale;
     int lightProjectionLocation;
     int lightPositionLocation;
     int lightColorLocation;
@@ -297,6 +299,33 @@ struct mAnimation {
     M_BOOL loop;
 };
 
+typedef struct {
+    double t;
+    float lifetime;
+    float x;
+    float y;
+    float velocityX;
+    float velocityY;
+    float size;
+    mColor color;
+    M_BOOL alive;
+}mParticle;
+
+typedef struct {
+    float x;
+    float y;
+    float speed;
+    uint amount;
+    int startSize;
+    int endSize;
+    mColor startColor;
+    mColor endColor;
+    M_BOOL active;
+    mParticle* particles;
+    float lifetime;
+    double spawnTime;
+    uint count;
+}mParticleEmitter;
 
 static inline uint64_t rand_ui64() {
     uint64_t x = prng_state;

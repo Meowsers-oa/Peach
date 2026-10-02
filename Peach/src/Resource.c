@@ -4,6 +4,7 @@
 #include <Peach/Shader.h>
 #include <Peach/Shape.h>
 #include <Peach/SpriteSheet.h>
+#include <Peach/Particles.h>
 #include <string.h>
 
 static mMapSlot* resourceSlot(mContext* ctx, const char* key) {
@@ -54,16 +55,19 @@ static void releaseResource(mContext* ctx, mResourceType type, void* value) {
         mShaderDestroy(value);
     } else if (type == M_RESOURCE_SHAPE) {
         mShapeDestroy(value);
+    } else if (type == M_RESOURCE_PARTICLE_EMITTER) {
+        mParticleEmitterDestroy(value);
     }
 }
 
 M_BOOL mResourceStore(mContext* ctx, const char* key, const void* value, size_t size, mResourceType type) {
     if (ctx == NULL || ctx->resourcePool == NULL || key == NULL || value == NULL || size == 0) return M_FALSE;
-    if (type < M_RESOURCE_VALUE || type > M_RESOURCE_SPRITE_SHEET ||
+    if (type < M_RESOURCE_VALUE || type > M_RESOURCE_PARTICLE_EMITTER ||
         (type == M_RESOURCE_TEXTURE && size != sizeof(mTexture)) ||
         (type == M_RESOURCE_SHADER && size != sizeof(mShader)) ||
         (type == M_RESOURCE_SHAPE && size != sizeof(mShape)) ||
-        (type == M_RESOURCE_SPRITE_SHEET && size != sizeof(mSpriteSheet))) return M_FALSE;
+        (type == M_RESOURCE_SPRITE_SHEET && size != sizeof(mSpriteSheet)) ||
+        (type == M_RESOURCE_PARTICLE_EMITTER && size != sizeof(mParticleEmitter))) return M_FALSE;
 
     mMapSlot* old = resourceSlot(ctx, key);
     unsigned int textureHandle = type == M_RESOURCE_TEXTURE ? ((const mTexture*)value)->handle :
@@ -94,6 +98,9 @@ M_BOOL mResourceStore(mContext* ctx, const char* key, const void* value, size_t 
         } else if (type == M_RESOURCE_SPRITE_SHEET) {
             mSprite* sprites = ((const mSpriteSheet*)value)->sprites;
             shared = sprites != NULL && sprites == ((mSpriteSheet*)slot->value)->sprites;
+        } else if (type == M_RESOURCE_PARTICLE_EMITTER) {
+            mParticle* particles = ((const mParticleEmitter*)value)->particles;
+            shared = particles != NULL && particles == ((mParticleEmitter*)slot->value)->particles;
         } else if (type == M_RESOURCE_SHAPE) {
             const mShape* shape = value;
             mShape* stored = slot->value;
@@ -111,10 +118,13 @@ M_BOOL mResourceStore(mContext* ctx, const char* key, const void* value, size_t 
     mShader oldShader = {0};
     mShape oldShape = {0};
     mSpriteSheet oldSheet = {0};
+    mParticleEmitter oldEmitter = {0};
     if (oldType == M_RESOURCE_TEXTURE) oldTexture = *(mTexture*)old->value;
     if (oldType == M_RESOURCE_SHADER) oldShader = *(mShader*)old->value;
     if (oldType == M_RESOURCE_SHAPE) oldShape = *(mShape*)old->value;
     if (oldType == M_RESOURCE_SPRITE_SHEET) oldSheet = *(mSpriteSheet*)old->value;
+
+    if (oldType == M_RESOURCE_PARTICLE_EMITTER) oldEmitter = *(mParticleEmitter*)old->value;
 
     if (!mMapSetBytes(ctx->resourcePool, key, value, size)) return M_FALSE;
     mMapSlot* stored = resourceSlot(ctx, key);
@@ -130,6 +140,8 @@ M_BOOL mResourceStore(mContext* ctx, const char* key, const void* value, size_t 
             mShaderDestroy(&oldShader);
         } else if (oldType == M_RESOURCE_SHAPE) {
             mShapeDestroy(&oldShape);
+        } else if (oldType == M_RESOURCE_PARTICLE_EMITTER) {
+            mParticleEmitterDestroy(&oldEmitter);
         }
     }
     return M_TRUE;

@@ -1,0 +1,3 @@
+/Users/meowsers/Desktop/Code/C/peach/Peach/build/CMakeFiles/Peach.dir
+/Users/meowsers/Desktop/Code/C/peach/Peach/build/CMakeFiles/edit_cache.dir
+/Users/meowsers/Desktop/Code/C/peach/Peach/build/CMakeFiles/rebuild_cache.dir

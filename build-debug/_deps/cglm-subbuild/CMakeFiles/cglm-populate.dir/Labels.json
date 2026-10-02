@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/cglm-subbuild/CMakeFiles/cglm-populate"
+		},
+		{
+			"file" : "/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/cglm-subbuild/CMakeFiles/cglm-populate.rule"
+		},
+		{
+			"file" : "/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/cglm-subbuild/CMakeFiles/cglm-populate-complete.rule"
+		},
+		{
+			"file" : "/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/cglm-subbuild/cglm-populate-prefix/src/cglm-populate-stamp/cglm-populate-build.rule"
+		},
+		{
+			"file" : "/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/cglm-subbuild/cglm-populate-prefix/src/cglm-populate-stamp/cglm-populate-configure.rule"
+		},
+		{
+			"file" : "/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/cglm-subbuild/cglm-populate-prefix/src/cglm-populate-stamp/cglm-populate-download.rule"
+		},
+		{
+			"file" : "/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/cglm-subbuild/cglm-populate-prefix/src/cglm-populate-stamp/cglm-populate-install.rule"
+		},
+		{
+			"file" : "/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/cglm-subbuild/cglm-populate-prefix/src/cglm-populate-stamp/cglm-populate-mkdir.rule"
+		},
+		{
+			"file" : "/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/cglm-subbuild/cglm-populate-prefix/src/cglm-populate-stamp/cglm-populate-patch.rule"
+		},
+		{
+			"file" : "/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/cglm-subbuild/cglm-populate-prefix/src/cglm-populate-stamp/cglm-populate-test.rule"
+		},
+		{
+			"file" : "/Users/meowsers/Desktop/Code/C/peach/build-debug/_deps/cglm-subbuild/cglm-populate-prefix/src/cglm-populate-stamp/cglm-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"cglm-populate"
+		],
+		"name" : "cglm-populate"
+	}
+}
