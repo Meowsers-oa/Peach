@@ -1,3 +1,0 @@
-/Users/meowsers/Desktop/Code/C/peach/build/_deps/glfw-subbuild/CMakeFiles/glfw-populate.dir
-/Users/meowsers/Desktop/Code/C/peach/build/_deps/glfw-subbuild/CMakeFiles/edit_cache.dir
-/Users/meowsers/Desktop/Code/C/peach/build/_deps/glfw-subbuild/CMakeFiles/rebuild_cache.dir

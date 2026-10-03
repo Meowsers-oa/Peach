@@ -1,1 +1,0 @@
-/usr/bin/cc -g -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/sandbox.dir/src/Main.c.o -o sandbox  ../Peach/libPeach.a ../external/libglad.a ../_deps/glfw-build/src/libglfw3.a -framework Cocoa -framework IOKit -framework CoreFoundation ../_deps/cglm-build/libcglm.a -framework OpenGL ../external/libstb_image.a
